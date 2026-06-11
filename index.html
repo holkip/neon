@@ -1,1044 +1,1905 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>VAGUELY — Ташкент, переулок Цветов</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&family=Space+Mono:ital@0;1&display=swap" rel="stylesheet"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEON ABYSS</title>
 <style>
-:root{
-  --ink:#050505;
-  --card:#0e0e0e;
-  --card2:#141414;
-  --ivory:#e5e5e0;
-  --muted:#5a5a55;
-  --blood:#990000;
-  --blood-glow:rgba(153,0,0,0.45);
-  --border:rgba(255,255,255,0.05);
-}
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{background:var(--ink);color:var(--ivory);font-family:'Inter',sans-serif;font-weight:300;overflow-x:hidden}
-::-webkit-scrollbar{width:4px}
-::-webkit-scrollbar-track{background:var(--ink)}
-::-webkit-scrollbar-thumb{background:#2a2a2a;border-radius:2px}
-::selection{background:var(--blood);color:#fff}
-
-/* Type */
-.f-disp{font-family:'Cormorant Garamond',serif}
-.f-mono{font-family:'Space Mono',monospace}
-
-/* Glassmorphism header */
-#hdr{
-  position:fixed;top:0;left:0;right:0;z-index:90;
-  background:rgba(5,5,5,0.78);
-  backdrop-filter:blur(16px);
-  -webkit-backdrop-filter:blur(16px);
-  border-bottom:1px solid var(--border);
+/* ===== RESET & BASE ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; overflow: hidden; }
+body {
+  background: #03030a;
+  color: #d0d0f0;
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+  line-height: 1.5;
 }
 
-/* Hero */
-#hero{min-height:100vh;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
-.hero-bg{
-  position:absolute;inset:0;
-  background-image:url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1800&q=85');
-  background-size:cover;background-position:center;
-  filter:brightness(0.18) saturate(0.6);
-}
-.hero-grain{
-  position:absolute;inset:0;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-  pointer-events:none;opacity:0.6;
-}
-.hero-vignette{position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 30%,rgba(5,5,5,0.92) 100%)}
-
-/* Neon card highlight */
-.neon-match{
-  box-shadow:0 0 0 1px rgba(153,0,0,0.8),0 0 24px rgba(153,0,0,0.35),0 0 48px rgba(153,0,0,0.15);
-  border-color:rgba(153,0,0,0.6)!important;
-  transition:box-shadow 0.6s ease,border-color 0.6s ease;
+/* ===== CSS VARIABLES / THEME ===== */
+:root {
+  --pk: #ff2d78;
+  --cy: #00f5d4;
+  --go: #ffd700;
+  --pu: #b060ff;
+  --bg0: #03030a;
+  --bg1: #080816;
+  --bg2: #0e0e22;
+  --bg3: #14142e;
+  --border: rgba(0,245,212,0.15);
+  --border-pk: rgba(255,45,120,0.2);
+  --text-dim: #606080;
+  --text-mid: #9090b0;
+  --common: #707090;
+  --epic: #b060ff;
+  --legendary: #ffd700;
 }
 
-/* Menu card base */
-.menu-card{
-  background:var(--card);
-  border:1px solid var(--border);
-  transition:all 0.3s ease;
-  cursor:pointer;
+/* ===== KEYFRAME ANIMATIONS ===== */
+@keyframes logoPulse {
+  0%,100% { text-shadow: 0 0 8px var(--pk), 0 0 20px var(--pk), 0 0 40px rgba(255,45,120,0.4); }
+  50%      { text-shadow: 0 0 16px var(--pk), 0 0 40px var(--pk), 0 0 80px rgba(255,45,120,0.7), 0 0 120px rgba(255,45,120,0.3); }
 }
-.menu-card:hover{border-color:rgba(255,255,255,0.12);transform:translateY(-2px)}
-
-/* Cart drawer */
-#cart-drawer{
-  position:fixed;top:0;right:0;bottom:0;z-index:110;
-  width:min(420px,100vw);
-  background:rgba(10,10,10,0.97);
-  backdrop-filter:blur(24px);
-  -webkit-backdrop-filter:blur(24px);
-  border-left:1px solid var(--border);
-  transform:translateX(100%);
-  transition:transform 0.4s cubic-bezier(0.4,0,0.2,1);
-  display:flex;flex-direction:column;
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
-#cart-drawer.open{transform:translateX(0)}
-#cart-overlay{
-  position:fixed;inset:0;z-index:105;
-  background:rgba(0,0,0,0);
-  pointer-events:none;
-  transition:background 0.4s ease;
+@keyframes shake {
+  0%,100% { transform: translate(0,0); }
+  20%     { transform: translate(-5px, 2px); }
+  40%     { transform: translate(5px, -2px); }
+  60%     { transform: translate(-4px, 1px); }
+  80%     { transform: translate(4px, -1px); }
 }
-#cart-overlay.open{background:rgba(0,0,0,0.7);pointer-events:all}
-
-/* Modal */
-#modal-wrap{
-  position:fixed;inset:0;z-index:120;
-  background:rgba(0,0,0,0);
-  pointer-events:none;
-  display:flex;align-items:center;justify-content:center;
-  transition:background 0.35s ease;
+@keyframes dmgFloat {
+  0%   { opacity: 1; transform: translateY(0) scale(1); }
+  30%  { opacity: 1; transform: translateY(-20px) scale(1.2); }
+  100% { opacity: 0; transform: translateY(-70px) scale(0.8); }
 }
-#modal-wrap.open{background:rgba(0,0,0,0.85);pointer-events:all}
-#modal-box{
-  background:#0e0e0e;
-  border:1px solid rgba(255,255,255,0.08);
-  width:min(520px,94vw);
-  max-height:90vh;
-  overflow-y:auto;
-  transform:translateY(20px) scale(0.97);
-  opacity:0;
-  transition:all 0.35s cubic-bezier(0.4,0,0.2,1);
+@keyframes notifSlideIn {
+  from { opacity: 0; transform: translateX(100px); }
+  to   { opacity: 1; transform: translateX(0); }
 }
-#modal-wrap.open #modal-box{transform:translateY(0) scale(1);opacity:1}
-
-/* Alert toast */
-#toast{
-  position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(20px);
-  z-index:130;
-  background:#0e0e0e;
-  border:1px solid rgba(153,0,0,0.4);
-  padding:1.25rem 2rem;
-  text-align:center;
-  opacity:0;
-  transition:all 0.4s ease;
-  pointer-events:none;
-  min-width:300px;
-  max-width:90vw;
+@keyframes notifSlideOut {
+  from { opacity: 1; transform: translateX(0); }
+  to   { opacity: 0; transform: translateX(120px); }
 }
-#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-
-/* Quiz */
-.quiz-opt{
-  background:var(--card2);
-  border:1px solid var(--border);
-  padding:0.875rem 1.25rem;
-  cursor:pointer;
-  transition:all 0.25s ease;
-  text-align:left;
-  width:100%;
-  color:var(--ivory);
-  font-family:'Inter',sans-serif;
-  font-size:0.875rem;
+@keyframes legendaryGlow {
+  0%,100% { box-shadow: 0 0 6px rgba(255,215,0,0.3), inset 0 0 6px rgba(255,215,0,0.05); }
+  50%      { box-shadow: 0 0 18px rgba(255,215,0,0.6), inset 0 0 10px rgba(255,215,0,0.1); }
 }
-.quiz-opt:hover{border-color:rgba(153,0,0,0.5);background:rgba(153,0,0,0.06)}
-.quiz-opt.selected{border-color:rgba(153,0,0,0.7);background:rgba(153,0,0,0.12);color:#fff}
-
-/* Input / select shared */
-.field{
-  width:100%;
-  background:#0a0a0a;
-  border:1px solid rgba(255,255,255,0.08);
-  color:var(--ivory);
-  font-family:'Inter',sans-serif;
-  font-size:0.875rem;
-  padding:0.7rem 0.875rem;
-  outline:none;
-  transition:border-color 0.25s;
-  border-radius:0;
-  appearance:none;
+@keyframes epicGlow {
+  0%,100% { box-shadow: 0 0 6px rgba(176,96,255,0.3); }
+  50%      { box-shadow: 0 0 14px rgba(176,96,255,0.5); }
 }
-.field:focus{border-color:rgba(153,0,0,0.5)}
-.field::placeholder{color:var(--muted)}
-
-/* Qty controls */
-.qty-btn{
-  width:28px;height:28px;
-  border:1px solid rgba(255,255,255,0.1);
-  background:transparent;
-  color:var(--ivory);
-  cursor:pointer;
-  font-size:1rem;
-  line-height:1;
-  transition:border-color 0.2s,background 0.2s;
-  display:flex;align-items:center;justify-content:center;
-  flex-shrink:0;
+@keyframes warnBlink {
+  0%,100% { opacity: 1; }
+  50%      { opacity: 0.5; }
 }
-.qty-btn:hover{border-color:rgba(153,0,0,0.5);background:rgba(153,0,0,0.08)}
-
-/* Coupon success */
-.coupon-ok{border-color:rgba(153,0,0,0.6)!important;background:rgba(153,0,0,0.06)!important}
-
-/* Tab */
-.tab{
-  font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;
-  padding:0.5rem 1.1rem;
-  background:transparent;
-  border:1px solid transparent;
-  color:var(--muted);
-  cursor:pointer;
-  transition:all 0.25s;
-  white-space:nowrap;
+@keyframes scanline {
+  0%   { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
 }
-.tab.active{border-color:rgba(153,0,0,0.5);color:var(--ivory);background:rgba(153,0,0,0.08)}
-.tab:hover:not(.active){color:var(--ivory);border-color:rgba(255,255,255,0.08)}
-
-/* Checkbox custom */
-.chk-wrap{display:flex;align-items:center;gap:0.6rem;cursor:pointer;user-select:none}
-.chk-wrap input{display:none}
-.chk-box{
-  width:16px;height:16px;flex-shrink:0;
-  border:1px solid rgba(255,255,255,0.15);
-  background:var(--card2);
-  display:flex;align-items:center;justify-content:center;
-  transition:all 0.2s;
+@keyframes onlinePulse {
+  0%,100% { color: var(--cy); }
+  50%      { color: #fff; }
 }
-.chk-wrap input:checked + .chk-box{background:var(--blood);border-color:var(--blood)}
-.chk-box::after{content:'';width:8px;height:8px;background:var(--ink);opacity:0;transition:opacity 0.15s}
-.chk-wrap input:checked + .chk-box::after{opacity:1;clip-path:polygon(14% 44%,0 65%,50% 100%,100% 16%,80% 0,43% 62%)}
-
-/* Badge */
-#cart-count{
-  position:absolute;top:-7px;right:-7px;
-  background:var(--blood);
-  color:#fff;
-  width:18px;height:18px;
-  border-radius:50%;
-  font-size:10px;
-  display:none;
-  align-items:center;justify-content:center;
-  font-weight:500;
+@keyframes cdBar {
+  from { width: 100%; }
+  to   { width: 0%; }
 }
-#cart-count.show{display:flex}
-
-/* Scroll reveal */
-.reveal{opacity:0;transform:translateY(24px);transition:opacity 0.7s ease,transform 0.7s ease}
-.reveal.visible{opacity:1;transform:translateY(0)}
-
-/* Footer subscribe */
-.sub-inp{
-  background:transparent;
-  border:1px solid rgba(255,255,255,0.08);
-  border-right:none;
-  color:var(--ivory);
-  font-family:'Inter',sans-serif;
-  font-size:0.8rem;
-  padding:0.65rem 1rem;
-  outline:none;
-  flex:1;
-  transition:border-color 0.25s;
+@keyframes spinDrum {
+  0%   { transform: translateY(0); }
+  100% { transform: translateY(-400%); }
 }
-.sub-inp:focus{border-color:rgba(153,0,0,0.4)}
-.sub-inp::placeholder{color:var(--muted)}
-
-/* Easter egg */
-#copy-easter:hover::after{
-  content:' — и всё же ты здесь.';
-  color:rgba(153,0,0,0.6);
-  font-style:italic;
-  font-size:0.75rem;
+@keyframes fireFlash {
+  0%   { background: rgba(255,45,120,0); }
+  20%  { background: rgba(255,45,120,0.15); }
+  100% { background: rgba(255,45,120,0); }
 }
 
-/* Divider line */
-.hr{width:40px;height:1px;background:rgba(153,0,0,0.5);display:block;margin:1.25rem 0}
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: var(--bg0); }
+::-webkit-scrollbar-thumb { background: rgba(0,245,212,0.3); border-radius: 2px; }
 
-/* Price tag */
-.price-tag{font-family:'Space Mono',monospace;font-size:0.8rem;color:rgba(153,0,0,0.85)}
-
-/* Scrollable tabs row */
-.tabs-row{display:flex;gap:0.5rem;overflow-x:auto;padding-bottom:2px}
-.tabs-row::-webkit-scrollbar{height:0}
-
-@media(max-width:640px){
-  .hero-title{font-size:2.4rem!important;line-height:1.1!important}
+/* ===== LAYOUT ===== */
+#app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
 }
+
+/* ===== HEADER ===== */
+#header {
+  flex-shrink: 0;
+  background: var(--bg1);
+  border-bottom: 1px solid var(--border-pk);
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  z-index: 50;
+}
+#header::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--pk), var(--cy), transparent);
+}
+#logo {
+  font-size: 20px;
+  font-weight: bold;
+  letter-spacing: 5px;
+  color: var(--pk);
+  animation: logoPulse 3s ease-in-out infinite;
+  cursor: default;
+  user-select: none;
+}
+#logo span { color: var(--cy); }
+.hud-stat { text-align: center; }
+.hud-label { font-size: 9px; color: var(--text-dim); letter-spacing: 1px; text-transform: uppercase; }
+.hud-value { font-size: 16px; font-weight: bold; }
+.hud-credits { color: var(--go); }
+.hud-crystals { color: var(--pu); }
+.hud-online { animation: onlinePulse 4s ease-in-out infinite; }
+#live-ticker {
+  font-size: 10px;
+  color: var(--cy);
+  max-width: 200px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  border-left: 1px solid var(--border);
+  padding-left: 10px;
+  opacity: 0.8;
+}
+#header-right {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+/* ===== BODY ===== */
+#body {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+/* ===== SIDEBAR ===== */
+#sidebar {
+  width: 180px;
+  flex-shrink: 0;
+  background: var(--bg1);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  padding: 12px 0;
+}
+.nav-section { font-size: 9px; color: var(--text-dim); letter-spacing: 2px; padding: 0 14px 6px; margin-top: 6px; }
+.tab-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-left: 2px solid transparent;
+  color: var(--text-mid);
+  padding: 11px 14px;
+  cursor: pointer;
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  text-align: left;
+  transition: all 0.2s;
+  position: relative;
+}
+.tab-btn:hover { color: #e0e0ff; background: rgba(255,255,255,0.03); }
+.tab-btn.active {
+  color: var(--cy);
+  border-left-color: var(--cy);
+  background: rgba(0,245,212,0.06);
+}
+.tab-btn.active::before {
+  content: '';
+  position: absolute;
+  right: 0; top: 0; bottom: 0;
+  width: 1px;
+  background: rgba(0,245,212,0.2);
+}
+.tab-icon { font-size: 15px; width: 18px; text-align: center; }
+
+/* ===== CHAT SIDEBAR ===== */
+#chat-section {
+  margin-top: auto;
+  border-top: 1px solid var(--border);
+  padding: 10px;
+}
+.chat-section-label { font-size: 9px; color: var(--text-dim); letter-spacing: 2px; margin-bottom: 6px; }
+#chat-messages {
+  height: 160px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.chat-msg {
+  font-size: 10px;
+  line-height: 1.4;
+  padding: 2px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  word-break: break-word;
+}
+.chat-name { font-weight: bold; }
+.chat-text { color: #9090b0; }
+.chat-row { display: flex; gap: 4px; margin-top: 6px; }
+#chat-input-field {
+  flex: 1;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  color: #e0e0ff;
+  padding: 5px 8px;
+  font-family: 'Courier New', monospace;
+  font-size: 11px;
+  border-radius: 3px;
+  outline: none;
+}
+#chat-input-field:focus { border-color: var(--cy); }
+.chat-send-btn {
+  background: rgba(0,245,212,0.1);
+  border: 1px solid var(--cy);
+  color: var(--cy);
+  padding: 5px 8px;
+  cursor: pointer;
+  font-size: 11px;
+  border-radius: 3px;
+  transition: all 0.2s;
+}
+.chat-send-btn:hover { background: rgba(0,245,212,0.2); }
+
+/* ===== MAIN CONTENT ===== */
+#main-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 24px;
+  position: relative;
+}
+.tab-pane { display: none; animation: fadeIn 0.3s ease; }
+.tab-pane.active { display: block; }
+.section-title {
+  font-size: 13px;
+  color: var(--cy);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.section-title::before { content: '▸'; color: var(--pk); }
+.section-subtitle {
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin: 16px 0 10px;
+}
+
+/* ===== CARDS ===== */
+.card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 14px;
+}
+.card.rarity-common  { border-color: rgba(112,112,144,0.4); }
+.card.rarity-epic    { border-color: rgba(176,96,255,0.5); animation: epicGlow 3s ease-in-out infinite; }
+.card.rarity-legendary { border-color: rgba(255,215,0,0.6); animation: legendaryGlow 2s ease-in-out infinite; }
+
+/* ===== NEON BUTTONS ===== */
+.btn {
+  background: transparent;
+  border: 1px solid;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  border-radius: 4px;
+  transition: all 0.2s;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.btn-cyan  { border-color: var(--cy); color: var(--cy); }
+.btn-cyan:hover:not(:disabled)  { background: rgba(0,245,212,0.12); box-shadow: 0 0 10px rgba(0,245,212,0.3); }
+.btn-pink  { border-color: var(--pk); color: var(--pk); }
+.btn-pink:hover:not(:disabled)  { background: rgba(255,45,120,0.12); box-shadow: 0 0 10px rgba(255,45,120,0.3); }
+.btn-gold  { border-color: var(--go); color: var(--go); }
+.btn-gold:hover:not(:disabled)  { background: rgba(255,215,0,0.12); box-shadow: 0 0 10px rgba(255,215,0,0.3); }
+.btn-purple { border-color: var(--pu); color: var(--pu); }
+.btn-purple:hover:not(:disabled) { background: rgba(176,96,255,0.12); box-shadow: 0 0 10px rgba(176,96,255,0.3); }
+.btn-lg { padding: 12px 24px; font-size: 14px; }
+.btn-sm { padding: 5px 10px; font-size: 11px; }
+.btn-full { width: 100%; }
+
+/* ===== POLYGON / HOME TAB ===== */
+#polygon-panel {
+  background: var(--bg2);
+  border: 1px solid var(--border-pk);
+  border-radius: 8px;
+  padding: 18px;
+  margin-bottom: 18px;
+  position: relative;
+  overflow: hidden;
+}
+#polygon-panel::before {
+  content: '';
+  position: absolute;
+  top: -50%; left: -50%;
+  width: 200%; height: 200%;
+  background: radial-gradient(circle at center, rgba(255,45,120,0.04) 0%, transparent 60%);
+  pointer-events: none;
+}
+#fire-flash-overlay {
+  position: absolute; inset: 0;
+  border-radius: 8px;
+  pointer-events: none;
+  opacity: 0;
+  background: rgba(255,45,120,0.15);
+  transition: opacity 0.1s;
+}
+#polygon-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+#equipped-name-display {
+  font-size: 20px;
+  font-weight: bold;
+  color: var(--cy);
+  text-shadow: 0 0 10px rgba(0,245,212,0.4);
+}
+.status-dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; margin-right: 4px; }
+.status-dot.ready   { background: #00ff88; box-shadow: 0 0 6px #00ff88; }
+.status-dot.cooldown { background: var(--pk); box-shadow: 0 0 6px var(--pk); animation: warnBlink 0.5s infinite; }
+#polygon-stats {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.stat-box {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 10px;
+  text-align: center;
+}
+.stat-box-label { font-size: 9px; color: var(--text-dim); letter-spacing: 1px; margin-bottom: 4px; }
+.stat-box-value { font-size: 22px; font-weight: bold; }
+.stat-dmg   { color: var(--pk); }
+.stat-cd    { color: var(--cy); }
+.stat-cost  { color: var(--go); }
+#polygon-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+#cd-bar-container {
+  height: 3px;
+  background: var(--bg3);
+  border-radius: 2px;
+  margin-top: 12px;
+  overflow: hidden;
+}
+#cd-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--pk), var(--cy));
+  border-radius: 2px;
+  width: 100%;
+  transition: none;
+}
+.earn-note { font-size: 10px; color: var(--text-dim); line-height: 1.4; }
+.earn-note span { color: var(--go); }
+#weapon-grid, #spell-grid {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 12px;
+}
+.arsenal-card {
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+.arsenal-card:hover { transform: translateY(-2px); }
+.arsenal-card.cd-active { cursor: not-allowed; }
+.card-icon { font-size: 26px; margin-bottom: 6px; }
+.card-name { font-size: 12px; font-weight: bold; margin-bottom: 1px; }
+.card-rarity-tag { font-size: 9px; color: var(--text-dim); letter-spacing: 1px; margin-bottom: 8px; }
+.card-stat-row { font-size: 10px; color: var(--text-dim); margin-bottom: 2px; }
+.card-stat-row span { color: #c0c0e0; }
+.equipped-tag {
+  display: inline-block;
+  font-size: 9px;
+  color: var(--cy);
+  border: 1px solid rgba(0,245,212,0.4);
+  background: rgba(0,245,212,0.08);
+  padding: 2px 8px;
+  border-radius: 10px;
+  margin-top: 6px;
+  letter-spacing: 1px;
+}
+.locked-overlay {
+  position: absolute; inset: 0;
+  background: rgba(3,3,10,0.65);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  color: var(--text-dim);
+  flex-direction: column;
+  gap: 4px;
+}
+.lock-icon { font-size: 20px; }
+.cd-overlay {
+  position: absolute; inset: 0;
+  background: rgba(0,0,0,0.75);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: var(--cy);
+  font-weight: bold;
+  flex-direction: column;
+  gap: 4px;
+  text-shadow: 0 0 10px var(--cy);
+}
+.cd-label { font-size: 10px; color: var(--text-dim); }
+
+/* ===== SHOP TAB ===== */
+#shop-grid {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 16px;
+}
+.shop-card { position: relative; }
+.shop-card-icon { font-size: 32px; margin-bottom: 8px; }
+.shop-card-name { font-size: 13px; font-weight: bold; margin-bottom: 2px; }
+.shop-card-rarity { font-size: 9px; letter-spacing: 1px; margin-bottom: 6px; }
+.shop-card-desc { font-size: 10px; color: var(--text-mid); margin-bottom: 10px; line-height: 1.5; }
+.shop-card-stats { font-size: 10px; color: var(--text-dim); margin-bottom: 12px; }
+.shop-card-stats span { color: #c0c0e0; }
+.sold-tag {
+  display: flex; align-items: center; justify-content: center;
+  color: #00cc66; border: 1px solid #00cc6650;
+  background: rgba(0,204,102,0.08);
+  padding: 8px; border-radius: 4px;
+  font-size: 11px; letter-spacing: 1px;
+}
+#shop-warning {
+  display: none;
+  background: rgba(255,45,120,0.1);
+  border: 1px solid rgba(255,45,120,0.5);
+  color: var(--pk);
+  padding: 10px 16px;
+  border-radius: 6px;
+  margin-bottom: 14px;
+  text-align: center;
+  font-size: 12px;
+  letter-spacing: 1px;
+  animation: warnBlink 0.8s infinite;
+}
+
+/* ===== CASINO TAB ===== */
+#casino-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+.casino-card-title {
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 2px;
+  text-align: center;
+  margin-bottom: 16px;
+  text-transform: uppercase;
+}
+/* Slot Machine */
+#slot-machine { text-align: center; }
+#reels-container {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 14px;
+}
+.reel-window {
+  width: 70px; height: 70px;
+  overflow: hidden;
+  background: #000;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  position: relative;
+}
+.reel-window::before, .reel-window::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0;
+  height: 20px;
+  z-index: 2;
+  pointer-events: none;
+}
+.reel-window::before { top: 0; background: linear-gradient(to bottom, rgba(14,14,34,1), transparent); }
+.reel-window::after  { bottom: 0; background: linear-gradient(to top, rgba(14,14,34,1), transparent); }
+.reel-strip {
+  display: flex;
+  flex-direction: column;
+  transition: transform 0s;
+}
+.reel-item {
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  flex-shrink: 0;
+}
+#slot-result-msg {
+  min-height: 22px;
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 12px;
+  text-align: center;
+  transition: all 0.3s;
+}
+#slot-bet-info { font-size: 10px; color: var(--text-dim); margin-bottom: 10px; }
+#slot-bet-info span { color: var(--go); }
+
+/* Wheel */
+#wheel-section { text-align: center; }
+#wheel-outer {
+  position: relative;
+  width: 200px; height: 200px;
+  margin: 0 auto 14px;
+}
+#wheel-canvas { border-radius: 50%; }
+#wheel-pointer {
+  position: absolute;
+  top: -12px; left: 50%;
+  transform: translateX(-50%);
+  font-size: 20px;
+  color: var(--go);
+  text-shadow: 0 0 8px var(--go);
+  z-index: 10;
+}
+#wheel-result-msg {
+  min-height: 22px;
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+/* Casino Stats */
+#casino-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  gap: 12px;
+  text-align: center;
+}
+.casino-stat-label { font-size: 9px; color: var(--text-dim); letter-spacing: 1px; margin-bottom: 4px; }
+.casino-stat-val { font-size: 18px; font-weight: bold; }
+
+/* ===== INVENTORY TAB ===== */
+#inventory-grid {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  gap: 14px;
+}
+#inventory-empty {
+  color: var(--text-dim);
+  text-align: center;
+  padding: 60px 20px;
+  font-size: 13px;
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+}
+.inv-card { position: relative; }
+.inv-card-icon { font-size: 28px; margin-bottom: 6px; }
+.inv-card-name { font-size: 11px; font-weight: bold; margin-bottom: 2px; }
+.inv-card-rarity { font-size: 9px; letter-spacing: 1px; margin-bottom: 6px; }
+.inv-card-stat { font-size: 10px; color: var(--text-dim); }
+.inv-card-stat span { color: #c0c0e0; }
+.inv-equip-btn { width: 100%; margin-top: 8px; font-size: 10px; }
+.tooltip {
+  position: relative;
+  cursor: help;
+}
+.tooltip-text {
+  display: none;
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  color: #c0c0e0;
+  font-size: 10px;
+  padding: 6px 10px;
+  border-radius: 4px;
+  white-space: nowrap;
+  z-index: 100;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.5);
+}
+.tooltip:hover .tooltip-text { display: block; }
+
+/* ===== SETTINGS TAB ===== */
+#settings-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.settings-card-title { font-size: 10px; color: var(--cy); letter-spacing: 2px; margin-bottom: 14px; text-transform: uppercase; }
+.settings-card-title.pk { color: var(--pk); }
+.settings-label { font-size: 11px; color: var(--text-mid); margin-bottom: 8px; }
+.settings-row { display: flex; gap: 8px; margin-bottom: 8px; }
+.settings-row .btn { flex: 1; font-size: 10px; padding: 7px 4px; }
+.settings-active { background: rgba(0,245,212,0.12) !important; box-shadow: 0 0 8px rgba(0,245,212,0.25) !important; }
+.settings-active-pk { background: rgba(255,45,120,0.12) !important; box-shadow: 0 0 8px rgba(255,45,120,0.25) !important; }
+input[type="range"] {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 3px;
+  background: var(--bg3);
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--cy);
+  box-shadow: 0 0 6px var(--cy);
+  cursor: pointer;
+}
+.toggle-switch {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+.toggle-track {
+  width: 36px; height: 18px;
+  border-radius: 9px;
+  border: 1px solid var(--border);
+  background: var(--bg3);
+  position: relative;
+  transition: all 0.2s;
+}
+.toggle-track.on { background: rgba(0,245,212,0.2); border-color: rgba(0,245,212,0.5); }
+.toggle-thumb {
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: var(--text-dim);
+  position: absolute;
+  top: 2px; left: 2px;
+  transition: all 0.2s;
+}
+.toggle-track.on .toggle-thumb { background: var(--cy); left: 20px; box-shadow: 0 0 6px var(--cy); }
+.settings-info { font-size: 9px; color: var(--text-dim); margin-top: 8px; letter-spacing: 0.5px; }
+.version-badge {
+  font-size: 9px;
+  color: var(--text-dim);
+  border: 1px solid var(--border);
+  padding: 3px 8px;
+  border-radius: 10px;
+  display: inline-block;
+  margin-top: 6px;
+}
+
+/* ===== NOTIFICATIONS ===== */
+#notifications {
+  position: fixed;
+  right: 16px;
+  bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 9000;
+  pointer-events: none;
+  max-width: 300px;
+}
+.notif {
+  background: var(--bg2);
+  border: 1px solid var(--cy);
+  border-radius: 5px;
+  padding: 10px 14px;
+  font-size: 11px;
+  color: var(--cy);
+  animation: notifSlideIn 0.35s ease;
+  box-shadow: 0 0 12px rgba(0,245,212,0.15);
+}
+.notif.player { border-color: var(--go); color: var(--go); box-shadow: 0 0 12px rgba(255,215,0,0.15); }
+.notif.fade-out { animation: notifSlideOut 0.35s ease forwards; }
+
+/* ===== DAMAGE NUMBERS ===== */
+#dmg-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 8000;
+  overflow: hidden;
+}
+.dmg-num {
+  position: absolute;
+  font-size: 26px;
+  font-weight: bold;
+  color: var(--pk);
+  text-shadow: 0 0 10px var(--pk);
+  animation: dmgFloat 1.1s ease forwards;
+  white-space: nowrap;
+}
+
+/* ===== RARITY COLORS ===== */
+.color-common    { color: var(--common); }
+.color-epic      { color: var(--epic); }
+.color-legendary { color: var(--legendary); }
+
+/* ===== UTILITY ===== */
+.divider { height: 1px; background: var(--border); margin: 14px 0; }
+.flex-between { display: flex; align-items: center; justify-content: space-between; }
+.text-dim { color: var(--text-dim); }
+.text-mid { color: var(--text-mid); }
+.text-cy  { color: var(--cy); }
+.text-pk  { color: var(--pk); }
+.text-go  { color: var(--go); }
+.text-pu  { color: var(--pu); }
+.text-sm  { font-size: 11px; }
+.text-xs  { font-size: 10px; }
+.mb4  { margin-bottom: 4px; }
+.mb8  { margin-bottom: 8px; }
+.mb12 { margin-bottom: 12px; }
+.mb16 { margin-bottom: 16px; }
 </style>
 </head>
 <body>
 
-<!-- ===== HEADER ===== -->
-<header id="hdr">
-  <div class="max-w-6xl mx-auto px-5 py-4 flex items-center justify-between gap-4">
-    <a href="#hero" class="f-disp text-2xl tracking-[0.22em] font-light" style="color:var(--ivory);text-decoration:none;letter-spacing:0.3em">VAGUELY</a>
-    <div class="hidden md:flex items-center gap-6 text-xs tracking-widest uppercase" style="color:var(--muted)">
-      <a href="tel:+998337777737" style="color:var(--muted);text-decoration:none;transition:color 0.2s" onmouseover="this.style.color='var(--ivory)'" onmouseout="this.style.color='var(--muted)'">+998 33 777 77 37</a>
-      <a href="mailto:jojimol@jinni.com" style="color:var(--muted);text-decoration:none;transition:color 0.2s" onmouseover="this.style.color='var(--ivory)'" onmouseout="this.style.color='var(--muted)'">jojimol@jinni.com</a>
-    </div>
-    <button id="cart-btn" onclick="toggleCart()" style="position:relative;background:none;border:none;cursor:pointer;padding:4px" aria-label="Корзина">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#e5e5e0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/>
-      </svg>
-      <span id="cart-count">0</span>
-    </button>
-  </div>
-</header>
+<div id="app">
 
-
-<!-- ===== HERO ===== -->
-<section id="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-grain"></div>
-  <div class="hero-vignette"></div>
-  <div class="relative z-10 text-center px-6 max-w-3xl mx-auto">
-    <p class="f-mono text-xs tracking-[0.25em] uppercase mb-6" style="color:rgba(153,0,0,0.7)">Ташкент · Мирабадский район · 18:00 — 06:00</p>
-    <h1 class="hero-title f-disp font-light" style="font-size:3.6rem;line-height:1.08;color:var(--ivory);letter-spacing:0.01em">
-      Место для тех,<br/><em>чья жизнь начинается<br/>после заката</em>
-    </h1>
-    <div class="hr mx-auto" style="margin:2rem auto"></div>
-    <p class="text-sm mb-10" style="color:var(--muted);max-width:380px;margin-left:auto;margin-right:auto;line-height:1.8;margin-bottom:2.5rem">
-      Самый плотный кофе в столице. Ваша приватность — наш главный ингредиент.
-    </p>
-    <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
-      <a href="#menu" class="text-xs tracking-[0.18em] uppercase px-8 py-3 transition-all duration-300" style="border:1px solid rgba(153,0,0,0.6);color:var(--ivory);text-decoration:none;background:transparent" onmouseover="this.style.background='rgba(153,0,0,0.12)';this.style.borderColor='rgba(153,0,0,0.9)'" onmouseout="this.style.background='transparent';this.style.borderColor='rgba(153,0,0,0.6)'">Спуститься в меню</a>
-      <a href="#quiz" class="text-xs tracking-[0.18em] uppercase px-8 py-3 transition-all duration-300" style="border:1px solid rgba(255,255,255,0.08);color:var(--muted);text-decoration:none" onmouseover="this.style.color='var(--ivory)';this.style.borderColor='rgba(255,255,255,0.2)'" onmouseout="this.style.color='var(--muted)';this.style.borderColor='rgba(255,255,255,0.08)'">Подобрать напиток</a>
-    </div>
-    <div class="f-mono text-xs" style="color:var(--muted)">
-      Мест свободно прямо сейчас: <span id="seats" style="color:rgba(153,0,0,0.85)">—</span>
-    </div>
-  </div>
-</section>
-
-
-<!-- ===== ABOUT ===== -->
-<section id="about" class="reveal" style="padding:7rem 1.5rem">
-  <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-16 items-center">
-    <div>
-      <p class="f-mono text-xs tracking-widest uppercase mb-4" style="color:rgba(153,0,0,0.6)">О кофейне</p>
-      <h2 class="f-disp font-light mb-6" style="font-size:2.8rem;line-height:1.15;color:var(--ivory)">Убежище<br/><em>в самом сердце шума</em></h2>
-      <span class="hr"></span>
-      <p class="text-sm leading-relaxed mb-5" style="color:var(--muted)">
-        VAGUELY открылась однажды ночью — без афиш, без рекламы. Только табличка на двери и запах свежей обжарки из окна полуподвала в переулке Цветов. За несколько месяцев о нас узнали те, кому нужно было знать.
-      </p>
-      <p class="text-sm leading-relaxed mb-8" style="color:var(--muted)">
-        Мы не спрашиваем, чем вы занимаетесь. Мы варим кофе по технике медленной экстракции — до 11 минут на одну чашку. Пространство спроектировано так, чтобы ни один столик не просматривался с другого. Здесь ценят тишину, тёмное дерево, неспешность.
-      </p>
-      <div class="flex gap-12">
-        <div>
-          <div class="f-mono text-2xl mb-1" style="color:var(--ivory)">11<span class="text-sm" style="color:rgba(153,0,0,0.7)">мин</span></div>
-          <div class="text-xs uppercase tracking-widest" style="color:var(--muted)">Экстракция</div>
-        </div>
-        <div>
-          <div class="f-mono text-2xl mb-1" style="color:var(--ivory)">404</div>
-          <div class="text-xs uppercase tracking-widest" style="color:var(--muted)">Убежище</div>
-        </div>
-        <div>
-          <div class="f-mono text-2xl mb-1" style="color:var(--ivory)">18<span class="text-xs" style="color:rgba(153,0,0,0.7)">:00</span></div>
-          <div class="text-xs uppercase tracking-widest" style="color:var(--muted)">Открытие</div>
-        </div>
+  <!-- ============ HEADER ============ -->
+  <header id="header">
+    <div style="display:flex;align-items:center;gap:20px">
+      <div id="logo">NEON <span>ABYSS</span></div>
+      <div class="hud-stat">
+        <div class="hud-label">Онлайн</div>
+        <div class="hud-value hud-online" id="online-count">—</div>
       </div>
     </div>
-    <div class="relative">
-      <img src="https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=700&q=80" alt="Интерьер" class="w-full" style="filter:brightness(0.55) sepia(0.2);border:1px solid rgba(255,255,255,0.04)"/>
-      <div style="position:absolute;bottom:-1.5rem;left:-1.5rem;width:140px;height:140px;background:var(--card2);border:1px solid rgba(255,255,255,0.05);padding:1.25rem;display:flex;flex-direction:column;justify-content:center">
-        <div class="f-mono text-xs mb-1" style="color:rgba(153,0,0,0.6)">АДРЕС</div>
-        <div class="text-xs leading-relaxed" style="color:var(--muted)">г. Ташкент<br/>пер. Цветов, 12<br/>Убежище 404</div>
+    <div id="header-right">
+      <div id="live-ticker">▶ подключение к серверу...</div>
+      <div class="hud-stat">
+        <div class="hud-label">Кредиты</div>
+        <div class="hud-value hud-credits" id="hud-credits">1 500</div>
+      </div>
+      <div class="hud-stat">
+        <div class="hud-label">Кристаллы</div>
+        <div class="hud-value hud-crystals" id="hud-crystals">10</div>
       </div>
     </div>
-  </div>
-</section>
+  </header>
 
+  <!-- ============ BODY ============ -->
+  <div id="body">
 
-<!-- ===== MENU ===== -->
-<section id="menu" style="padding:6rem 1.5rem;background:rgba(8,8,8,0.6)">
-  <div class="max-w-6xl mx-auto">
-    <div class="reveal">
-      <p class="f-mono text-xs tracking-widest uppercase mb-3" style="color:rgba(153,0,0,0.6)">Меню</p>
-      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
-        <h2 class="f-disp font-light" style="font-size:2.6rem;color:var(--ivory)">Что подать<br/><em>этой ночью</em></h2>
-        <div class="flex items-center gap-3">
-          <select id="sort-sel" class="field text-xs" style="width:auto;padding:0.5rem 0.875rem;font-size:0.72rem;letter-spacing:0.08em;cursor:pointer" onchange="renderMenu()">
-            <option value="">Сортировка</option>
-            <option value="asc">Цена: сначала низкая</option>
-            <option value="desc">Цена: сначала высокая</option>
-          </select>
-        </div>
-      </div>
-
-      <!-- Tabs -->
-      <div class="tabs-row mb-5" id="cat-tabs">
-        <button class="tab active" data-cat="all" onclick="setTab(this,'all')">Все</button>
-        <button class="tab" data-cat="classic" onclick="setTab(this,'classic')">Классика</button>
-        <button class="tab" data-cat="author" onclick="setTab(this,'author')">Авторские</button>
-        <button class="tab" data-cat="secret" onclick="setTab(this,'secret')">Секретная коллекция</button>
-        <button class="tab" data-cat="dessert" onclick="setTab(this,'dessert')">Десерты</button>
-      </div>
-
-      <!-- Extra filters -->
-      <div class="flex flex-wrap gap-5 mb-8">
-        <label class="chk-wrap text-xs" style="color:var(--muted)">
-          <input type="checkbox" id="f-dark" onchange="renderMenu()"/>
-          <span class="chk-box"></span>Только тёмная обжарка
-        </label>
-        <label class="chk-wrap text-xs" style="color:var(--muted)">
-          <input type="checkbox" id="f-lactose" onchange="renderMenu()"/>
-          <span class="chk-box"></span>Без лактозы
-        </label>
-        <label class="chk-wrap text-xs" style="color:var(--muted)">
-          <input type="checkbox" id="f-energy" onchange="renderMenu()"/>
-          <span class="chk-box"></span>Энергетический буст
-        </label>
-      </div>
-    </div>
-
-    <!-- Menu grid -->
-    <div id="menu-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
-    <div id="menu-empty" class="hidden text-center py-16 text-sm" style="color:var(--muted)">Ни одна позиция не соответствует фильтрам</div>
-  </div>
-</section>
-
-
-<!-- ===== QUIZ ===== -->
-<section id="quiz" style="padding:7rem 1.5rem">
-  <div class="max-w-xl mx-auto reveal">
-    <p class="f-mono text-xs tracking-widest uppercase mb-3 text-center" style="color:rgba(153,0,0,0.6)">Калькулятор вкуса</p>
-    <h2 class="f-disp font-light text-center mb-2" style="font-size:2.4rem;color:var(--ivory)">Найди <em>свой напиток</em></h2>
-    <p class="text-xs text-center mb-10" style="color:var(--muted)">3 вопроса — и мы подберём то, что нужно именно сейчас</p>
-
-    <div id="quiz-body">
-      <!-- Steps injected by JS -->
-    </div>
-
-    <div id="quiz-result" class="hidden mt-8 p-6" style="border:1px solid rgba(153,0,0,0.25);background:rgba(153,0,0,0.04)">
-      <p class="f-mono text-xs uppercase tracking-widest mb-2" style="color:rgba(153,0,0,0.6)">Ваш выбор</p>
-      <p id="quiz-match-name" class="f-disp text-2xl mb-1" style="color:var(--ivory)"></p>
-      <p id="quiz-match-desc" class="text-xs mb-5" style="color:var(--muted)"></p>
-      <button id="quiz-add-btn" onclick="addQuizToCart()" class="text-xs tracking-widest uppercase px-6 py-3 transition-all duration-300" style="border:1px solid rgba(153,0,0,0.5);background:transparent;color:var(--ivory);cursor:pointer" onmouseover="this.style.background='rgba(153,0,0,0.12)'" onmouseout="this.style.background='transparent'">
-        Добавить этот выбор в корзину
+    <!-- ---- SIDEBAR ---- -->
+    <aside id="sidebar">
+      <div class="nav-section">НАВИГАЦИЯ</div>
+      <button class="tab-btn active" data-tab="home" onclick="switchTab('home')">
+        <span class="tab-icon">⚔</span> Полигон
       </button>
-    </div>
-  </div>
-</section>
-
-
-<!-- ===== FOOTER ===== -->
-<footer style="background:rgba(6,6,6,0.95);border-top:1px solid rgba(255,255,255,0.04);padding:5rem 1.5rem 3rem">
-  <div class="max-w-5xl mx-auto">
-    <div class="grid md:grid-cols-3 gap-12 mb-12">
-      <div>
-        <div class="f-disp text-2xl tracking-[0.25em] mb-4" style="color:var(--ivory)">VAGUELY</div>
-        <p class="text-xs leading-relaxed mb-5" style="color:var(--muted)">Переулок Цветов, 12<br/>Мирабадский район<br/>Ташкент, Узбекистан</p>
-        <div class="text-xs space-y-1" style="color:var(--muted)">
-          <div><a href="tel:+998337777737" style="color:var(--muted);text-decoration:none" onmouseover="this.style.color='var(--ivory)'" onmouseout="this.style.color='var(--muted)'">+998 33 777 77 37</a></div>
-          <div><a href="mailto:jojimol@jinni.com" style="color:var(--muted);text-decoration:none" onmouseover="this.style.color='var(--ivory)'" onmouseout="this.style.color='var(--muted)'">jojimol@jinni.com</a></div>
-        </div>
-      </div>
-      <div>
-        <div class="text-xs tracking-widest uppercase mb-5" style="color:rgba(153,0,0,0.6)">Часы работы</div>
-        <div class="f-mono text-3xl mb-1" style="color:var(--ivory)">18:00</div>
-        <div class="text-xs mb-1" style="color:var(--muted)">— открываемся с наступлением темноты</div>
-        <div class="f-mono text-3xl mb-1 mt-4" style="color:var(--ivory)">06:00</div>
-        <div class="text-xs" style="color:var(--muted)">— закрываемся, когда рассветает</div>
-      </div>
-      <div>
-        <div class="text-xs tracking-widest uppercase mb-5" style="color:rgba(153,0,0,0.6)">Закрытые ивенты</div>
-        <p class="text-xs leading-relaxed mb-4" style="color:var(--muted)">Джаз по средам, слепые дегустации, одиночные сеансы. Никакой афиши. Только для своих.</p>
-        <div class="flex">
-          <input type="email" placeholder="ваш@email.com" class="sub-inp" id="sub-email"/>
-          <button onclick="handleSubscribe()" class="text-xs tracking-widest uppercase px-4 py-2 transition-all duration-300" style="border:1px solid rgba(153,0,0,0.5);background:transparent;color:var(--ivory);cursor:pointer;white-space:nowrap" onmouseover="this.style.background='rgba(153,0,0,0.1)'" onmouseout="this.style.background='transparent'">Войти</button>
-        </div>
-      </div>
-    </div>
-    <div style="border-top:1px solid rgba(255,255,255,0.04);padding-top:2rem;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:1rem">
-      <span id="copy-easter" class="f-mono text-xs" style="color:rgba(90,90,85,0.6);cursor:default">© VAGUELY 2024</span>
-      <div class="flex gap-6 text-xs" style="color:rgba(90,90,85,0.4)">
-        <a href="#about" style="color:rgba(90,90,85,0.4);text-decoration:none;transition:color 0.2s" onmouseover="this.style.color='var(--muted)'" onmouseout="this.style.color='rgba(90,90,85,0.4)'">О нас</a>
-        <a href="#menu" style="color:rgba(90,90,85,0.4);text-decoration:none;transition:color 0.2s" onmouseover="this.style.color='var(--muted)'" onmouseout="this.style.color='rgba(90,90,85,0.4)'">Меню</a>
-        <a href="#quiz" style="color:rgba(90,90,85,0.4);text-decoration:none;transition:color 0.2s" onmouseover="this.style.color='var(--muted)'" onmouseout="this.style.color='rgba(90,90,85,0.4)'">Калькулятор</a>
-      </div>
-    </div>
-  </div>
-</footer>
-
-
-<!-- ===== CART OVERLAY ===== -->
-<div id="cart-overlay" onclick="toggleCart()"></div>
-
-<!-- ===== CART DRAWER ===== -->
-<div id="cart-drawer">
-  <div class="flex items-center justify-between px-6 py-5" style="border-bottom:1px solid var(--border)">
-    <h3 class="f-disp text-xl font-light" style="color:var(--ivory)">Корзина</h3>
-    <button onclick="toggleCart()" style="background:none;border:none;cursor:pointer;color:var(--muted);font-size:1.5rem;line-height:1;transition:color 0.2s" onmouseover="this.style.color='var(--ivory)'" onmouseout="this.style.color='var(--muted)'">×</button>
-  </div>
-
-  <div id="cart-items-list" class="flex-1 overflow-y-auto px-6 py-4" style="min-height:0">
-    <div id="cart-empty" class="py-16 text-center text-sm" style="color:var(--muted)">
-      Корзина пуста.<br/><span class="f-mono text-xs">Меню ждёт вас.</span>
-    </div>
-  </div>
-
-  <div id="cart-footer" class="hidden px-6 pb-6" style="border-top:1px solid var(--border);padding-top:1.25rem">
-    <!-- Coupon -->
-    <div class="flex mb-4">
-      <input id="coupon-inp" type="text" placeholder="ПРОМОКОД" class="field text-xs" style="border-right:none;letter-spacing:0.12em;text-transform:uppercase"/>
-      <button onclick="applyCoupon()" class="text-xs tracking-widest uppercase px-4 py-2 transition-all duration-300" style="border:1px solid rgba(255,255,255,0.08);background:transparent;color:var(--muted);cursor:pointer;white-space:nowrap" onmouseover="this.style.color='var(--ivory)'" onmouseout="this.style.color='var(--muted)'">Применить</button>
-    </div>
-    <div id="coupon-msg" class="hidden text-xs mb-4 f-mono" style="color:rgba(153,0,0,0.8)"></div>
-
-    <!-- Totals -->
-    <div class="space-y-2 mb-5 text-sm">
-      <div class="flex justify-between" style="color:var(--muted)">
-        <span>Сумма</span><span id="subtotal-val" class="f-mono">—</span>
-      </div>
-      <div id="discount-row" class="hidden flex justify-between" style="color:rgba(153,0,0,0.7)">
-        <span>Скидка 15%</span><span id="discount-val" class="f-mono"></span>
-      </div>
-      <div class="flex justify-between pt-2" style="border-top:1px solid var(--border);color:var(--ivory)">
-        <span>Итого</span><span id="total-val" class="f-mono font-medium"></span>
-      </div>
-    </div>
-
-    <button onclick="openOrderModal()" class="w-full text-xs tracking-widest uppercase py-3.5 transition-all duration-300" style="border:1px solid rgba(153,0,0,0.6);background:rgba(153,0,0,0.08);color:var(--ivory);cursor:pointer" onmouseover="this.style.background='rgba(153,0,0,0.18)'" onmouseout="this.style.background='rgba(153,0,0,0.08)'">
-      Оформить заказ
-    </button>
-  </div>
-</div>
-
-
-<!-- ===== ORDER MODAL ===== -->
-<div id="modal-wrap" onclick="handleModalBg(event)">
-  <div id="modal-box" class="p-8">
-    <div class="flex items-center justify-between mb-6">
-      <h3 class="f-disp text-2xl font-light" style="color:var(--ivory)">Оформление заказа</h3>
-      <button onclick="closeModal()" style="background:none;border:none;cursor:pointer;color:var(--muted);font-size:1.5rem;line-height:1;transition:color 0.2s" onmouseover="this.style.color='var(--ivory)'" onmouseout="this.style.color='var(--muted)'">×</button>
-    </div>
-    <span class="hr"></span>
-
-    <form id="order-form" onsubmit="submitOrder(event)" novalidate>
-      <!-- Guest type -->
-      <div class="mb-5">
-        <label class="block text-xs tracking-widest uppercase mb-3" style="color:var(--muted)">Тип гостя</label>
-        <div class="grid grid-cols-2 gap-3">
-          <label style="cursor:pointer">
-            <input type="radio" name="guest" value="incognito" class="hidden" id="g-incognito" required/>
-            <div class="guest-radio quiz-opt text-center" data-for="g-incognito" onclick="selectGuest(this)" style="text-align:center">
-              <div class="f-mono text-xs tracking-widest mb-1" style="color:rgba(153,0,0,0.6)">Инкогнито</div>
-              <div class="text-xs" style="color:var(--muted)">Без лишних вопросов</div>
-            </div>
-          </label>
-          <label style="cursor:pointer">
-            <input type="radio" name="guest" value="regular" class="hidden" id="g-regular"/>
-            <div class="guest-radio quiz-opt text-center" data-for="g-regular" onclick="selectGuest(this)" style="text-align:center">
-              <div class="f-mono text-xs tracking-widest mb-1" style="color:rgba(153,0,0,0.6)">Постоянный</div>
-              <div class="text-xs" style="color:var(--muted)">Узнаём вас с порога</div>
-            </div>
-          </label>
-        </div>
-        <div id="guest-err" class="hidden text-xs mt-2 f-mono" style="color:rgba(153,0,0,0.7)">Выберите тип гостя</div>
-      </div>
-
-      <div class="mb-4">
-        <label class="block text-xs tracking-widest uppercase mb-2" style="color:var(--muted)">Имя / позывной</label>
-        <input id="order-name" type="text" placeholder="Необязательно для инкогнито" class="field"/>
-        <div id="name-err" class="hidden text-xs mt-1 f-mono" style="color:rgba(153,0,0,0.7)">Укажите имя</div>
-      </div>
-
-      <div class="grid grid-cols-2 gap-3 mb-4">
-        <div>
-          <label class="block text-xs tracking-widest uppercase mb-2" style="color:var(--muted)">Телефон</label>
-          <input id="order-phone" type="tel" placeholder="+998 _ _  _ _ _  _ _ _ _" class="field"/>
-        </div>
-        <div>
-          <label class="block text-xs tracking-widest uppercase mb-2" style="color:var(--muted)">Email</label>
-          <input id="order-email" type="email" placeholder="your@email.com" class="field"/>
-        </div>
-      </div>
-
-      <div class="mb-6">
-        <label class="block text-xs tracking-widest uppercase mb-2" style="color:var(--muted)">Комментарий</label>
-        <textarea id="order-comment" rows="3" placeholder="Место у окна. Никакого молока. Без разговоров." class="field" style="resize:none"></textarea>
-      </div>
-
-      <div id="modal-order-summary" class="mb-6 p-4" style="background:rgba(153,0,0,0.04);border:1px solid rgba(153,0,0,0.12)">
-        <div class="text-xs tracking-widest uppercase mb-2" style="color:var(--muted)">Итог заказа</div>
-        <div id="modal-items-list" class="space-y-1 mb-3 text-xs" style="color:var(--muted)"></div>
-        <div class="flex justify-between items-center pt-2" style="border-top:1px solid rgba(255,255,255,0.05)">
-          <span class="text-xs" style="color:var(--muted)">К оплате</span>
-          <span id="modal-total" class="f-mono text-sm" style="color:var(--ivory)"></span>
-        </div>
-      </div>
-
-      <button type="submit" class="w-full text-xs tracking-widest uppercase py-3.5 transition-all duration-300" style="border:1px solid rgba(153,0,0,0.6);background:rgba(153,0,0,0.08);color:var(--ivory);cursor:pointer" onmouseover="this.style.background='rgba(153,0,0,0.2)'" onmouseout="this.style.background='rgba(153,0,0,0.08)'">
-        Подтвердить заказ
+      <button class="tab-btn" data-tab="shop" onclick="switchTab('shop')">
+        <span class="tab-icon">🏪</span> Магазин
       </button>
-    </form>
-  </div>
-</div>
+      <button class="tab-btn" data-tab="casino" onclick="switchTab('casino')">
+        <span class="tab-icon">🎰</span> Казино
+      </button>
+      <button class="tab-btn" data-tab="inventory" onclick="switchTab('inventory')">
+        <span class="tab-icon">🎒</span> Инвентарь
+      </button>
+      <button class="tab-btn" data-tab="settings" onclick="switchTab('settings')">
+        <span class="tab-icon">⚙</span> Настройки
+      </button>
 
+      <!-- Chat -->
+      <div id="chat-section">
+        <div class="chat-section-label">Global Chat</div>
+        <div id="chat-messages"></div>
+        <div class="chat-row">
+          <input type="text" id="chat-input-field" placeholder="Написать..." maxlength="80"
+            onkeydown="if(event.key==='Enter') sendUserChat()">
+          <button class="chat-send-btn" onclick="sendUserChat()">▶</button>
+        </div>
+      </div>
+    </aside>
 
-<!-- ===== TOAST ALERT ===== -->
-<div id="toast">
-  <div class="f-mono text-xs tracking-widest uppercase mb-2" style="color:rgba(153,0,0,0.7)" id="toast-code"></div>
-  <div id="toast-msg" class="text-sm" style="color:var(--ivory)"></div>
-</div>
+    <!-- ---- MAIN CONTENT ---- -->
+    <main id="main-content">
 
+      <!-- ========== TAB: POLYGON ========== -->
+      <div id="tab-home" class="tab-pane active">
+        <div class="section-title">Боевой Полигон</div>
 
-<!-- ===== JAVASCRIPT ===== -->
+        <!-- Active Weapon Panel -->
+        <div id="polygon-panel">
+          <div id="fire-flash-overlay"></div>
+          <div id="polygon-header">
+            <div>
+              <div class="text-dim text-xs mb4">ЭКИПИРОВАНО</div>
+              <div id="equipped-name-display">Pulse Rifle</div>
+            </div>
+            <div id="polygon-status-block" style="text-align:right">
+              <div class="text-dim text-xs mb4">СТАТУС</div>
+              <div id="polygon-status">
+                <span class="status-dot ready"></span>
+                <span id="status-text" style="font-size:11px;color:#00ff88">ГОТОВ К БОЮ</span>
+              </div>
+            </div>
+          </div>
+
+          <div id="polygon-stats">
+            <div class="stat-box">
+              <div class="stat-box-label">Урон / выстрел</div>
+              <div class="stat-box-value stat-dmg" id="eq-dmg">120</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-box-label">Перезарядка (с)</div>
+              <div class="stat-box-value stat-cd" id="eq-cd">2</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-box-label">Стоимость</div>
+              <div class="stat-box-value stat-cost" id="eq-cost">0</div>
+            </div>
+          </div>
+
+          <div id="polygon-actions">
+            <button id="fire-btn" class="btn btn-pink btn-lg" onclick="fireWeapon()" style="flex:1">
+              💥&nbsp; ТЕСТ-ВЫСТРЕЛ
+            </button>
+            <div class="earn-note">
+              За каждый выстрел:<br>
+              <span>+50 Кредитов</span>
+            </div>
+          </div>
+          <div id="cd-bar-container">
+            <div id="cd-bar-fill"></div>
+          </div>
+        </div>
+
+        <!-- Arsenal -->
+        <div class="section-subtitle">Оружие — выбери для экипировки</div>
+        <div id="weapon-grid"></div>
+
+        <div class="section-subtitle" style="margin-top:18px">Ультимейты и заклинания</div>
+        <div id="spell-grid"></div>
+      </div>
+
+      <!-- ========== TAB: SHOP ========== -->
+      <div id="tab-shop" class="tab-pane">
+        <div class="section-title">Магазин Оружия</div>
+        <div id="shop-warning">⚠&nbsp; НЕДОСТАТОЧНО КРЕДИТОВ!</div>
+        <div id="shop-grid"></div>
+      </div>
+
+      <!-- ========== TAB: CASINO ========== -->
+      <div id="tab-casino" class="tab-pane">
+        <div class="section-title">Казино Бездны</div>
+        <div id="casino-grid">
+
+          <!-- Slot Machine -->
+          <div class="card" style="border-color:rgba(0,245,212,0.25)">
+            <div class="casino-card-title">🎰 Слот-Машина</div>
+            <div id="reels-container">
+              <div class="reel-window"><div class="reel-strip" id="reel-0"></div></div>
+              <div class="reel-window"><div class="reel-strip" id="reel-1"></div></div>
+              <div class="reel-window"><div class="reel-strip" id="reel-2"></div></div>
+            </div>
+            <div id="slot-result-msg" class="text-go">— нажми КРУТИТЬ —</div>
+            <div id="slot-bet-info">Ставка: <span>200 кредитов</span></div>
+            <button id="slot-btn" class="btn btn-gold btn-full btn-lg" onclick="spinSlots()">
+              🎰&nbsp; КРУТИТЬ!
+            </button>
+          </div>
+
+          <!-- Wheel of Fortune -->
+          <div class="card" style="border-color:rgba(255,45,120,0.25)">
+            <div class="casino-card-title">🎡 Колесо Фортуны</div>
+            <div id="wheel-outer">
+              <div id="wheel-pointer">▼</div>
+              <canvas id="wheel-canvas" width="200" height="200"></canvas>
+            </div>
+            <div id="wheel-result-msg" class="text-go">— нажми ВРАЩАТЬ —</div>
+            <div style="font-size:10px;color:var(--text-dim);margin-bottom:10px;text-align:center">Ставка: <span class="text-go">150 кредитов</span></div>
+            <button id="wheel-btn" class="btn btn-pink btn-full btn-lg" onclick="spinWheel()">
+              🎡&nbsp; ВРАЩАТЬ!
+            </button>
+          </div>
+        </div>
+
+        <!-- Casino Stats -->
+        <div class="card">
+          <div style="font-size:10px;color:var(--text-dim);letter-spacing:2px;margin-bottom:12px">📊 СТАТИСТИКА КАЗИНО</div>
+          <div id="casino-stats-grid">
+            <div>
+              <div class="casino-stat-label">Прокруток</div>
+              <div class="casino-stat-val text-cy" id="stat-spins">0</div>
+            </div>
+            <div>
+              <div class="casino-stat-label">Выиграно</div>
+              <div class="casino-stat-val" style="color:#00cc66" id="stat-wins">0</div>
+            </div>
+            <div>
+              <div class="casino-stat-label">Проиграно</div>
+              <div class="casino-stat-val text-pk" id="stat-losses">0</div>
+            </div>
+            <div>
+              <div class="casino-stat-label">Макс. выигрыш</div>
+              <div class="casino-stat-val text-go" id="stat-max">0</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========== TAB: INVENTORY ========== -->
+      <div id="tab-inventory" class="tab-pane">
+        <div class="section-title">Инвентарь</div>
+        <div id="inventory-grid"></div>
+        <div id="inventory-empty">
+          🔒 Инвентарь пуст.<br>
+          <span class="text-dim">Купи предметы в Магазине или заработай на Полигоне.</span>
+        </div>
+      </div>
+
+      <!-- ========== TAB: SETTINGS ========== -->
+      <div id="tab-settings" class="tab-pane">
+        <div class="section-title">Настройки</div>
+        <div id="settings-grid">
+
+          <!-- Graphics -->
+          <div class="card">
+            <div class="settings-card-title">⚡ Графика</div>
+            <div class="settings-label">Режим рендера:</div>
+            <div class="settings-row">
+              <button id="gfx-eco-btn" class="btn btn-cyan" onclick="setGraphics('eco')">Эко</button>
+              <button id="gfx-ultra-btn" class="btn btn-cyan settings-active" onclick="setGraphics('ultra')">Ультра</button>
+            </div>
+            <div id="gfx-status" style="font-size:11px;color:#00cc66;margin-top:6px">
+              ● Ультра-режим активен (неоновые эффекты включены)
+            </div>
+            <div class="settings-info">Эко-режим отключает часть анимаций.</div>
+          </div>
+
+          <!-- Sound -->
+          <div class="card">
+            <div class="settings-card-title">🔊 Звук</div>
+            <div class="settings-label">Громкость SFX: <span id="vol-label" class="text-cy">70</span>%</div>
+            <input type="range" id="vol-slider" min="0" max="100" value="70" step="1"
+              oninput="document.getElementById('vol-label').textContent=this.value; GS.sfxVol=parseInt(this.value)">
+            <div class="settings-info" style="margin-top:12px">Музыка: <span id="music-label" class="text-cy">50</span>%</div>
+            <input type="range" id="music-slider" min="0" max="100" value="50" step="1" style="margin-top:6px"
+              oninput="document.getElementById('music-label').textContent=this.value">
+          </div>
+
+          <!-- Color Profile -->
+          <div class="card">
+            <div class="settings-card-title pk">🎨 Цветовой профиль</div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <button class="btn btn-cyan settings-active" id="theme-cyan-btn" onclick="setColorTheme('cyan')">
+                ◈ Киберпанк Бирюзовый
+              </button>
+              <button class="btn btn-pink" id="theme-pink-btn" onclick="setColorTheme('pink')">
+                ◈ Киберпанк Розовый
+              </button>
+              <button class="btn" id="theme-dark-btn" style="border-color:#666;color:#888" onclick="setColorTheme('dark')">
+                ◈ Мрачная Бездна
+              </button>
+            </div>
+          </div>
+
+          <!-- Interface -->
+          <div class="card">
+            <div class="settings-card-title pk">🖥 Интерфейс</div>
+            <div class="settings-label mb8">Глобальный чат:</div>
+            <div class="toggle-switch" onclick="toggleChat()">
+              <div id="chat-toggle-track" class="toggle-track on">
+                <div class="toggle-thumb"></div>
+              </div>
+              <span id="chat-toggle-label" class="text-mid text-sm">Показывать</span>
+            </div>
+            <div class="divider"></div>
+            <div class="settings-label mb8">Уведомления о событиях:</div>
+            <div class="toggle-switch" onclick="toggleNotifs()">
+              <div id="notif-toggle-track" class="toggle-track on">
+                <div class="toggle-thumb"></div>
+              </div>
+              <span id="notif-toggle-label" class="text-mid text-sm">Включены</span>
+            </div>
+            <div class="divider"></div>
+            <div class="version-badge">NEON ABYSS v2.4.7 · BUILD-250611-ALPHA</div>
+            <div class="settings-info" style="margin-top:8px">Сессий: <span class="text-cy" id="session-count">—</span></div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div><!-- /body -->
+</div><!-- /app -->
+
+<!-- Damage layer -->
+<div id="dmg-layer"></div>
+
+<!-- Notifications -->
+<div id="notifications"></div>
+
+<!-- ============================================================ -->
+<!-- ========================  SCRIPTS  ========================= -->
+<!-- ============================================================ -->
 <script>
-// ─── TELEGRAM CONFIG ─────────────────────────────────────────────────────────
-const TELEGRAM_BOT_TOKEN = "8884111219:AAFVy5leHG9otUW7dJIzwAg1-_dmfXjcV9U";
-const TELEGRAM_CHAT_ID   = "6630522700";
-
-async function sendToTelegram(orderData) {
-  const { code, name, phone, email, guestType, comment, items, sub, disc, total, coupon } = orderData;
-  const now = new Date().toLocaleString('ru-RU', { timeZone: 'Asia/Tashkent', day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' });
-  const guestLabel = guestType === 'incognito' ? '🎭 Инкогнито' : '🪑 Постоянный посетитель';
-
-  const itemLines = items.map(c =>
-    `  • ${c.name} × ${c.qty}  —  ${(c.price * c.qty).toLocaleString('ru-RU')} UZS`
-  ).join('\n');
-
-  const discLine  = disc > 0 ? `\n🏷 Скидка (${coupon}): −${disc.toLocaleString('ru-RU')} UZS` : '';
-
-  const text = [
-    `☕ *НОВЫЙ ЗАКАЗ — VAGUELY*`,
-    `━━━━━━━━━━━━━━━━━━━━`,
-    `🔖 Код брони: \`${code}\``,
-    `🕐 Время: ${now} (Ташкент)`,
-    ``,
-    `👤 *Гость*`,
-    `  Тип: ${guestLabel}`,
-    name    ? `  Имя: ${name}` : `  Имя: —`,
-    phone   ? `  📞 Тел: ${phone}` : `  📞 Тел: —`,
-    email   ? `  📧 Email: ${email}` : `  📧 Email: —`,
-    ``,
-    `🧾 *Состав заказа*`,
-    itemLines,
-    ``,
-    `💰 *Расчёт*`,
-    `  Сумма: ${sub.toLocaleString('ru-RU')} UZS`,
-    discLine,
-    `  ✅ Итого: *${total.toLocaleString('ru-RU')} UZS*`,
-    ``,
-    comment ? `💬 Комментарий: _${comment}_` : null,
-    `━━━━━━━━━━━━━━━━━━━━`,
-    `📍 Ташкент, пер. Цветов, 12 · Убежище 404`,
-  ].filter(l => l !== null).join('\n');
-
-  const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
-  const res = await fetch(url, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      chat_id:    TELEGRAM_CHAT_ID,
-      text:       text,
-      parse_mode: 'Markdown',
-    }),
-  });
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
-    console.error('Telegram API error:', err);
-    throw new Error(err.description || 'Telegram send failed');
-  }
-  return true;
-}
-
-// ─── DATA ────────────────────────────────────────────────────────────────────
-const MENU = [
-  {id:1, name:'Эспрессо «Одиночество»',    cat:'classic', price:22000, img:'https://images.unsplash.com/photo-1510707577719-ae7c14805e3a?w=600&q=80', desc:'Обжарка до угля. Один глоток — и шум города стихает.', dark:true,  lactose:false, energy:false},
-  {id:2, name:'Капучино «Пепел и Молоко»',  cat:'classic', price:29000, img:'https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?w=600&q=80', desc:'Молоко от проверенных партнёров. Пена в три слоя.', dark:false, lactose:false, energy:false},
-  {id:3, name:'Авторский раф «Густой туман»', cat:'author', price:36000, img:'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600&q=80', desc:'Сливки холодного отжима, лавандовая соль, тёмный купаж.', dark:true,  lactose:false, energy:false},
-  {id:4, name:'Секретный эликсир «Полночь»', cat:'secret', price:48000, img:'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=600&q=80', desc:'Для тех, кто не спит. Состав на ваше усмотрение бармена.', dark:true,  lactose:true,  energy:true},
-  {id:5, name:'Горький трюфель «Тень»',      cat:'dessert', price:25000, img:'https://images.unsplash.com/photo-1481391319762-47dff72954d9?w=600&q=80', desc:'Одиночный шоколадный трюфель. К любому напитку.', dark:false, lactose:false, energy:false},
-  {id:6, name:'Флэт-уайт «Серый район»',     cat:'classic', price:27000, img:'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&q=80', desc:'Двойной шот, минимум молока. Для тех, кто знает счёт.', dark:true,  lactose:false, energy:true},
-  {id:7, name:'Матча «Первый свет»',          cat:'author',  price:34000, img:'https://images.unsplash.com/photo-1548121880-7c1a9d83f929?w=600&q=80', desc:'Японская церемониальная матча. Без сахара — разумеется.', dark:false, lactose:true,  energy:true},
-  {id:8, name:'Авторский фильтр «Дождь»',    cat:'author',  price:31000, img:'https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=600&q=80', desc:'Медленная заливка. 11 минут тишины в чашке.', dark:false, lactose:true,  energy:false},
-];
-
-// ─── STATE ────────────────────────────────────────────────────────────────────
-const state = {
-  cart: [],
-  couponApplied: false,
-  activeTab: 'all',
-  quizAnswers: {},
-  quizMatchId: null,
-  guestTypeSelected: null,
+/* ======================================================
+   GAME STATE
+====================================================== */
+const GS = {
+  credits: 1500,
+  crystals: 10,
+  equippedId: 'pulse',
+  inventory: ['pulse'],
+  onCooldown: false,
+  cooldownTimer: null,
+  casinoStats: { spins: 0, wins: 0, losses: 0, maxWin: 0 },
+  graphics: 'ultra',
+  sfxVol: 70,
+  chatVisible: true,
+  notifsEnabled: true,
+  sessions: Math.floor(Math.random() * 300 + 500),
+  wheelAngle: 0,
+  wheelSpinning: false,
+  slotsSpinning: false,
+  currentTab: 'home',
 };
 
-const FMT = v => v.toLocaleString('ru-RU') + ' UZS';
-
-// ─── CART ─────────────────────────────────────────────────────────────────────
-function addToCart(id) {
-  const item = MENU.find(m => m.id === id);
-  if (!item) return;
-  const ex = state.cart.find(c => c.id === id);
-  if (ex) ex.qty++;
-  else state.cart.push({...item, qty: 1});
-  renderCart();
-  updateBadge();
-  // Brief flash on card
-  const card = document.querySelector(`[data-menu-id="${id}"]`);
-  if (card) {
-    card.style.borderColor = 'rgba(153,0,0,0.7)';
-    setTimeout(() => card.style.borderColor = '', 800);
-  }
-}
-function changeQty(id, delta) {
-  const ex = state.cart.find(c => c.id === id);
-  if (!ex) return;
-  ex.qty += delta;
-  if (ex.qty <= 0) state.cart = state.cart.filter(c => c.id !== id);
-  renderCart();
-  updateBadge();
-}
-function removeFromCart(id) {
-  state.cart = state.cart.filter(c => c.id !== id);
-  renderCart();
-  updateBadge();
-}
-function calcTotals() {
-  const sub = state.cart.reduce((s, c) => s + c.price * c.qty, 0);
-  const disc = state.couponApplied ? Math.round(sub * 0.15) : 0;
-  return { sub, disc, total: sub - disc };
-}
-function updateBadge() {
-  const n = state.cart.reduce((s, c) => s + c.qty, 0);
-  const badge = document.getElementById('cart-count');
-  badge.textContent = n;
-  n > 0 ? badge.classList.add('show') : badge.classList.remove('show');
-}
-function renderCart() {
-  const list = document.getElementById('cart-items-list');
-  const footer = document.getElementById('cart-footer');
-  const empty = document.getElementById('cart-empty');
-  if (state.cart.length === 0) {
-    list.innerHTML = '';
-    list.appendChild(empty);
-    empty.classList.remove('hidden');
-    footer.classList.add('hidden');
-    return;
-  }
-  empty.classList.add('hidden');
-  footer.classList.remove('hidden');
-  list.innerHTML = state.cart.map(c => `
-    <div class="py-4" style="border-bottom:1px solid var(--border)">
-      <div class="flex items-start gap-3">
-        <img src="${c.img}" alt="${c.name}" style="width:52px;height:52px;object-fit:cover;filter:brightness(0.7);flex-shrink:0;border:1px solid rgba(255,255,255,0.04)"/>
-        <div class="flex-1 min-w-0">
-          <div class="text-sm mb-0.5" style="color:var(--ivory)">${c.name}</div>
-          <div class="f-mono text-xs" style="color:rgba(153,0,0,0.7)">${FMT(c.price)}</div>
-        </div>
-        <button onclick="removeFromCart(${c.id})" style="background:none;border:none;cursor:pointer;color:var(--muted);font-size:1rem;padding:2px;transition:color 0.2s;flex-shrink:0" onmouseover="this.style.color='var(--ivory)'" onmouseout="this.style.color='var(--muted)'">×</button>
-      </div>
-      <div class="flex items-center gap-3 mt-3">
-        <button class="qty-btn" onclick="changeQty(${c.id},-1)">−</button>
-        <span class="f-mono text-sm" style="color:var(--ivory);min-width:20px;text-align:center">${c.qty}</span>
-        <button class="qty-btn" onclick="changeQty(${c.id},1)">+</button>
-        <span class="f-mono text-xs ml-auto" style="color:var(--muted)">${FMT(c.price * c.qty)}</span>
-      </div>
-    </div>
-  `).join('');
-
-  const {sub, disc, total} = calcTotals();
-  document.getElementById('subtotal-val').textContent = FMT(sub);
-  document.getElementById('total-val').textContent = FMT(total);
-  const drow = document.getElementById('discount-row');
-  if (state.couponApplied && disc > 0) {
-    drow.classList.remove('hidden');
-    document.getElementById('discount-val').textContent = '−' + FMT(disc);
-  } else {
-    drow.classList.add('hidden');
-  }
-}
-
-// ─── COUPON ───────────────────────────────────────────────────────────────────
-function applyCoupon() {
-  const val = document.getElementById('coupon-inp').value.trim().toUpperCase();
-  const msg = document.getElementById('coupon-msg');
-  if (val === 'TENEBRIS') {
-    state.couponApplied = true;
-    msg.textContent = '✦ TENEBRIS активирован — скидка 15% применена';
-    msg.classList.remove('hidden');
-    document.getElementById('coupon-inp').classList.add('coupon-ok');
-    renderCart();
-  } else {
-    msg.textContent = '✗ Неверный код. Попробуйте ещё раз.';
-    msg.classList.remove('hidden');
-    msg.style.color = 'rgba(90,90,85,0.6)';
-  }
-}
-
-// ─── CART DRAWER ──────────────────────────────────────────────────────────────
-function toggleCart() {
-  const drawer = document.getElementById('cart-drawer');
-  const overlay = document.getElementById('cart-overlay');
-  const isOpen = drawer.classList.contains('open');
-  drawer.classList.toggle('open', !isOpen);
-  overlay.classList.toggle('open', !isOpen);
-  document.body.style.overflow = isOpen ? '' : 'hidden';
-}
-
-// ─── MENU RENDER ──────────────────────────────────────────────────────────────
-function setTab(btn, cat) {
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  btn.classList.add('active');
-  state.activeTab = cat;
-  renderMenu();
-}
-function renderMenu() {
-  const sort = document.getElementById('sort-sel').value;
-  const fDark = document.getElementById('f-dark').checked;
-  const fLact = document.getElementById('f-lactose').checked;
-  const fEnergy = document.getElementById('f-energy').checked;
-
-  let items = MENU.filter(m => {
-    if (state.activeTab !== 'all' && m.cat !== state.activeTab) return false;
-    if (fDark && !m.dark) return false;
-    if (fLact && !m.lactose) return false;
-    if (fEnergy && !m.energy) return false;
-    return true;
-  });
-
-  if (sort === 'asc') items.sort((a,b) => a.price - b.price);
-  else if (sort === 'desc') items.sort((a,b) => b.price - a.price);
-
-  const grid = document.getElementById('menu-grid');
-  const empty = document.getElementById('menu-empty');
-  if (items.length === 0) {
-    grid.innerHTML = '';
-    empty.classList.remove('hidden');
-    return;
-  }
-  empty.classList.add('hidden');
-  grid.innerHTML = items.map(m => {
-    const isMatch = state.quizMatchId === m.id;
-    return `
-    <div class="menu-card reveal ${isMatch ? 'neon-match' : ''}" data-menu-id="${m.id}">
-      <div style="height:180px;overflow:hidden;position:relative">
-        <img src="${m.img}" alt="${m.name}" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.55) saturate(0.7);transition:transform 0.5s ease" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'"/>
-        <div style="position:absolute;top:0.75rem;left:0.75rem;display:flex;gap:0.4rem;flex-wrap:wrap">
-          ${m.dark?'<span class="f-mono text-xs px-2 py-0.5" style="background:rgba(0,0,0,0.6);color:rgba(153,0,0,0.8);border:1px solid rgba(153,0,0,0.25)">тёмная</span>':''}
-          ${m.lactose?'<span class="f-mono text-xs px-2 py-0.5" style="background:rgba(0,0,0,0.6);color:rgba(200,200,190,0.5);border:1px solid rgba(255,255,255,0.08)">б/л</span>':''}
-          ${m.energy?'<span class="f-mono text-xs px-2 py-0.5" style="background:rgba(0,0,0,0.6);color:rgba(153,0,0,0.6);border:1px solid rgba(153,0,0,0.2)">буст</span>':''}
-        </div>
-      </div>
-      <div class="p-5">
-        <div class="flex items-start justify-between gap-3 mb-2">
-          <h3 class="f-disp font-light text-lg leading-tight" style="color:var(--ivory)">${m.name}</h3>
-          <span class="price-tag whitespace-nowrap pt-0.5">${(m.price/1000).toFixed(0)}K</span>
-        </div>
-        <p class="text-xs leading-relaxed mb-5" style="color:var(--muted)">${m.desc}</p>
-        <button onclick="addToCart(${m.id})" class="w-full text-xs tracking-widest uppercase py-2.5 transition-all duration-300" style="border:1px solid rgba(255,255,255,0.08);background:transparent;color:var(--muted);cursor:pointer" onmouseover="this.style.borderColor='rgba(153,0,0,0.4)';this.style.color='var(--ivory)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.08)';this.style.color='var(--muted)'">
-          В корзину — ${FMT(m.price)}
-        </button>
-      </div>
-    </div>`;
-  }).join('');
-  // Trigger reveal for new cards
-  observeReveal();
-}
-
-// ─── QUIZ ─────────────────────────────────────────────────────────────────────
-const QUIZ_STEPS = [
-  { key:'base',    q:'Основа напитка?',          opts:[{v:'water',l:'Вода / чистый кофе'},{v:'milk',l:'Молоко / сливки'}] },
-  { key:'body',    q:'Текстура и плотность?',    opts:[{v:'light',l:'Лёгкий, прозрачный'},{v:'thick',l:'Густой, обволакивающий'}] },
-  { key:'mood',    q:'Зачем вы здесь сегодня?',  opts:[{v:'calm',l:'Тишина и покой'},{v:'energy',l:'Заряд и концентрация'}] },
+/* ======================================================
+   DATA: WEAPONS & SPELLS
+====================================================== */
+const ITEMS = [
+  {
+    id: 'pulse', type: 'weapon', name: 'Pulse Rifle',
+    icon: '🔫', rarity: 'common', dmg: 120, cd: 2, cost: 0,
+    desc: 'Стандартная импульсная винтовка. Быстрая и надёжная — идеальный стартер.',
+  },
+  {
+    id: 'vortex', type: 'weapon', name: 'Vortex Blade',
+    icon: '⚔', rarity: 'epic', dmg: 280, cd: 4, cost: 800,
+    desc: 'Вихревой клинок, разрывающий пространство. Режет сквозь щиты.',
+  },
+  {
+    id: 'railgun', type: 'weapon', name: 'Abyss Railgun',
+    icon: '🚀', rarity: 'legendary', dmg: 950, cd: 9, cost: 2500,
+    desc: 'Легендарный рейлган Бездны. Один выстрел — апокалипсис.',
+  },
+  {
+    id: 'blink', type: 'spell', name: 'Neon Blink',
+    icon: '⚡', rarity: 'common', dmg: 200, cd: 5, cost: 350,
+    desc: 'Мгновенный неоновый рывок. Оставляет за собой стену урона.',
+  },
+  {
+    id: 'overload', type: 'spell', name: 'Cyber Overload',
+    icon: '💥', rarity: 'epic', dmg: 600, cd: 12, cost: 1200,
+    desc: 'Кибер-перегрузка. Взрывной EMP выводит врагов из строя.',
+  },
+  {
+    id: 'chrono', type: 'spell', name: 'Chrono Shield',
+    icon: '🛡', rarity: 'legendary', dmg: 0, cd: 20, cost: 3000,
+    desc: 'Щит остановки времени. Абсолютная защита на 3 секунды.',
+  },
 ];
-let quizStep = 0;
-function renderQuiz() {
-  const step = QUIZ_STEPS[quizStep];
-  if (!step) { resolveQuiz(); return; }
-  document.getElementById('quiz-body').innerHTML = `
-    <div class="mb-3 flex items-center gap-3">
-      <span class="f-mono text-xs" style="color:rgba(153,0,0,0.5)">${quizStep+1} / ${QUIZ_STEPS.length}</span>
-      <div style="flex:1;height:1px;background:rgba(255,255,255,0.05)">
-        <div style="height:1px;background:rgba(153,0,0,0.4);width:${((quizStep)/QUIZ_STEPS.length)*100}%;transition:width 0.4s ease"></div>
-      </div>
-    </div>
-    <p class="f-disp text-xl mb-5 font-light" style="color:var(--ivory)">${step.q}</p>
-    <div class="space-y-3">
-      ${step.opts.map(o => `<button class="quiz-opt" onclick="answerQuiz('${step.key}','${o.v}',this)">${o.l}</button>`).join('')}
-    </div>`;
-}
-function answerQuiz(key, val, btn) {
-  state.quizAnswers[key] = val;
-  btn.classList.add('selected');
-  setTimeout(() => { quizStep++; renderQuiz(); }, 320);
-}
-function resolveQuiz() {
-  const {base, body, mood} = state.quizAnswers;
-  let match;
-  if (base === 'water' && mood === 'calm')   match = MENU.find(m => m.id === 1);
-  else if (base === 'water' && mood === 'energy') match = MENU.find(m => m.id === 6);
-  else if (base === 'milk' && body === 'thick' && mood === 'energy') match = MENU.find(m => m.id === 4);
-  else if (base === 'milk' && body === 'thick') match = MENU.find(m => m.id === 3);
-  else if (base === 'milk' && mood === 'calm') match = MENU.find(m => m.id === 2);
-  else match = MENU.find(m => m.id === 7);
 
-  state.quizMatchId = match.id;
-  document.getElementById('quiz-body').innerHTML = '';
-  document.getElementById('quiz-result').classList.remove('hidden');
-  document.getElementById('quiz-match-name').textContent = match.name;
-  document.getElementById('quiz-match-desc').textContent = match.desc + ' — ' + FMT(match.price);
+function getItem(id) { return ITEMS.find(i => i.id === id); }
+function getEquipped() { return getItem(GS.equippedId); }
+function isOwned(id) { return GS.inventory.includes(id); }
 
-  // Highlight card
-  renderMenu();
-  setTimeout(() => {
-    const card = document.querySelector(`[data-menu-id="${match.id}"]`);
-    if (card) card.scrollIntoView({behavior:'smooth', block:'center'});
-  }, 400);
+/* ======================================================
+   UTILITIES
+====================================================== */
+function fmt(n) { return Math.round(n).toLocaleString('ru-RU'); }
+function el(id) { return document.getElementById(id); }
+function rarityLabel(r) {
+  return r === 'legendary' ? 'ЛЕГЕНДАРНЫЙ' : r === 'epic' ? 'ЭПИЧЕСКИЙ' : 'ОБЫЧНЫЙ';
 }
-function addQuizToCart() {
-  if (state.quizMatchId) { addToCart(state.quizMatchId); toggleCart(); }
+function rarityClass(r) { return 'rarity-' + r; }
+function rarityColorClass(r) { return 'color-' + r; }
+
+/* ======================================================
+   HUD UPDATE
+====================================================== */
+function updateHUD() {
+  el('hud-credits').textContent = fmt(GS.credits);
+  el('hud-crystals').textContent = fmt(GS.crystals);
 }
 
-// ─── ORDER MODAL ──────────────────────────────────────────────────────────────
-function openOrderModal() {
-  if (state.cart.length === 0) return;
-  const wrap = document.getElementById('modal-wrap');
-  // Fill summary
-  document.getElementById('modal-items-list').innerHTML = state.cart
-    .map(c => `<div class="flex justify-between"><span>${c.name} ×${c.qty}</span><span class="f-mono">${FMT(c.price*c.qty)}</span></div>`).join('');
-  const {total} = calcTotals();
-  document.getElementById('modal-total').textContent = FMT(total);
-  wrap.classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-function closeModal() {
-  document.getElementById('modal-wrap').classList.remove('open');
-  document.body.style.overflow = '';
-}
-function handleModalBg(e) { if (e.target === document.getElementById('modal-wrap')) closeModal(); }
-
-function selectGuest(div) {
-  document.querySelectorAll('.guest-radio').forEach(d => d.classList.remove('selected'));
-  div.classList.add('selected');
-  const radio = document.getElementById(div.dataset.for);
-  if (radio) { radio.checked = true; state.guestTypeSelected = radio.value; }
-}
-
-async function submitOrder(e) {
-  e.preventDefault();
-  let valid = true;
-
-  const guestChecked = document.querySelector('input[name="guest"]:checked');
-  if (!guestChecked) {
-    document.getElementById('guest-err').classList.remove('hidden');
-    valid = false;
-  } else {
-    document.getElementById('guest-err').classList.add('hidden');
-  }
-
-  const name       = document.getElementById('order-name').value.trim();
-  const phone      = document.getElementById('order-phone').value.trim();
-  const email      = document.getElementById('order-email').value.trim();
-  const comment    = document.getElementById('order-comment').value.trim();
-  const isIncognito = guestChecked && guestChecked.value === 'incognito';
-
-  if (!isIncognito && !name) {
-    document.getElementById('name-err').classList.remove('hidden');
-    valid = false;
-  } else {
-    document.getElementById('name-err').classList.add('hidden');
-  }
-
-  if (!valid) return;
-
-  // Disable submit button while sending
-  const submitBtn = e.target.querySelector('button[type="submit"]');
-  const origText  = submitBtn.textContent;
-  submitBtn.textContent = 'Отправляем...';
-  submitBtn.disabled    = true;
-  submitBtn.style.opacity = '0.6';
-
-  const code = '#' + Math.floor(1000 + Math.random() * 9000);
-  const { sub, disc, total } = calcTotals();
-
-  try {
-    await sendToTelegram({
-      code,
-      name,
-      phone,
-      email,
-      comment,
-      guestType:  guestChecked.value,
-      items:      [...state.cart],
-      sub,
-      disc,
-      total,
-      coupon: state.couponApplied ? 'TENEBRIS −15%' : '',
-    });
-  } catch (err) {
-    // Telegram failed — still complete the order on the site side
-    console.warn('Telegram notification failed:', err.message);
-  }
-
-  // Close modal, clear cart
-  closeModal();
-  state.cart           = [];
-  state.couponApplied  = false;
-  renderCart();
-  updateBadge();
-  document.getElementById('cart-drawer').classList.remove('open');
-  document.getElementById('cart-overlay').classList.remove('open');
-  document.body.style.overflow = '';
-
-  // Reset form
-  document.getElementById('order-form').reset();
-  document.querySelectorAll('.guest-radio').forEach(d => d.classList.remove('selected'));
-  state.guestTypeSelected = null;
-  submitBtn.textContent   = origText;
-  submitBtn.disabled      = false;
-  submitBtn.style.opacity = '1';
-
-  showToast(
-    code,
-    isIncognito
-      ? `Заказ принят. Код брони: ${code}. Ожидайте подтверждения — мы свяжемся с вами.`
-      : `Заказ принят, ${name}. Код брони: ${code}. Ожидайте подтверждения на email / телефон.`
-  );
-}
-
-// ─── TOAST ────────────────────────────────────────────────────────────────────
-function showToast(code, msg) {
-  const toast = document.getElementById('toast');
-  document.getElementById('toast-code').textContent = 'КОД БРОНИ ' + code;
-  document.getElementById('toast-msg').textContent = msg;
-  toast.classList.add('show');
-  setTimeout(() => toast.classList.remove('show'), 5500);
-}
-
-// ─── SUBSCRIBE ────────────────────────────────────────────────────────────────
-function handleSubscribe() {
-  const v = document.getElementById('sub-email').value.trim();
-  if (!v || !v.includes('@')) return;
-  showToast('×××', 'Вы в списке. Мы напишем, когда придёт время.');
-  document.getElementById('sub-email').value = '';
-}
-
-// ─── REVEAL OBSERVER ─────────────────────────────────────────────────────────
-function observeReveal() {
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
-  }, {threshold:0.08});
-  document.querySelectorAll('.reveal:not(.visible)').forEach(el => obs.observe(el));
-}
-
-// ─── INIT ─────────────────────────────────────────────────────────────────────
-document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('seats').textContent = Math.floor(2 + Math.random() * 6);
-  renderMenu();
-  renderQuiz();
-  observeReveal();
-
-  // ESC closes modal / drawer
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') {
-      closeModal();
-      if (document.getElementById('cart-drawer').classList.contains('open')) toggleCart();
-    }
+/* ======================================================
+   TAB SWITCHING
+====================================================== */
+function switchTab(name) {
+  GS.currentTab = name;
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  el('tab-' + name).classList.add('active');
+  document.querySelectorAll('.tab-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.tab === name);
   });
-});
+  if (name === 'home')      renderArsenal();
+  if (name === 'shop')      renderShop();
+  if (name === 'inventory') renderInventory();
+  if (name === 'casino')    { buildSlots(); drawWheel(); }
+}
+
+/* ======================================================
+   POLYGON / ARSENAL
+====================================================== */
+function renderArsenal() {
+  renderGrid('weapon-grid', ITEMS.filter(i => i.type === 'weapon'));
+  renderGrid('spell-grid',  ITEMS.filter(i => i.type === 'spell'));
+  updatePolygonPanel();
+}
+
+function renderGrid(containerId, items) {
+  const container = el(containerId);
+  container.innerHTML = '';
+  items.forEach(item => {
+    const owned    = isOwned(item.id);
+    const equipped = GS.equippedId === item.id;
+    const div = document.createElement('div');
+    div.className = 'card arsenal-card ' + rarityClass(item.rarity);
+    div.id = 'ac-' + item.id;
+
+    let inner = `
+      <div class="card-icon">${item.icon}</div>
+      <div class="card-name ${rarityColorClass(item.rarity)}">${item.name}</div>
+      <div class="card-rarity-tag ${rarityColorClass(item.rarity)}">${rarityLabel(item.rarity)}</div>
+      <div class="card-stat-row">УРН: <span>${fmt(item.dmg)}</span></div>
+      <div class="card-stat-row">КД:&nbsp; <span>${item.cd} с</span></div>
+    `;
+    if (equipped) {
+      inner += `<div class="equipped-tag">✓ АКТИВНО</div>`;
+    }
+    div.innerHTML = inner;
+
+    // Overlay: locked or cooldown
+    if (!owned) {
+      const lock = document.createElement('div');
+      lock.className = 'locked-overlay';
+      lock.innerHTML = `<span class="lock-icon">🔒</span><span>${fmt(item.cost)} кр.</span>`;
+      div.appendChild(lock);
+    } else if (!equipped) {
+      div.style.cursor = 'pointer';
+      div.addEventListener('click', () => equipItem(item.id));
+    }
+    div.id = 'ac-' + item.id;
+    container.appendChild(div);
+  });
+}
+
+function updatePolygonPanel() {
+  const item = getEquipped();
+  if (!item) return;
+  el('equipped-name-display').textContent = item.name;
+  el('eq-dmg').textContent  = fmt(item.dmg);
+  el('eq-cd').textContent   = item.cd;
+  el('eq-cost').textContent = fmt(item.cost);
+}
+
+function equipItem(id) {
+  if (!isOwned(id) || GS.equippedId === id) return;
+  GS.equippedId = id;
+  renderArsenal();
+  showNotif(`${getItem(id).icon} ${getItem(id).name} экипировано`, false);
+}
+
+/* ======================================================
+   FIRE WEAPON
+====================================================== */
+function fireWeapon() {
+  if (GS.onCooldown) return;
+  const item = getEquipped();
+  GS.onCooldown = true;
+
+  const fireBtn = el('fire-btn');
+  fireBtn.disabled = true;
+
+  // Screen shake
+  const body = el('app');
+  body.style.animation = 'shake 0.3s ease';
+  setTimeout(() => body.style.animation = '', 350);
+
+  // Flash overlay
+  const flash = el('fire-flash-overlay');
+  flash.style.opacity = '1';
+  setTimeout(() => flash.style.opacity = '0', 180);
+
+  // Damage number
+  const dmg = Math.floor(item.dmg * (0.85 + Math.random() * 0.3));
+  spawnDmgNum(dmg);
+
+  // Earn credits
+  GS.credits += 50;
+  updateHUD();
+
+  // Status
+  setPolygonStatus(false);
+
+  // Arsenal cooldown overlay on the card
+  const card = el('ac-' + item.id);
+  if (card) {
+    let cdDiv = document.createElement('div');
+    cdDiv.className = 'cd-overlay';
+    cdDiv.id = 'cd-ov-' + item.id;
+    cdDiv.innerHTML = `<span id="cd-num-${item.id}">${item.cd}</span><div class="cd-label">Перезарядка...</div>`;
+    card.appendChild(cdDiv);
+    card.classList.add('cd-active');
+  }
+
+  // CD bar animation
+  const bar = el('cd-bar-fill');
+  bar.style.transition = 'none';
+  bar.style.width = '100%';
+  setTimeout(() => {
+    bar.style.transition = `width ${item.cd}s linear`;
+    bar.style.width = '0%';
+  }, 50);
+
+  // Countdown tick
+  let remaining = item.cd;
+  const tickInterval = setInterval(() => {
+    remaining -= 0.1;
+    const numEl = el('cd-num-' + item.id);
+    if (numEl) numEl.textContent = Math.max(0, remaining).toFixed(1);
+    if (remaining <= 0) {
+      clearInterval(tickInterval);
+      GS.onCooldown = false;
+      fireBtn.disabled = false;
+      setPolygonStatus(true);
+      const cdOv = el('cd-ov-' + item.id);
+      if (cdOv) cdOv.remove();
+      if (card) card.classList.remove('cd-active');
+      bar.style.transition = 'none';
+      bar.style.width = '100%';
+    }
+  }, 100);
+
+  // Chat reaction occasionally
+  if (Math.random() < 0.3) {
+    const botMsg = BOT_FIRE_MSGS[Math.floor(Math.random() * BOT_FIRE_MSGS.length)];
+    addChatMsg(randomBotName(), botMsg);
+  }
+}
+
+function setPolygonStatus(ready) {
+  const dot  = el('polygon-status').querySelector('.status-dot');
+  const text = el('status-text');
+  if (ready) {
+    dot.className  = 'status-dot ready';
+    text.textContent = 'ГОТОВ К БОЮ';
+    text.style.color = '#00ff88';
+  } else {
+    dot.className  = 'status-dot cooldown';
+    text.textContent = 'ПЕРЕЗАРЯДКА';
+    text.style.color = 'var(--pk)';
+  }
+}
+
+function spawnDmgNum(dmg) {
+  const layer = el('dmg-layer');
+  const d = document.createElement('div');
+  d.className = 'dmg-num';
+  d.textContent = '-' + fmt(dmg) + '!';
+  d.style.left  = (20 + Math.random() * 55) + '%';
+  d.style.top   = (25 + Math.random() * 30) + '%';
+  d.style.color = Math.random() < 0.3 ? 'var(--cy)' : 'var(--pk)';
+  d.style.textShadow = `0 0 10px ${Math.random() < 0.3 ? 'var(--cy)' : 'var(--pk)'}`;
+  layer.appendChild(d);
+  setTimeout(() => d.remove(), 1200);
+}
+
+/* ======================================================
+   SHOP
+====================================================== */
+function renderShop() {
+  const grid = el('shop-grid');
+  grid.innerHTML = '';
+  const shopItems = ITEMS.filter(i => i.cost > 0);
+
+  shopItems.forEach(item => {
+    const owned = isOwned(item.id);
+    const div = document.createElement('div');
+    div.className = 'card shop-card ' + rarityClass(item.rarity);
+
+    div.innerHTML = `
+      <div class="shop-card-icon">${item.icon}</div>
+      <div class="shop-card-name ${rarityColorClass(item.rarity)}">${item.name}</div>
+      <div class="shop-card-rarity ${rarityColorClass(item.rarity)}">${rarityLabel(item.rarity)}</div>
+      <div class="shop-card-desc">${item.desc}</div>
+      <div class="shop-card-stats">
+        Урон: <span>${fmt(item.dmg)}</span> &nbsp;·&nbsp; КД: <span>${item.cd} с</span>
+      </div>
+      <div id="shop-action-${item.id}">
+        ${owned
+          ? `<div class="sold-tag">✓ КУПЛЕНО</div>`
+          : `<button class="btn btn-gold btn-full" onclick="buyItem('${item.id}')">
+               💰 ${fmt(item.cost)} кредитов
+             </button>`
+        }
+      </div>
+    `;
+    grid.appendChild(div);
+  });
+}
+
+function buyItem(id) {
+  const item = getItem(id);
+  if (!item || isOwned(id)) return;
+
+  if (GS.credits < item.cost) {
+    showShopWarning();
+    return;
+  }
+
+  GS.credits -= item.cost;
+  GS.inventory.push(id);
+  updateHUD();
+  renderShop();
+  renderArsenal();
+
+  showNotif(`${item.icon} ${item.name} куплено и добавлено в инвентарь!`, true);
+  addChatMsg('СИСТЕМА', `Игрок приобрёл ${item.name}!`);
+}
+
+function showShopWarning() {
+  const w = el('shop-warning');
+  w.style.display = 'block';
+  setTimeout(() => w.style.display = 'none', 2800);
+}
+
+/* ======================================================
+   CASINO — SLOTS
+====================================================== */
+const SLOT_SYMBOLS = ['💎', '🔥', '⚡', '💀', '🌀', '🏆'];
+
+function buildSlots() {
+  for (let i = 0; i < 3; i++) {
+    const strip = el('reel-' + i);
+    if (strip && strip.children.length === 0) {
+      // Build a long reel of symbols (repeated x5 for visual)
+      const allSymbols = [];
+      for (let r = 0; r < 6; r++) allSymbols.push(...SLOT_SYMBOLS);
+      strip.innerHTML = allSymbols.map(s => `<div class="reel-item">${s}</div>`).join('');
+      strip.style.transform = 'translateY(0)';
+    }
+  }
+}
+
+function spinSlots() {
+  if (GS.slotsSpinning) return;
+  if (GS.credits < 200) {
+    el('slot-result-msg').textContent = '❌ Нужно 200 кредитов!';
+    el('slot-result-msg').style.color = 'var(--pk)';
+    return;
+  }
+
+  GS.credits -= 200;
+  GS.slotsSpinning = true;
+  GS.casinoStats.spins++;
+  updateHUD();
+
+  const btn = el('slot-btn');
+  btn.disabled = true;
+  el('slot-result-msg').textContent = '⏳ вращение...';
+  el('slot-result-msg').style.color = 'var(--text-dim)';
+
+  // Pick final symbols
+  const finalSymbols = [
+    SLOT_SYMBOLS[Math.floor(Math.random() * SLOT_SYMBOLS.length)],
+    SLOT_SYMBOLS[Math.floor(Math.random() * SLOT_SYMBOLS.length)],
+    SLOT_SYMBOLS[Math.floor(Math.random() * SLOT_SYMBOLS.length)],
+  ];
+
+  // Animate each reel
+  const delays = [400, 700, 1000];
+  const ITEM_H = 70;
+
+  for (let i = 0; i < 3; i++) {
+    const strip = el('reel-' + i);
+    const finalIdx = SLOT_SYMBOLS.indexOf(finalSymbols[i]);
+    // Spin fast first
+    strip.style.transition = `transform ${delays[i] + 200}ms cubic-bezier(0.2, 0.8, 0.5, 1)`;
+    // Land on a specific row: offset to show finalIdx in center
+    const offset = (Math.floor(Math.random() * 3 + 2) * SLOT_SYMBOLS.length + finalIdx) * ITEM_H;
+    strip.style.transform = `translateY(-${offset}px)`;
+  }
+
+  setTimeout(() => {
+    let win = 0;
+    let msg = '';
+    const [s0, s1, s2] = finalSymbols;
+
+    if (s0 === s1 && s1 === s2) {
+      if (s0 === '💎')      { win = 5000; msg = '💎 ДЖЕКПОТ! +5 000 кр.!'; }
+      else if (s0 === '🏆') { win = 3000; msg = '🏆 ПОБЕДА! +3 000 кр.!'; }
+      else if (s0 === '🔥') { win = 2000; msg = '🔥 МЕГА ВЫИГРЫШ! +2 000 кр.!'; }
+      else                   { win = 1000; msg = `${s0} ТРОЙНИК! +1 000 кр.!`; }
+    } else if (s0 === s1 || s1 === s2 || s0 === s2) {
+      win = 400; msg = '✨ Пара! +400 кр.!';
+    } else {
+      msg = '❌ Нет совпадений. -200 кр.';
+    }
+
+    if (win > 0) {
+      GS.credits += win;
+      GS.casinoStats.wins++;
+      if (win > GS.casinoStats.maxWin) GS.casinoStats.maxWin = win;
+      el('slot-result-msg').style.color = 'var(--go)';
+      if (win >= 1000) {
+        const n = randomBotName();
+        showNotif(`${n} сорвал ${fmt(win)} кр. в Казино!`, false);
+        addChatMsg(n, `я только что взорвал слоты на ${fmt(win)} кредитов!!!`);
+      }
+    } else {
+      GS.casinoStats.losses++;
+      el('slot-result-msg').style.color = 'var(--pk)';
+    }
+
+    GS.credits = Math.max(0, GS.credits);
+    el('slot-result-msg').textContent = msg;
+    updateHUD();
+    updateCasinoStats();
+    GS.slotsSpinning = false;
+    btn.disabled = false;
+  }, delays[2] + 300);
+}
+
+/* ======================================================
+   CASINO — WHEEL
+====================================================== */
+const WHEEL_SEGMENTS = [
+  { label: 'x0',       mult: 0,    flat: null, color: '#cc2244' },
+  { label: '+200',     mult: null, flat: 200,  color: '#1a2a3a' },
+  { label: 'x2',       mult: 2,    flat: null, color: '#006655' },
+  { label: '+500',     mult: null, flat: 500,  color: '#3a1a6a' },
+  { label: 'ДЖЕКПОТ',  mult: null, flat: 3000, color: '#7a6000' },
+  { label: 'x0',       mult: 0,    flat: null, color: '#cc2244' },
+  { label: '+300',     mult: null, flat: 300,  color: '#006655' },
+  { label: 'x1.5',     mult: 1.5,  flat: null, color: '#2a3a1a' },
+];
+
+function drawWheel() {
+  const canvas = el('wheel-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const cx = 100, cy = 100, r = 96;
+  const n = WHEEL_SEGMENTS.length;
+  const segAngle = (Math.PI * 2) / n;
+
+  ctx.clearRect(0, 0, 200, 200);
+
+  WHEEL_SEGMENTS.forEach((seg, i) => {
+    const start = GS.wheelAngle + i * segAngle - Math.PI / 2;
+    const end   = start + segAngle;
+
+    // Segment fill
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.arc(cx, cy, r, start, end);
+    ctx.closePath();
+    ctx.fillStyle = seg.color;
+    ctx.fill();
+    ctx.strokeStyle = '#000';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+
+    // Label
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.rotate(start + segAngle / 2);
+    ctx.textAlign = 'right';
+    ctx.fillStyle = '#ffffff';
+    ctx.font = `bold ${seg.label === 'ДЖЕКПОТ' ? 9 : 11}px Courier New`;
+    ctx.fillText(seg.label, r - 8, 4);
+    ctx.restore();
+  });
+
+  // Center circle
+  ctx.beginPath();
+  ctx.arc(cx, cy, 14, 0, Math.PI * 2);
+  ctx.fillStyle = '#050510';
+  ctx.fill();
+  ctx.strokeStyle = 'rgba(0,245,212,0.5)';
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+
+  // Center dot
+  ctx.beginPath();
+  ctx.arc(cx, cy, 4, 0, Math.PI * 2);
+  ctx.fillStyle = '#00f5d4';
+  ctx.fill();
+}
+
+function spinWheel() {
+  if (GS.wheelSpinning) return;
+  if (GS.credits < 150) {
+    el('wheel-result-msg').textContent = '❌ Нужно 150 кредитов!';
+    el('wheel-result-msg').style.color = 'var(--pk)';
+    return;
+  }
+
+  GS.credits -= 150;
+  GS.wheelSpinning = true;
+  GS.casinoStats.spins++;
+  updateHUD();
+
+  const btn = el('wheel-btn');
+  btn.disabled = true;
+  el('wheel-result-msg').textContent = '⏳ вращается...';
+  el('wheel-result-msg').style.color = 'var(--text-dim)';
+
+  // Pick result
+  const winIdx  = Math.floor(Math.random() * WHEEL_SEGMENTS.length);
+  const n       = WHEEL_SEGMENTS.length;
+  const segAngle = (Math.PI * 2) / n;
+
+  // Calculate how much to rotate so winIdx lands at top (pointer)
+  const currentAngle = GS.wheelAngle % (Math.PI * 2);
+  const targetAngle  = -winIdx * segAngle - segAngle / 2;
+  const spins        = Math.PI * 2 * (8 + Math.floor(Math.random() * 5));
+  const totalRotation = spins + ((targetAngle - currentAngle + Math.PI * 4) % (Math.PI * 2));
+
+  const startAngle = GS.wheelAngle;
+  const endAngle   = startAngle + totalRotation;
+  const duration   = 3500;
+  const startTime  = performance.now();
+
+  function easeOut(t) { return 1 - Math.pow(1 - t, 4); }
+
+  function frame(now) {
+    const t = Math.min(1, (now - startTime) / duration);
+    GS.wheelAngle = startAngle + (endAngle - startAngle) * easeOut(t);
+    drawWheel();
+
+    if (t < 1) {
+      requestAnimationFrame(frame);
+    } else {
+      GS.wheelAngle = endAngle;
+      drawWheel();
+
+      // Resolve
+      const seg = WHEEL_SEGMENTS[winIdx];
+      let win = 0;
+      let msg = '';
+
+      if (seg.flat !== null && seg.flat !== undefined) {
+        win = seg.flat;
+        msg = `🎡 +${fmt(win)} кр.!`;
+      } else if (seg.mult !== null) {
+        if (seg.mult === 0) {
+          msg = '❌ Ничего. Повезёт в следующий раз!';
+        } else {
+          win = Math.floor(150 * seg.mult);
+          msg = `🎡 x${seg.mult}! +${fmt(win)} кр.!`;
+        }
+      }
+
+      if (win > 0) {
+        GS.credits += win;
+        GS.casinoStats.wins++;
+        if (win > GS.casinoStats.maxWin) GS.casinoStats.maxWin = win;
+        el('wheel-result-msg').style.color = 'var(--go)';
+        if (win >= 1000) showNotif(`${randomBotName()} выиграл ${fmt(win)} кр. на Колесе!`, false);
+      } else {
+        GS.casinoStats.losses++;
+        el('wheel-result-msg').style.color = 'var(--pk)';
+      }
+
+      GS.credits = Math.max(0, GS.credits);
+      el('wheel-result-msg').textContent = msg;
+      updateHUD();
+      updateCasinoStats();
+      GS.wheelSpinning = false;
+      btn.disabled = false;
+    }
+  }
+  requestAnimationFrame(frame);
+}
+
+function updateCasinoStats() {
+  el('stat-spins').textContent   = GS.casinoStats.spins;
+  el('stat-wins').textContent    = GS.casinoStats.wins;
+  el('stat-losses').textContent  = GS.casinoStats.losses;
+  el('stat-max').textContent     = fmt(GS.casinoStats.maxWin);
+}
+
+/* ======================================================
+   INVENTORY
+====================================================== */
+function renderInventory() {
+  const grid  = el('inventory-grid');
+  const empty = el('inventory-empty');
+  grid.innerHTML = '';
+
+  const ownedItems = ITEMS.filter(i => isOwned(i.id));
+  empty.style.display = ownedItems.length === 0 ? 'block' : 'none';
+
+  ownedItems.forEach(item => {
+    const equipped = GS.equippedId === item.id;
+    const div = document.createElement('div');
+    div.className = 'card inv-card ' + rarityClass(item.rarity);
+
+    div.innerHTML = `
+      <div class="tooltip">
+        <div class="inv-card-icon">${item.icon}</div>
+        <div class="tooltip-text">
+          ${item.desc}<br>
+          УРН: ${fmt(item.dmg)} · КД: ${item.cd}с
+        </div>
+      </div>
+      <div class="inv-card-name ${rarityColorClass(item.rarity)}">${item.name}</div>
+      <div class="inv-card-rarity ${rarityColorClass(item.rarity)}">${rarityLabel(item.rarity)}</div>
+      <div class="inv-card-stat">УРН: <span>${fmt(item.dmg)}</span></div>
+      <div class="inv-card-stat">КД: <span>${item.cd} с</span></div>
+      ${equipped
+        ? `<div class="equipped-tag" style="display:inline-block;margin-top:8px;font-size:9px">✓ АКТИВНО</div>`
+        : `<button class="btn btn-cyan inv-equip-btn btn-sm" onclick="equipFromInventory('${item.id}')">
+             ⚡ Экипировать
+           </button>`
+      }
+    `;
+    grid.appendChild(div);
+  });
+}
+
+function equipFromInventory(id) {
+  equipItem(id);
+  renderInventory();
+}
+
+/* ======================================================
+   SETTINGS
+====================================================== */
+function setGraphics(mode) {
+  GS.graphics = mode;
+  const ecoBtn   = el('gfx-eco-btn');
+  const ultraBtn = el('gfx-ultra-btn');
+  const status   = el('gfx-status');
+
+  if (mode === 'eco') {
+    ecoBtn.classList.add('settings-active');
+    ultraBtn.classList.remove('settings-active');
+    document.getElementById('logo').style.animation = 'none';
+    document.getElementById('logo').style.textShadow = 'none';
+    status.style.color = 'var(--cy)';
+    status.textContent = '● Эко-режим: часть анимаций отключена';
+  } else {
+    ultraBtn.classList.add('settings-active');
+    ecoBtn.classList.remove('settings-active');
+    document.getElementById('logo').style.animation = 'logoPulse 3s ease-in-out infinite';
+    document.getElementById('logo').style.textShadow = '';
+    status.style.color = '#00cc66';
+    status.textContent = '● Ультра-режим активен (неоновые эффекты включены)';
+  }
+}
+
+function setColorTheme(theme) {
+  const root = document.documentElement;
+  el('theme-cyan-btn').classList.remove('settings-active');
+  el('theme-pink-btn').classList.remove('settings-active');
+  el('theme-dark-btn').classList.remove('settings-active');
+
+  if (theme === 'cyan') {
+    root.style.setProperty('--cy', '#00f5d4');
+    root.style.setProperty('--pk', '#ff2d78');
+    el('theme-cyan-btn').classList.add('settings-active');
+  } else if (theme === 'pink') {
+    root.style.setProperty('--cy', '#ff2d78');
+    root.style.setProperty('--pk', '#ff7a00');
+    el('theme-pink-btn').classList.add('settings-active');
+  } else {
+    root.style.setProperty('--cy', '#aaaaaa');
+    root.style.setProperty('--pk', '#666666');
+    el('theme-dark-btn').classList.add('settings-active');
+  }
+  // Redraw wheel if open
+  if (GS.currentTab === 'casino') drawWheel();
+}
+
+function toggleChat() {
+  GS.chatVisible = !GS.chatVisible;
+  const track = el('chat-toggle-track');
+  const label = el('chat-toggle-label');
+  const section = el('chat-section');
+  track.classList.toggle('on', GS.chatVisible);
+  label.textContent = GS.chatVisible ? 'Показывать' : 'Скрыть';
+  const msgs = el('chat-messages');
+  const row  = document.querySelector('.chat-row');
+  if (msgs) msgs.style.display = GS.chatVisible ? 'flex' : 'none';
+  if (row)  row.style.display  = GS.chatVisible ? 'flex' : 'none';
+}
+
+function toggleNotifs() {
+  GS.notifsEnabled = !GS.notifsEnabled;
+  const track = el('notif-toggle-track');
+  const label = el('notif-toggle-label');
+  track.classList.toggle('on', GS.notifsEnabled);
+  label.textContent = GS.notifsEnabled ? 'Включены' : 'Отключены';
+}
+
+/* ======================================================
+   NOTIFICATIONS
+====================================================== */
+function showNotif(text, isPlayer) {
+  if (!GS.notifsEnabled && !isPlayer) return;
+  const container = el('notifications');
+  const div = document.createElement('div');
+  div.className = 'notif' + (isPlayer ? ' player' : '');
+  div.textContent = (isPlayer ? '✅ ' : '📡 ') + text;
+  container.appendChild(div);
+
+  setTimeout(() => {
+    div.classList.add('fade-out');
+    setTimeout(() => div.remove(), 380);
+  }, 3800);
+
+  // Trim old notifs
+  while (container.children.length > 5) container.removeChild(container.firstChild);
+}
+
+/* ======================================================
+   CHAT
+====================================================== */
+const BOT_NAMES = [
+  'CyberGhost_X', 'NeonHunter_77', 'Void_Walker', 'GlitchQueen',
+  'Phantom_Pro', 'Dark_Matter', 'NullPointer', 'CyberFox42',
+  'Abyss_Lord', 'Ghost_Code', 'Player_Zero', 'Gamer_Cyberpunk',
+  'ShadowByte', 'NeonWraith', 'CodeSlinger99',
+];
+const NAME_COLORS = ['#00f5d4', '#ff2d78', '#b060ff', '#ffd700', '#00cc66', '#ff7a00', '#60c0ff'];
+
+const BOT_CHAT_MSGS = [
+  'где выбить Abyss Railgun? уже 2 часа фармлю...',
+  'казино сегодня щедрое, поднял 5k кредитов за час',
+  'кто знает код полигона 5-ого сектора?',
+  'ищу пати на рейд Бездны, у меня рейлган',
+  'Vortex Blade — имба, советую всем брать',
+  'слот 3 раза дал джекпот, не верю своим глазам',
+  'Chrono Shield стоит своих кредитов однозначно',
+  'новый сезон скоро? слышал про обновление 3.0',
+  'Cyber Overload + рейлган = win в любом режиме',
+  'кто-нибудь видел легендарку сегодня в казино?',
+  'Neon Blink слабовата, нужен бафф к уронy',
+  'gg wp, без Chrono Shield никуда)',
+  'сервера лагают или только у меня?',
+  'скоро ивент на 2x кредиты!',
+  'топ сборка: Railgun + Overload, проверено',
+];
+const BOT_FIRE_MSGS = [
+  'ого, вот это урон!',
+  'стреляй лучше, нуб :)',
+  'рейлган имба конечно',
+  'wow nice shot!',
+  'дамаг зашкаливает!',
+];
+const NOTIF_TEMPLATES = [
+  name => `${name} только что выиграл ${fmt(Math.floor(Math.random()*5+1)*1000)} кр. в Казино!`,
+  name => `${name} зашёл в Лобби Бездны`,
+  name => `${name} получил легендарный Abyss Railgun!`,
+  name => `${name} нашёл Chrono Shield на полигоне`,
+  name => `${name} набрал ${Math.floor(Math.random()*10+5)}x комбо на полигоне!`,
+  name => `${name} купил Vortex Blade в магазине`,
+];
+
+function randomBotName() {
+  return BOT_NAMES[Math.floor(Math.random() * BOT_NAMES.length)];
+}
+function nameColor(name) {
+  let hash = 0;
+  for (let c of name) hash = (hash * 31 + c.charCodeAt(0)) & 0xfffffff;
+  return NAME_COLORS[hash % NAME_COLORS.length];
+}
+
+function addChatMsg(name, text, isPlayer = false) {
+  const container = el('chat-messages');
+  if (!container) return;
+
+  const div = document.createElement('div');
+  div.className = 'chat-msg';
+
+  const color = isPlayer ? '#ffffff' : nameColor(name);
+  div.innerHTML = `<span class="chat-name" style="color:${color}">${name}:</span> <span class="chat-text">${text}</span>`;
+  container.appendChild(div);
+  container.scrollTop = container.scrollHeight;
+
+  // Trim
+  while (container.children.length > 80) container.removeChild(container.firstChild);
+
+  // Update ticker
+  const ticker = el('live-ticker');
+  if (ticker) ticker.textContent = `${name}: ${text}`;
+}
+
+function sendUserChat() {
+  const input = el('chat-input-field');
+  const text  = (input.value || '').trim();
+  if (!text) return;
+  addChatMsg('ВЫ', text, true);
+  input.value = '';
+}
+
+/* ======================================================
+   ONLINE COUNTER (animated)
+====================================================== */
+let onlineBase = Math.floor(Math.random() * 3000 + 5500);
+
+function updateOnline() {
+  onlineBase += Math.floor(Math.random() * 31) - 15;
+  if (onlineBase < 4000) onlineBase = 4200;
+  if (onlineBase > 12000) onlineBase = 11500;
+  el('online-count').textContent = fmt(onlineBase);
+}
+
+/* ======================================================
+   INTERVALS / TIMERS
+====================================================== */
+// Bot chat messages
+setInterval(() => {
+  const msg = BOT_CHAT_MSGS[Math.floor(Math.random() * BOT_CHAT_MSGS.length)];
+  addChatMsg(randomBotName(), msg);
+}, 4500);
+
+// Multiplayer live notifications
+setInterval(() => {
+  const name = randomBotName();
+  const tmpl = NOTIF_TEMPLATES[Math.floor(Math.random() * NOTIF_TEMPLATES.length)];
+  showNotif(tmpl(name), false);
+}, 7000 + Math.random() * 3000);
+
+// Online counter fluctuation
+setInterval(updateOnline, 3200);
+
+/* ======================================================
+   INIT
+====================================================== */
+function init() {
+  updateHUD();
+  updateOnline();
+  el('session-count').textContent = fmt(GS.sessions);
+
+  // Render initial tab
+  renderArsenal();
+  buildSlots();
+
+  // Initial chat messages
+  setTimeout(() => addChatMsg('СИСТЕМА', 'Добро пожаловать в NEON ABYSS v2.4.7!'), 600);
+  setTimeout(() => addChatMsg('CyberFox42', 'казино сегодня реально щедрое!'), 1800);
+  setTimeout(() => addChatMsg('NeonHunter_77', 'кто хочет пати на рейд?'), 3200);
+
+  // Initial notification
+  setTimeout(() => showNotif('Player_Zero зашёл в Лобби Бездны', false), 2500);
+  setTimeout(() => showNotif('GlitchQueen получила легендарный Abyss Railgun!', false), 6000);
+}
+
+init();
 </script>
 </body>
 </html>
