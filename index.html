@@ -18,50 +18,48 @@ body{background:#03030a;color:#d0d0f0;font-family:'Courier New',monospace;font-s
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 @keyframes notifIn{from{opacity:0;transform:translateX(110px)}to{opacity:1;transform:translateX(0)}}
 @keyframes notifOut{from{opacity:1}to{opacity:0;transform:translateX(110px)}}
-@keyframes legendGlow{0%,100%{box-shadow:0 0 6px rgba(255,215,0,.3),inset 0 0 6px rgba(255,215,0,.06)}50%{box-shadow:0 0 18px rgba(255,215,0,.6),inset 0 0 10px rgba(255,215,0,.12)}}
-@keyframes epicGlow{0%,100%{box-shadow:0 0 5px rgba(176,96,255,.3)}50%{box-shadow:0 0 14px rgba(176,96,255,.5)}}
-@keyframes warnBlink{0%,100%{opacity:1}50%{opacity:.4}}
-@keyframes onlinePulse{0%,100%{color:var(--cy)}50%{color:#fff}}
+@keyframes legendGlow{0%,100%{box-shadow:0 0 6px rgba(255,215,0,.3)}50%{box-shadow:0 0 18px rgba(255,215,0,.6)}}
 
-::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:var(--bg0)}::-webkit-scrollbar-thumb{background:rgba(0,245,212,.3);border-radius:2px}
+/* Layout */
 #app{display:flex;flex-direction:column;height:100vh;overflow:hidden}
 #header{flex-shrink:0;background:var(--bg1);border-bottom:1px solid var(--bpk);padding:9px 18px;display:flex;align-items:center;justify-content:space-between;position:relative;z-index:50}
-#header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--pk),var(--cy),transparent)}
-#logo{font-size:19px;font-weight:bold;letter-spacing:5px;color:var(--pk);animation:logoPulse 3s ease-in-out infinite;user-select:none}
+#logo{font-size:19px;font-weight:bold;letter-spacing:5px;color:var(--pk);animation:logoPulse 3s infinite;user-select:none}
 #logo span{color:var(--cy)}
-.hud-stat{text-align:center}
-.hud-lbl{font-size:9px;color:var(--dim);letter-spacing:1px;text-transform:uppercase}
+.hud-stat{text-align:center; margin-left: 15px}
+.hud-lbl{font-size:9px;color:var(--dim);text-transform:uppercase}
 .hud-val{font-size:15px;font-weight:bold}
-#hdr-right{display:flex;align-items:center;gap:15px}
-#sound-btn{background:rgba(0,245,212,.08);border:1px solid var(--cy);color:var(--cy);padding:4px 10px;cursor:pointer;font-family:'Courier New',monospace;font-size:11px;border-radius:3px;transition:all .2s}
 
 #body{flex:1;display:flex;overflow:hidden}
-#sidebar{width:174px;flex-shrink:0;background:var(--bg1);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:10px 0}
-.tab-btn{display:flex;align-items:center;gap:9px;width:100%;background:transparent;border:none;border-left:2px solid transparent;color:var(--mid);padding:10px 12px;cursor:pointer;font-family:'Courier New',monospace;font-size:12px;text-align:left;transition:all .2s}
+#sidebar{width:180px;flex-shrink:0;background:var(--bg1);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:10px 0}
+.tab-btn{display:flex;align-items:center;gap:9px;width:100%;background:transparent;border:none;border-left:2px solid transparent;color:var(--mid);padding:10px 12px;cursor:pointer;font-family:'Courier New';font-size:12px;transition:all .2s}
 .tab-btn.active{color:var(--cy);border-left-color:var(--cy);background:rgba(0,245,212,.06)}
 
+#chat-wrap{margin-top:auto;border-top:1px solid var(--border);padding:8px}
+#chat-msgs{height:120px;overflow-y:auto;font-size:10px;color:var(--mid);margin-bottom:5px}
+
+/* Main Content */
 #main{flex:1;overflow-y:auto;padding:16px 20px;position:relative}
 .tab-pane{display:none;animation:fadeIn .3s ease}.tab-pane.active{display:block}
 .sec-title{font-size:12px;color:var(--cy);letter-spacing:3px;text-transform:uppercase;margin-bottom:13px}
 
-#game-outer{position:relative;border:1px solid rgba(0,245,212,.3);border-radius:8px;overflow:hidden;background:#000;margin-bottom:12px;box-shadow:0 0 24px rgba(0,245,212,.07)}
+/* Grid & Cards */
+.w-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:12px;text-align:center}
+.btn{background:transparent;border:1px solid;padding:7px 14px;cursor:pointer;font-family:'Courier New';font-size:11px;border-radius:4px;transition:all .2s;text-transform:uppercase}
+.btn-cy{border-color:var(--cy);color:var(--cy)}.btn-cy:hover{background:rgba(0,245,212,.1)}
+.btn-go{border-color:var(--go);color:var(--go)}.btn-go:hover{background:rgba(255,215,0,.1)}
+.btn-pk{border-color:var(--pk);color:var(--pk)}
+
+/* Canvas */
+#game-outer{position:relative;border:1px solid rgba(0,245,212,.3);border-radius:8px;overflow:hidden;background:#000;margin-bottom:12px}
 #game-canvas{display:block;width:100%;cursor:crosshair}
-#g-hud{position:absolute;top:0;left:0;right:0;display:flex;justify-content:space-between;padding:8px 11px;pointer-events:none}
-.g-val{font-size:13px;font-weight:bold;color:var(--cy)}
+#notifs{position:fixed;right:14px;bottom:18px;display:flex;flex-direction:column;gap:6px;z-index:9000}
+.notif{background:var(--bg2);border:1px solid var(--cy);border-radius:5px;padding:8px 12px;font-size:11px;animation:notifIn .35s ease}
 
-#skin-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:10px}
-.skin-card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px;text-align:center;transition:all .25s;position:relative}
-.skin-card.skin-equipped{border-color:var(--go);box-shadow:0 0 14px rgba(255,215,0,.35)}
-.skin-canvas-wrap{width:64px;height:80px;margin:0 auto 8px;border-radius:4px;overflow:hidden}
-
-.btn{background:transparent;border:1px solid;padding:7px 14px;cursor:pointer;font-family:'Courier New',monospace;font-size:12px;border-radius:4px;transition:all .2s;text-transform:uppercase}
-.btn-cy{border-color:var(--cy);color:var(--cy)}.btn-cy:hover{background:rgba(0,245,212,0.1)}
-.btn-go{border-color:var(--go);color:var(--go)}.btn-go:hover{background:rgba(255,215,0,0.1)}
-.btn-full{width:100%}
-
-#notifs{position:fixed;right:14px;bottom:18px;display:flex;flex-direction:column;gap:6px;z-index:9000;pointer-events:none}
-.notif{background:var(--bg2);border:1px solid var(--cy);border-radius:5px;padding:8px 12px;font-size:11px;color:var(--cy);animation:notifIn .35s ease}
-#shop-warn{display:none;background:rgba(255,45,120,.1);border:1px solid var(--pk);color:var(--pk);padding:9px;border-radius:6px;margin-bottom:12px;text-align:center;animation:warnBlink .8s infinite}
+/* Skins Specific */
+.skin-card{border:1px solid var(--border);border-radius:8px;padding:15px;text-align:center;transition:.3s}
+.skin-card.active{border-color:var(--go);box-shadow:0 0 10px rgba(255,215,0,0.2)}
+.skin-img{width:60px;height:60px;margin:0 auto 10px;background:rgba(0,0,0,0.2);display:flex;align-items:center;justify-content:center;font-size:30px}
 </style>
 </head>
 <body>
@@ -69,7 +67,7 @@ body{background:#03030a;color:#d0d0f0;font-family:'Courier New',monospace;font-s
 <div id="app">
 <header id="header">
   <div id="logo">NEON <span>ABYSS</span></div>
-  <div id="hdr-right">
+  <div style="display:flex">
     <div class="hud-stat"><div class="hud-lbl">Кредиты</div><div class="hud-val" style="color:var(--go)" id="hud-cr">0</div></div>
     <div class="hud-stat"><div class="hud-lbl">Кристаллы</div><div class="hud-val" style="color:var(--pu)" id="hud-xt">0</div></div>
   </div>
@@ -78,29 +76,45 @@ body{background:#03030a;color:#d0d0f0;font-family:'Courier New',monospace;font-s
 <div id="body">
   <aside id="sidebar">
     <button class="tab-btn active" data-tab="home" onclick="switchTab('home')">⚔ Полигон</button>
+    <button class="tab-btn" data-tab="campaign" onclick="switchTab('campaign')">🗺 Кампания</button>
     <button class="tab-btn" data-tab="skins" onclick="switchTab('skins')">👤 Скины</button>
-    <div style="margin-top:auto; padding:10px;">
-        <div id="chat-msgs" style="height:120px; overflow-y:auto; font-size:10px; color:var(--mid)"></div>
+    <button class="tab-btn" data-tab="settings" onclick="switchTab('settings')">⚙ Настройки</button>
+    
+    <div id="chat-wrap">
+      <div id="chat-msgs"></div>
+      <input type="text" id="chat-in" placeholder="Чат..." style="width:100%;background:#000;border:1px solid var(--border);color:#fff;padding:4px;font-size:10px" onkeydown="if(event.key==='Enter')sendChat()">
     </div>
   </aside>
 
   <main id="main">
+    <!-- POLYGON -->
     <div id="tab-home" class="tab-pane active">
       <div class="sec-title">Боевой Полигон</div>
       <div id="game-outer">
         <canvas id="game-canvas"></canvas>
-        <div id="g-hud">
-            <div class="g-val" id="g-weapon">Pulse Rifle</div>
-            <div class="g-val" style="color:var(--go)" id="g-dmg">Урон: 0</div>
-        </div>
       </div>
-      <div style="font-size:10px; color:var(--dim)">Управление: WASD - движение, ЛКМ - огонь.</div>
+      <div class="sec-title">Арсенал</div>
+      <div class="w-grid" id="arsenal-grid"></div>
     </div>
 
+    <!-- CAMPAIGN -->
+    <div id="tab-campaign" class="tab-pane">
+        <div class="sec-title">Миссии Кампании</div>
+        <div class="w-grid" id="campaign-grid"></div>
+    </div>
+
+    <!-- SKINS -->
     <div id="tab-skins" class="tab-pane">
       <div class="sec-title">Магазин скинов</div>
-      <div id="shop-warn">⚠ НЕДОСТАТОЧНО СРЕДСТВ!</div>
-      <div id="skin-grid"></div>
+      <div class="w-grid" id="skin-grid"></div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div id="tab-settings" class="tab-pane">
+        <div class="sec-title">Настройки</div>
+        <div class="card">
+            <button class="btn btn-pk" onclick="resetGame()">Сбросить прогресс</button>
+        </div>
     </div>
   </main>
 </div>
@@ -109,30 +123,37 @@ body{background:#03030a;color:#d0d0f0;font-family:'Courier New',monospace;font-s
 <div id="notifs"></div>
 
 <script>
-'use strict';
-
 /**
  * GLOBAL STATE
  */
 const GS = {
-  credits: 1500,
-  crystals: 10,
-  equippedId: 'pulse', // Оружие
-  equippedSkin: 'default',
-  ownedSkins: ['default'],
-  sessionDmg: 0,
-  currentTab: 'home',
-  soundOn: true
+    credits: 1500,
+    crystals: 10,
+    playerLevel: 1,
+    ownedSkins: ['default'],
+    equippedSkin: 'default',
+    currentTab: 'home',
+    playerHistory: [] // Для Сандевистана
 };
 
-const el = id => document.getElementById(id);
-const fmt = n => Math.round(n).toLocaleString('ru-RU');
+const SKINS_DATA = [
+    { id: 'default', name: 'Неоновый Беглец', costCredits: 0, costCrystals: 0, icon: '👤', unlocked: true },
+    { id: 'david', name: 'Дэвид Мартинес', costCredits: 2000, costCrystals: 15, icon: '⚡', unlocked: false },
+    { id: 'lucy', name: 'Люси', costCredits: 1500, costCrystals: 5, icon: '💠', unlocked: false }
+];
+
+const WEAPONS = [
+    { id: 'pulse', name: 'Pulse Rifle', dmg: 120, cost: 0, icon: '🔫' },
+    { id: 'railgun', name: 'Abyss Railgun', dmg: 950, cost: 2500, icon: '🚀' }
+];
 
 /**
- * PERSISTENCE
+ * CORE LOGIC
  */
-function saveProgress() {
-    localStorage.setItem('nabyss_save', JSON.stringify({
+const el = id => document.getElementById(id);
+
+function saveGameProgress() {
+    localStorage.setItem('neon_abyss_save', JSON.stringify({
         credits: GS.credits,
         crystals: GS.crystals,
         ownedSkins: GS.ownedSkins,
@@ -140,264 +161,246 @@ function saveProgress() {
     }));
 }
 
-function loadProgress() {
-    const data = localStorage.getItem('nabyss_save');
-    if (data) {
-        const p = JSON.parse(data);
-        GS.credits = p.credits || 1500;
-        GS.crystals = p.crystals || 0;
-        GS.ownedSkins = p.ownedSkins || ['default'];
-        GS.equippedSkin = p.equippedSkin || 'default';
+function loadGameProgress() {
+    const save = localStorage.getItem('neon_abyss_save');
+    if(save) {
+        const data = JSON.parse(save);
+        GS.credits = data.credits;
+        GS.crystals = data.crystals;
+        GS.ownedSkins = data.ownedSkins;
+        GS.equippedSkin = data.equippedSkin;
+        GS.ownedSkins.forEach(id => {
+            const skin = SKINS_DATA.find(s => s.id === id);
+            if(skin) skin.unlocked = true;
+        });
     }
 }
 
 /**
- * SKIN MANAGER
+ * 1. ИСПРАВЛЕННАЯ СИСТЕМА ПОКУПКИ
  */
-const SkinManager = {
-    SKINS: [
-        { id: 'default', name: 'Неоновый Беглец', rarity: 'common', costCr: 0, costXt: 0, desc: 'Стандартный облик.' },
-        { id: 'david', name: 'Дэвид Мартинес', rarity: 'legendary', costCr: 3000, costXt: 15, desc: 'Легенда Найт-Сити. Эффект Сандевистана.' },
-        { id: 'lucy', name: 'Люси', rarity: 'epic', costCr: 1500, costXt: 5, desc: 'Нетраннер. Элегантность и мощь.' },
-        { id: 'chrome', name: 'Хром Самурай', rarity: 'epic', costCr: 2000, costXt: 8, desc: 'Кибернетический воин.' }
-    ],
-
-    get(id) { return this.SKINS.find(s => s.id === id); },
-
-    drawPreview(canvas, skinId) {
-        const ctx = canvas.getContext('2d');
-        ctx.fillStyle = '#0e0e22';
-        ctx.fillRect(0, 0, 64, 80);
-        ctx.fillStyle = skinId === 'david' ? '#ffd700' : '#00f5d4';
-        ctx.fillRect(22, 25, 20, 30);
+function buySkin(skinId) {
+    const skin = SKINS_DATA.find(s => s.id === skinId);
+    if (!skin) return;
+    
+    if (GS.credits >= skin.costCredits && GS.crystals >= skin.costCrystals) {
+        GS.credits -= skin.costCredits;
+        GS.crystals -= skin.costCrystals;
+        skin.unlocked = true;
+        GS.ownedSkins.push(skinId);
+        
+        equipSkin(skinId); 
+        saveGameProgress(); 
+        updateUI();
+        showNotif(`Облик ${skin.name} разблокирован!`);
+    } else {
+        showNotif("Недостаточно средств!", false);
     }
-};
+}
+
+function equipSkin(skinId) {
+    GS.equippedSkin = skinId;
+    updateUI();
+    saveGameProgress();
+}
+
+function updateUI() {
+    el('hud-cr').textContent = GS.credits.toLocaleString();
+    el('hud-xt').textContent = GS.crystals.toLocaleString();
+    renderSkins();
+}
 
 /**
- * UI MODULE
+ * UI RENDERING
  */
-const UI = {
-    updateHUD() {
-        el('hud-cr').textContent = fmt(GS.credits);
-        el('hud-xt').textContent = fmt(GS.crystals);
-    },
-
-    showNotif(text) {
-        const c = el('notifs');
-        const d = document.createElement('div');
-        d.className = 'notif';
-        d.textContent = '📡 ' + text;
-        c.appendChild(d);
-        setTimeout(() => d.remove(), 3000);
-    },
-
-    renderSkins() {
-        const grid = el('skin-grid');
-        grid.innerHTML = '';
-        SkinManager.SKINS.forEach(skin => {
-            const isOwned = GS.ownedSkins.includes(skin.id);
-            const isEquipped = GS.equippedSkin === skin.id;
-            const d = document.createElement('div');
-            d.className = `skin-card ${isEquipped ? 'skin-equipped' : ''}`;
-            
-            const pc = document.createElement('canvas');
-            pc.width = 64; pc.height = 80;
-            SkinManager.drawPreview(pc, skin.id);
-
-            let btnHTML = '';
-            if (isEquipped) {
-                btnHTML = `<button class="btn btn-full" disabled style="color:var(--go); border-color:var(--go)">● АКТИВЕН</button>`;
-            } else if (isOwned) {
-                btnHTML = `<button class="btn btn-cy btn-full" onclick="UI.equipSkin('${skin.id}')">НАДЕТЬ</button>`;
-            } else {
-                btnHTML = `<button class="btn btn-go btn-full" onclick="UI.buySkin('${skin.id}')">КУПИТЬ [💰${skin.costCr}]</button>`;
-            }
-
-            d.innerHTML = `
-                <div class="skin-canvas-wrap" id="sw-${skin.id}"></div>
-                <div class="skin-name">${skin.name}</div>
-                <div style="font-size:9px; color:var(--dim); margin-bottom:10px">${skin.desc}</div>
-                ${btnHTML}
-            `;
-            grid.appendChild(d);
-            el(`sw-${skin.id}`).appendChild(pc);
-        });
-    },
-
-    buySkin(id) {
-        const skin = SkinManager.get(id);
-        if (!skin) return;
-
-        if (GS.credits >= skin.costCr && GS.crystals >= skin.costXt) {
-            GS.credits -= skin.costCr;
-            GS.crystals -= skin.costXt;
-            GS.ownedSkins.push(id);
-            this.showNotif(`Скин ${skin.name} куплен!`);
-            this.equipSkin(id);
-            saveProgress();
+function renderSkins() {
+    const grid = el('skin-grid');
+    grid.innerHTML = '';
+    SKINS_DATA.forEach(skin => {
+        const isEquipped = GS.equippedSkin === skin.id;
+        const card = document.createElement('div');
+        card.className = `card skin-card ${isEquipped ? 'active' : ''}`;
+        
+        let btnHTML = '';
+        if(isEquipped) {
+            btnHTML = `<button class="btn btn-full" disabled style="border-color:var(--go);color:var(--go)">Экипировано</button>`;
+        } else if(skin.unlocked) {
+            btnHTML = `<button class="btn btn-cy btn-full" onclick="equipSkin('${skin.id}')">Надеть</button>`;
         } else {
-            el('shop-warn').style.display = 'block';
-            setTimeout(() => el('shop-warn').style.display = 'none', 2000);
-            this.showNotif("Недостаточно средств!");
+            btnHTML = `<button class="btn btn-go btn-full" onclick="buySkin('${skin.id}')">Купить за ${skin.costCredits}</button>`;
         }
-    },
 
-    equipSkin(id) {
-        GS.equippedSkin = id;
-        this.showNotif(`Облик изменен на ${SkinManager.get(id).name}`);
-        this.renderSkins();
-        saveProgress();
-    },
+        card.innerHTML = `
+            <div class="skin-img">${skin.icon}</div>
+            <div style="font-weight:bold;margin-bottom:5px">${skin.name}</div>
+            ${btnHTML}
+        `;
+        grid.appendChild(card);
+    });
+}
 
-    addChat(msg) {
-        const c = el('chat-msgs');
-        c.innerHTML += `<div>> ${msg}</div>`;
-        c.scrollTop = c.scrollHeight;
-    }
-};
+function renderArsenal() {
+    const grid = el('arsenal-grid');
+    grid.innerHTML = '';
+    WEAPONS.forEach(w => {
+        grid.innerHTML += `<div class="card">
+            <div>${w.icon}</div>
+            <b>${w.name}</b><br>
+            <small>Урон: ${w.dmg}</small>
+        </div>`;
+    });
+}
 
 /**
- * GAME ENGINE
+ * 2. ИСПРАВЛЕННОЕ ОТОБРАЖЕНИЕ НА ПОЛИГОНЕ
  */
 const Engine = {
     canvas: null, ctx: null,
-    player: { x: 100, y: 150, w: 20, h: 24, vx: 0, vy: 0 },
-    playerHistory: [], // История позиций для Сандевистана
+    player: { x: 100, y: 200, vx: 0, vy: 0 },
+    plats: [{x: 0, y: 280, w: 800, h: 20}, {x: 200, y: 200, w: 150, h: 10}, {x: 450, y: 150, w: 150, h: 10}],
     keys: {},
-    
+
     init() {
         this.canvas = el('game-canvas');
         this.canvas.width = el('game-outer').offsetWidth;
         this.canvas.height = 300;
         this.ctx = this.canvas.getContext('2d');
-
         window.addEventListener('keydown', e => this.keys[e.code] = true);
         window.addEventListener('keyup', e => this.keys[e.code] = false);
-
         this.loop();
     },
 
     update() {
         const p = this.player;
-        if (this.keys['KeyA']) p.vx = -4;
-        else if (this.keys['KeyD']) p.vx = 4;
+        if(this.keys['KeyA']) p.vx = -4;
+        else if(this.keys['KeyD']) p.vx = 4;
         else p.vx *= 0.8;
 
-        if (this.keys['KeyW']) p.vy = -4;
-        else if (this.keys['KeyS']) p.vy = 4;
-        else p.vy *= 0.8;
+        if(this.keys['KeyW'] && p.onGround) { p.vy = -10; p.onGround = false; }
+        p.vy += 0.5; // Gravity
+        p.x += p.vx; p.y += p.vy;
 
-        p.x += p.vx;
-        p.y += p.vy;
+        p.onGround = false;
+        this.plats.forEach(pl => {
+            if(p.x < pl.x + pl.w && p.x + 20 > pl.x && p.y + 20 > pl.y && p.y + 20 < pl.y + pl.h) {
+                p.y = pl.y - 20; p.vy = 0; p.onGround = true;
+            }
+        });
 
-        // Ограничения экрана
-        p.x = Math.max(0, Math.min(this.canvas.width - p.w, p.x));
-        p.y = Math.max(0, Math.min(this.canvas.height - p.h, p.y));
-
-        // Логика шлейфа для скина Дэвида
-        if (GS.equippedSkin === 'david') {
-            this.playerHistory.push({ x: p.x, y: p.y, ts: Date.now() });
-            if (this.playerHistory.length > 10) this.playerHistory.shift();
+        // Запись истории для Сандевистана
+        if(GS.equippedSkin === 'david') {
+            GS.playerHistory.push({x: p.x, y: p.y});
+            if(GS.playerHistory.length > 6) GS.playerHistory.shift();
         } else {
-            this.playerHistory = [];
+            GS.playerHistory = [];
         }
     },
 
-    draw() {
-        const ctx = this.ctx;
-        ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
-        // Сетка фона
-        ctx.strokeStyle = 'rgba(0, 245, 212, 0.05)';
-        ctx.lineWidth = 1;
-        for(let i=0; i<this.canvas.width; i+=30) { ctx.beginPath(); ctx.moveTo(i,0); ctx.lineTo(i,300); ctx.stroke(); }
-
-        const px = this.player.x, py = this.player.y;
-        const pw = this.player.w, ph = this.player.h;
-
-        // 1. Отрисовка ШЛЕЙФА (Сандевистан)
-        if (GS.equippedSkin === 'david') {
-            this.playerHistory.forEach((pos, i) => {
+    drawPlayer(ctx, playerX, playerY) {
+        ctx.save();
+        const currentSkin = GS.equippedSkin;
+        
+        if (currentSkin === 'david') {
+            // 1. Отрисовка шлейфа
+            GS.playerHistory.forEach((pos, index) => {
                 ctx.save();
-                ctx.globalAlpha = (i / this.playerHistory.length) * 0.3;
-                ctx.shadowColor = "#ffb700";
-                ctx.shadowBlur = 10;
-                ctx.fillStyle = "#ffb700";
-                ctx.fillRect(pos.x, pos.y, pw, ph);
+                ctx.globalAlpha = (index + 1) / (GS.playerHistory.length * 2);
+                ctx.fillStyle = '#ffb700'; // Желтый след для Дэвида
+                ctx.fillRect(pos.x, pos.y, 20, 20);
                 ctx.restore();
             });
-        }
-
-        // 2. Отрисовка ИГРОКА
-        ctx.save();
-        if (GS.equippedSkin === 'david') {
-            // Уникальный визуал: Неоновый ромб
-            ctx.translate(px + pw/2, py + ph/2);
-            ctx.shadowColor = "#ffb700";
+            
+            // 2. Отрисовка Дэвида (ромб)
+            ctx.shadowColor = '#ffb700';
             ctx.shadowBlur = 15;
-            ctx.strokeStyle = "#ffb700";
-            ctx.lineWidth = 3;
-            
+            ctx.fillStyle = '#ffb700';
             ctx.beginPath();
-            ctx.moveTo(0, -ph/1.2);
-            ctx.lineTo(pw/1.2, 0);
-            ctx.lineTo(0, ph/1.2);
-            ctx.lineTo(-pw/1.2, 0);
+            ctx.translate(playerX + 10, playerY + 10);
+            ctx.moveTo(0, -15);
+            ctx.lineTo(15, 0);
+            ctx.lineTo(0, 15);
+            ctx.lineTo(-15, 0);
             ctx.closePath();
-            ctx.stroke();
-            
-            ctx.fillStyle = "rgba(255, 183, 0, 0.3)";
             ctx.fill();
-            ctx.fillStyle = "#fff";
-            ctx.fillRect(-2, -2, 4, 4);
         } else {
-            // Стандартный визуал
-            ctx.shadowColor = "#00f5d4";
-            ctx.shadowBlur = 12;
-            ctx.fillStyle = "#00f5d4";
-            ctx.fillRect(px, py, pw, ph);
-            ctx.strokeStyle = "#fff";
-            ctx.strokeRect(px, py, pw, ph);
+            // Стандартный скин
+            ctx.shadowColor = '#00f5d4';
+            ctx.shadowBlur = 10;
+            ctx.fillStyle = '#00f5d4';
+            ctx.fillRect(playerX, playerY, 20, 20);
+            ctx.strokeStyle = '#fff';
+            ctx.strokeRect(playerX, playerY, 20, 20);
         }
         ctx.restore();
     },
 
     loop() {
         this.update();
-        this.draw();
+        const ctx = this.ctx;
+        ctx.fillStyle = '#020208';
+        ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+
+        // Draw Plats
+        ctx.fillStyle = '#14142e';
+        this.plats.forEach(pl => ctx.fillRect(pl.x, pl.y, pl.w, pl.h));
+
+        this.drawPlayer(ctx, this.player.x, this.player.y);
         requestAnimationFrame(() => this.loop());
     }
 };
 
 /**
- * AUDIO (Dummy)
+ * SYSTEM
  */
-const AudioSys = {
-    play(name) { console.log("Sound play:", name); },
-    toggle() { GS.soundOn = !GS.soundOn; }
-};
-
-/**
- * TABS
- */
-window.switchTab = (name) => {
+function switchTab(name) {
     GS.currentTab = name;
     document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
     el('tab-' + name).classList.add('active');
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === name));
-    if (name === 'skins') UI.renderSkins();
-};
+}
 
-/**
- * INIT
- */
-(function init() {
-    loadProgress();
-    UI.updateHUD();
-    Engine.init();
-    UI.addChat("Система загружена. Добро пожаловать.");
-    UI.addChat("Дэвид Мартинес доступен в магазине!");
-})();
+function showNotif(txt, good = true) {
+    const n = el('notifs');
+    const d = document.createElement('div');
+    d.className = 'notif';
+    d.style.borderColor = good ? 'var(--cy)' : 'var(--pk)';
+    d.textContent = txt;
+    n.appendChild(d);
+    setTimeout(() => d.remove(), 3000);
+}
+
+function sendChat() {
+    const input = el('chat-in');
+    if(!input.value) return;
+    const msg = document.createElement('div');
+    msg.textContent = `Вы: ${input.value}`;
+    el('chat-msgs').appendChild(msg);
+    input.value = '';
+    el('chat-msgs').scrollTop = el('chat-msgs').scrollHeight;
+}
+
+function resetGame() {
+    if(confirm("Сбросить всё?")) {
+        localStorage.removeItem('neon_abyss_save');
+        location.reload();
+    }
+}
+
+// Start
+loadGameProgress();
+updateUI();
+renderArsenal();
+Engine.init();
+
+// Bots simulation
+setInterval(() => {
+    const botMsgs = ["Нужен рейд на 5 уровень", " Railgun имба!", "Как купить Дэвида?", "HOLKIP дает бонусы"];
+    const d = document.createElement('div');
+    d.innerHTML = `<span style="color:var(--cy)">Bot_${Math.floor(Math.random()*99)}:</span> ${botMsgs[Math.floor(Math.random()*botMsgs.length)]}`;
+    el('chat-msgs').appendChild(d);
+    el('chat-msgs').scrollTop = el('chat-msgs').scrollHeight;
+}, 8000);
+
 </script>
 </body>
 </html>
