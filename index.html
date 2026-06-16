@@ -21,16 +21,19 @@ body{background:#03030a;color:#d0d0f0;font-family:'Courier New',monospace;font-s
 @keyframes legendGlow{0%,100%{box-shadow:0 0 6px rgba(255,215,0,.3),inset 0 0 6px rgba(255,215,0,.06)}50%{box-shadow:0 0 18px rgba(255,215,0,.6),inset 0 0 10px rgba(255,215,0,.12)}}
 @keyframes epicGlow{0%,100%{box-shadow:0 0 5px rgba(176,96,255,.3)}50%{box-shadow:0 0 14px rgba(176,96,255,.5)}}
 @keyframes warnBlink{0%,100%{opacity:1}50%{opacity:.4}}
+@keyframes onlinePulse{0%,100%{color:var(--cy)}50%{color:#fff}}
 
 ::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:var(--bg0)}::-webkit-scrollbar-thumb{background:rgba(0,245,212,.3);border-radius:2px}
 #app{display:flex;flex-direction:column;height:100vh;overflow:hidden}
 #header{flex-shrink:0;background:var(--bg1);border-bottom:1px solid var(--bpk);padding:9px 18px;display:flex;align-items:center;justify-content:space-between;position:relative;z-index:50}
+#header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--pk),var(--cy),transparent)}
 #logo{font-size:19px;font-weight:bold;letter-spacing:5px;color:var(--pk);animation:logoPulse 3s ease-in-out infinite;user-select:none}
 #logo span{color:var(--cy)}
 .hud-stat{text-align:center}
 .hud-lbl{font-size:9px;color:var(--dim);letter-spacing:1px;text-transform:uppercase}
 .hud-val{font-size:15px;font-weight:bold}
 #hdr-right{display:flex;align-items:center;gap:15px}
+#sound-btn{background:rgba(0,245,212,.08);border:1px solid var(--cy);color:var(--cy);padding:4px 10px;cursor:pointer;font-family:'Courier New',monospace;font-size:11px;border-radius:3px;transition:all .2s}
 
 #body{flex:1;display:flex;overflow:hidden}
 #sidebar{width:174px;flex-shrink:0;background:var(--bg1);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:10px 0}
@@ -40,30 +43,25 @@ body{background:#03030a;color:#d0d0f0;font-family:'Courier New',monospace;font-s
 #main{flex:1;overflow-y:auto;padding:16px 20px;position:relative}
 .tab-pane{display:none;animation:fadeIn .3s ease}.tab-pane.active{display:block}
 .sec-title{font-size:12px;color:var(--cy);letter-spacing:3px;text-transform:uppercase;margin-bottom:13px}
-.card{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:12px}
 
-.btn{background:transparent;border:1px solid;padding:7px 14px;cursor:pointer;font-family:'Courier New',monospace;font-size:12px;border-radius:4px;transition:all .2s;text-transform:uppercase;letter-spacing:1px}
+#game-outer{position:relative;border:1px solid rgba(0,245,212,.3);border-radius:8px;overflow:hidden;background:#000;margin-bottom:12px;box-shadow:0 0 24px rgba(0,245,212,.07)}
+#game-canvas{display:block;width:100%;cursor:crosshair}
+#g-hud{position:absolute;top:0;left:0;right:0;display:flex;justify-content:space-between;padding:8px 11px;pointer-events:none}
+.g-val{font-size:13px;font-weight:bold;color:var(--cy)}
+
+#skin-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:10px}
+.skin-card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px;text-align:center;transition:all .25s;position:relative}
+.skin-card.skin-equipped{border-color:var(--go);box-shadow:0 0 14px rgba(255,215,0,.35)}
+.skin-canvas-wrap{width:64px;height:80px;margin:0 auto 8px;border-radius:4px;overflow:hidden}
+
+.btn{background:transparent;border:1px solid;padding:7px 14px;cursor:pointer;font-family:'Courier New',monospace;font-size:12px;border-radius:4px;transition:all .2s;text-transform:uppercase}
 .btn-cy{border-color:var(--cy);color:var(--cy)}.btn-cy:hover{background:rgba(0,245,212,0.1)}
-.btn-pk{border-color:var(--pk);color:var(--pk)}.btn-pk:hover{background:rgba(255,45,120,0.1)}
 .btn-go{border-color:var(--go);color:var(--go)}.btn-go:hover{background:rgba(255,215,0,0.1)}
 .btn-full{width:100%}
 
-#game-outer{position:relative;border:1px solid rgba(0,245,212,.3);border-radius:8px;overflow:hidden;background:#000;margin-bottom:12px}
-#game-canvas{display:block;width:100%;cursor:crosshair;background: #020208;}
-
-/* SKINS UI */
-#skin-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:10px}
-.skin-card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px;text-align:center;transition:all .25s;position:relative}
-.skin-card.active-skin{border-color:var(--go);box-shadow:0 0 15px rgba(255,215,0,0.2)}
-.skin-name{font-size:13px;font-weight:bold;margin-bottom:5px;color:#fff}
-.skin-price{font-size:11px;color:var(--go);margin:8px 0;font-weight:bold}
-.skin-canvas-wrap{width:64px;height:64px;margin:0 auto 10px;background:rgba(0,0,0,0.3);border-radius:4px}
-
 #notifs{position:fixed;right:14px;bottom:18px;display:flex;flex-direction:column;gap:6px;z-index:9000;pointer-events:none}
 .notif{background:var(--bg2);border:1px solid var(--cy);border-radius:5px;padding:8px 12px;font-size:11px;color:var(--cy);animation:notifIn .35s ease}
-
-#chat-msgs{height:100px;overflow-y:auto;padding:5px;font-size:10px;background:rgba(0,0,0,0.2)}
-#shop-warn{display:none;color:var(--pk);text-align:center;font-weight:bold;margin-bottom:10px;animation:warnBlink 0.5s infinite}
+#shop-warn{display:none;background:rgba(255,45,120,.1);border:1px solid var(--pk);color:var(--pk);padding:9px;border-radius:6px;margin-bottom:12px;text-align:center;animation:warnBlink .8s infinite}
 </style>
 </head>
 <body>
@@ -82,24 +80,25 @@ body{background:#03030a;color:#d0d0f0;font-family:'Courier New',monospace;font-s
     <button class="tab-btn active" data-tab="home" onclick="switchTab('home')">⚔ Полигон</button>
     <button class="tab-btn" data-tab="skins" onclick="switchTab('skins')">👤 Скины</button>
     <div style="margin-top:auto; padding:10px;">
-        <div style="font-size:9px; color:var(--dim)">CHAT</div>
-        <div id="chat-msgs"></div>
+        <div id="chat-msgs" style="height:120px; overflow-y:auto; font-size:10px; color:var(--mid)"></div>
     </div>
   </aside>
 
   <main id="main">
-    <!-- POLYGON -->
     <div id="tab-home" class="tab-pane active">
       <div class="sec-title">Боевой Полигон</div>
       <div id="game-outer">
-        <canvas id="game-canvas" width="800" height="400"></canvas>
+        <canvas id="game-canvas"></canvas>
+        <div id="g-hud">
+            <div class="g-val" id="g-weapon">Pulse Rifle</div>
+            <div class="g-val" style="color:var(--go)" id="g-dmg">Урон: 0</div>
+        </div>
       </div>
-      <p style="font-size:10px; color:var(--dim)">WASD - движение, ЛКМ - огонь (Скин Дэвида активирует Сандевистан при движении)</p>
+      <div style="font-size:10px; color:var(--dim)">Управление: WASD - движение, ЛКМ - огонь.</div>
     </div>
 
-    <!-- SKINS -->
     <div id="tab-skins" class="tab-pane">
-      <div class="sec-title">Магазин Обликов</div>
+      <div class="sec-title">Магазин скинов</div>
       <div id="shop-warn">⚠ НЕДОСТАТОЧНО СРЕДСТВ!</div>
       <div id="skin-grid"></div>
     </div>
@@ -110,35 +109,30 @@ body{background:#03030a;color:#d0d0f0;font-family:'Courier New',monospace;font-s
 <div id="notifs"></div>
 
 <script>
+'use strict';
+
 /**
  * GLOBAL STATE
  */
 const GS = {
-    credits: 1500,
-    crystals: 10,
-    ownedSkins: ['default'],
-    equippedSkin: 'default',
-    currentTab: 'home'
+  credits: 1500,
+  crystals: 10,
+  equippedId: 'pulse', // Оружие
+  equippedSkin: 'default',
+  ownedSkins: ['default'],
+  sessionDmg: 0,
+  currentTab: 'home',
+  soundOn: true
 };
 
-/**
- * SKIN DATABASE
- */
-const SKINS_DB = [
-    { id: 'default', name: 'Беглец', costCredits: 0, costCrystals: 0, desc: 'Стандартный костюм.' },
-    { id: 'david', name: 'Дэвид Мартинес', costCredits: 2500, costCrystals: 15, desc: 'Легенда Найт-Сити. Эффект шлейфа.' },
-    { id: 'lucy', name: 'Люси', costCredits: 1800, costCrystals: 5, desc: 'Нетраннер. Бирюзовое сияние.' },
-    { id: 'chrome', name: 'Хром Самурай', costCredits: 4000, costCrystals: 20, desc: 'Полная замена тела.' }
-];
-
 const el = id => document.getElementById(id);
-const fmt = n => n.toLocaleString();
+const fmt = n => Math.round(n).toLocaleString('ru-RU');
 
 /**
  * PERSISTENCE
  */
 function saveProgress() {
-    localStorage.setItem('neon_abyss_data', JSON.stringify({
+    localStorage.setItem('nabyss_save', JSON.stringify({
         credits: GS.credits,
         crystals: GS.crystals,
         ownedSkins: GS.ownedSkins,
@@ -147,15 +141,37 @@ function saveProgress() {
 }
 
 function loadProgress() {
-    const data = localStorage.getItem('neon_abyss_data');
+    const data = localStorage.getItem('nabyss_save');
     if (data) {
-        const parsed = JSON.parse(data);
-        GS.credits = parsed.credits || 1500;
-        GS.crystals = parsed.crystals || 0;
-        GS.ownedSkins = parsed.ownedSkins || ['default'];
-        GS.equippedSkin = parsed.equippedSkin || 'default';
+        const p = JSON.parse(data);
+        GS.credits = p.credits || 1500;
+        GS.crystals = p.crystals || 0;
+        GS.ownedSkins = p.ownedSkins || ['default'];
+        GS.equippedSkin = p.equippedSkin || 'default';
     }
 }
+
+/**
+ * SKIN MANAGER
+ */
+const SkinManager = {
+    SKINS: [
+        { id: 'default', name: 'Неоновый Беглец', rarity: 'common', costCr: 0, costXt: 0, desc: 'Стандартный облик.' },
+        { id: 'david', name: 'Дэвид Мартинес', rarity: 'legendary', costCr: 3000, costXt: 15, desc: 'Легенда Найт-Сити. Эффект Сандевистана.' },
+        { id: 'lucy', name: 'Люси', rarity: 'epic', costCr: 1500, costXt: 5, desc: 'Нетраннер. Элегантность и мощь.' },
+        { id: 'chrome', name: 'Хром Самурай', rarity: 'epic', costCr: 2000, costXt: 8, desc: 'Кибернетический воин.' }
+    ],
+
+    get(id) { return this.SKINS.find(s => s.id === id); },
+
+    drawPreview(canvas, skinId) {
+        const ctx = canvas.getContext('2d');
+        ctx.fillStyle = '#0e0e22';
+        ctx.fillRect(0, 0, 64, 80);
+        ctx.fillStyle = skinId === 'david' ? '#ffd700' : '#00f5d4';
+        ctx.fillRect(22, 25, 20, 30);
+    }
+};
 
 /**
  * UI MODULE
@@ -166,81 +182,77 @@ const UI = {
         el('hud-xt').textContent = fmt(GS.crystals);
     },
 
-    showNotif(text, isGood = true) {
+    showNotif(text) {
         const c = el('notifs');
         const d = document.createElement('div');
         d.className = 'notif';
-        if (!isGood) d.style.borderColor = 'var(--pk)';
-        d.textContent = text;
+        d.textContent = '📡 ' + text;
         c.appendChild(d);
         setTimeout(() => d.remove(), 3000);
-    },
-
-    addChat(user, msg) {
-        const c = el('chat-msgs');
-        c.innerHTML += `<div><b style="color:var(--cy)">${user}:</b> ${msg}</div>`;
-        c.scrollTop = c.scrollHeight;
     },
 
     renderSkins() {
         const grid = el('skin-grid');
         grid.innerHTML = '';
-
-        SKINS_DB.forEach(skin => {
+        SkinManager.SKINS.forEach(skin => {
             const isOwned = GS.ownedSkins.includes(skin.id);
-            const isActive = GS.equippedSkin === skin.id;
+            const isEquipped = GS.equippedSkin === skin.id;
+            const d = document.createElement('div');
+            d.className = `skin-card ${isEquipped ? 'skin-equipped' : ''}`;
             
-            const card = document.createElement('div');
-            card.className = `skin-card ${isActive ? 'active-skin' : ''}`;
-            
-            let actionBtn = '';
-            if (isActive) {
-                actionBtn = `<button class="btn btn-full" disabled style="color:var(--go); border-color:var(--go)">● АКТИВЕН</button>`;
+            const pc = document.createElement('canvas');
+            pc.width = 64; pc.height = 80;
+            SkinManager.drawPreview(pc, skin.id);
+
+            let btnHTML = '';
+            if (isEquipped) {
+                btnHTML = `<button class="btn btn-full" disabled style="color:var(--go); border-color:var(--go)">● АКТИВЕН</button>`;
             } else if (isOwned) {
-                actionBtn = `<button class="btn btn-cy btn-full" onclick="UI.equipSkin('${skin.id}')">НАДЕТЬ</button>`;
+                btnHTML = `<button class="btn btn-cy btn-full" onclick="UI.equipSkin('${skin.id}')">НАДЕТЬ</button>`;
             } else {
-                actionBtn = `<button class="btn btn-go btn-full" onclick="UI.buySkin('${skin.id}')">КУПИТЬ ЗА ${skin.costCredits}</button>`;
+                btnHTML = `<button class="btn btn-go btn-full" onclick="UI.buySkin('${skin.id}')">КУПИТЬ [💰${skin.costCr}]</button>`;
             }
 
-            card.innerHTML = `
-                <div class="skin-canvas-wrap"></div>
+            d.innerHTML = `
+                <div class="skin-canvas-wrap" id="sw-${skin.id}"></div>
                 <div class="skin-name">${skin.name}</div>
-                <div style="font-size:10px; color:var(--dim); margin-bottom:10px">${skin.desc}</div>
-                ${!isOwned ? `<div class="skin-price">💰 ${skin.costCredits} | 💠 ${skin.costCrystals}</div>` : ''}
-                ${actionBtn}
+                <div style="font-size:9px; color:var(--dim); margin-bottom:10px">${skin.desc}</div>
+                ${btnHTML}
             `;
-            grid.appendChild(card);
+            grid.appendChild(d);
+            el(`sw-${skin.id}`).appendChild(pc);
         });
     },
 
     buySkin(id) {
-        const skin = SKINS_DB.find(s => s.id === id);
+        const skin = SkinManager.get(id);
         if (!skin) return;
 
-        const canAfford = GS.credits >= skin.costCredits && GS.crystals >= skin.costCrystals;
-
-        if (canAfford) {
-            GS.credits -= skin.costCredits;
-            GS.crystals -= skin.costCrystals;
+        if (GS.credits >= skin.costCr && GS.crystals >= skin.costXt) {
+            GS.credits -= skin.costCr;
+            GS.crystals -= skin.costXt;
             GS.ownedSkins.push(id);
-            
-            this.showNotif(`🔓 Скин "${skin.name}" разблокирован!`);
-            this.equipSkin(id); // Автоматически надеваем
+            this.showNotif(`Скин ${skin.name} куплен!`);
+            this.equipSkin(id);
             saveProgress();
         } else {
-            const warn = el('shop-warn');
-            warn.style.display = 'block';
-            setTimeout(() => warn.style.display = 'none', 2000);
-            this.showNotif("Недостаточно средств!", false);
+            el('shop-warn').style.display = 'block';
+            setTimeout(() => el('shop-warn').style.display = 'none', 2000);
+            this.showNotif("Недостаточно средств!");
         }
     },
 
     equipSkin(id) {
         GS.equippedSkin = id;
+        this.showNotif(`Облик изменен на ${SkinManager.get(id).name}`);
         this.renderSkins();
-        this.updateHUD();
-        this.showNotif(`👤 Облик изменен на "${SKINS_DB.find(s=>s.id===id).name}"`);
         saveProgress();
+    },
+
+    addChat(msg) {
+        const c = el('chat-msgs');
+        c.innerHTML += `<div>> ${msg}</div>`;
+        c.scrollTop = c.scrollHeight;
     }
 };
 
@@ -248,146 +260,144 @@ const UI = {
  * GAME ENGINE
  */
 const Engine = {
-    canvas: null,
-    ctx: null,
-    player: { x: 400, y: 200, vx: 0, vy: 0, w: 20, h: 20 },
-    history: [], // Для шлейфа Сандевистана
+    canvas: null, ctx: null,
+    player: { x: 100, y: 150, w: 20, h: 24, vx: 0, vy: 0 },
+    playerHistory: [], // История позиций для Сандевистана
     keys: {},
-    mouse: { x: 0, y: 0 },
-
+    
     init() {
         this.canvas = el('game-canvas');
+        this.canvas.width = el('game-outer').offsetWidth;
+        this.canvas.height = 300;
         this.ctx = this.canvas.getContext('2d');
-        
+
         window.addEventListener('keydown', e => this.keys[e.code] = true);
         window.addEventListener('keyup', e => this.keys[e.code] = false);
-        this.canvas.addEventListener('mousemove', e => {
-            const r = this.canvas.getBoundingClientRect();
-            this.mouse.x = e.clientX - r.left;
-            this.mouse.y = e.clientY - r.top;
-        });
 
         this.loop();
     },
 
     update() {
-        // Движение
-        if (this.keys['KeyA']) this.player.vx = -4;
-        else if (this.keys['KeyD']) this.player.vx = 4;
-        else this.player.vx *= 0.8;
+        const p = this.player;
+        if (this.keys['KeyA']) p.vx = -4;
+        else if (this.keys['KeyD']) p.vx = 4;
+        else p.vx *= 0.8;
 
-        if (this.keys['KeyW']) this.player.vy = -4;
-        else if (this.keys['KeyS']) this.player.vy = 4;
-        else this.player.vy *= 0.8;
+        if (this.keys['KeyW']) p.vy = -4;
+        else if (this.keys['KeyS']) p.vy = 4;
+        else p.vy *= 0.8;
 
-        this.player.x += this.player.vx;
-        this.player.y += this.player.vy;
+        p.x += p.vx;
+        p.y += p.vy;
 
-        // Границы
-        this.player.x = Math.max(0, Math.min(800 - this.player.w, this.player.x));
-        this.player.y = Math.max(0, Math.min(400 - this.player.h, this.player.y));
+        // Ограничения экрана
+        p.x = Math.max(0, Math.min(this.canvas.width - p.w, p.x));
+        p.y = Math.max(0, Math.min(this.canvas.height - p.h, p.y));
 
-        // Логика шлейфа для Дэвида
+        // Логика шлейфа для скина Дэвида
         if (GS.equippedSkin === 'david') {
-            this.history.push({ x: this.player.x, y: this.player.y });
-            if (this.history.length > 8) this.history.shift();
+            this.playerHistory.push({ x: p.x, y: p.y, ts: Date.now() });
+            if (this.playerHistory.length > 10) this.playerHistory.shift();
         } else {
-            this.history = [];
+            this.playerHistory = [];
         }
     },
 
     draw() {
         const ctx = this.ctx;
-        ctx.clearRect(0, 0, 800, 400);
+        ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-        // Сетка
+        // Сетка фона
         ctx.strokeStyle = 'rgba(0, 245, 212, 0.05)';
-        for(let i=0; i<800; i+=40) { ctx.beginPath(); ctx.moveTo(i,0); ctx.lineTo(i,400); ctx.stroke(); }
+        ctx.lineWidth = 1;
+        for(let i=0; i<this.canvas.width; i+=30) { ctx.beginPath(); ctx.moveTo(i,0); ctx.lineTo(i,300); ctx.stroke(); }
 
-        const cx = this.player.x + this.player.w / 2;
-        const cy = this.player.y + this.player.h / 2;
+        const px = this.player.x, py = this.player.y;
+        const pw = this.player.w, ph = this.player.h;
 
-        // 1. Отрисовка Шлейфа (Сандевистан)
-        if (GS.equippedSkin === 'david' && this.history.length > 0) {
-            this.history.forEach((pos, i) => {
+        // 1. Отрисовка ШЛЕЙФА (Сандевистан)
+        if (GS.equippedSkin === 'david') {
+            this.playerHistory.forEach((pos, i) => {
                 ctx.save();
-                ctx.globalAlpha = (i / this.history.length) * 0.4;
+                ctx.globalAlpha = (i / this.playerHistory.length) * 0.3;
                 ctx.shadowColor = "#ffb700";
                 ctx.shadowBlur = 10;
                 ctx.fillStyle = "#ffb700";
-                ctx.fillRect(pos.x, pos.y, this.player.w, this.player.h);
+                ctx.fillRect(pos.x, pos.y, pw, ph);
                 ctx.restore();
             });
         }
 
-        // 2. Отрисовка самого Игрока
+        // 2. Отрисовка ИГРОКА
         ctx.save();
         if (GS.equippedSkin === 'david') {
-            // Эффект Дэвида - неоновый ромб-прицел
-            ctx.translate(cx, cy);
+            // Уникальный визуал: Неоновый ромб
+            ctx.translate(px + pw/2, py + ph/2);
             ctx.shadowColor = "#ffb700";
             ctx.shadowBlur = 15;
             ctx.strokeStyle = "#ffb700";
             ctx.lineWidth = 3;
             
             ctx.beginPath();
-            ctx.moveTo(0, -15);
-            ctx.lineTo(15, 0);
-            ctx.lineTo(0, 15);
-            ctx.lineTo(-15, 0);
+            ctx.moveTo(0, -ph/1.2);
+            ctx.lineTo(pw/1.2, 0);
+            ctx.lineTo(0, ph/1.2);
+            ctx.lineTo(-pw/1.2, 0);
             ctx.closePath();
             ctx.stroke();
             
             ctx.fillStyle = "rgba(255, 183, 0, 0.3)";
             ctx.fill();
-            
-            // Точка в центре
             ctx.fillStyle = "#fff";
             ctx.fillRect(-2, -2, 4, 4);
         } else {
-            // Стандартный игрок
-            ctx.shadowColor = "var(--cy)";
-            ctx.shadowBlur = 10;
-            ctx.fillStyle = GS.equippedSkin === 'lucy' ? "#b060ff" : "#00f5d4";
-            ctx.fillRect(this.player.x, this.player.y, this.player.w, this.player.h);
+            // Стандартный визуал
+            ctx.shadowColor = "#00f5d4";
+            ctx.shadowBlur = 12;
+            ctx.fillStyle = "#00f5d4";
+            ctx.fillRect(px, py, pw, ph);
             ctx.strokeStyle = "#fff";
-            ctx.strokeRect(this.player.x, this.player.y, this.player.w, this.player.h);
+            ctx.strokeRect(px, py, pw, ph);
         }
         ctx.restore();
-
-        // Прицел
-        ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
-        ctx.beginPath();
-        ctx.moveTo(this.mouse.x - 10, this.mouse.y); ctx.lineTo(this.mouse.x + 10, this.mouse.y);
-        ctx.moveTo(this.mouse.x, this.mouse.y - 10); ctx.lineTo(this.mouse.x, this.mouse.y + 10);
-        ctx.stroke();
     },
 
     loop() {
-        Engine.update();
-        Engine.draw();
-        requestAnimationFrame(() => Engine.loop());
+        this.update();
+        this.draw();
+        requestAnimationFrame(() => this.loop());
     }
 };
 
 /**
- * APP INIT
+ * AUDIO (Dummy)
  */
-function switchTab(name) {
+const AudioSys = {
+    play(name) { console.log("Sound play:", name); },
+    toggle() { GS.soundOn = !GS.soundOn; }
+};
+
+/**
+ * TABS
+ */
+window.switchTab = (name) => {
     GS.currentTab = name;
     document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
     el('tab-' + name).classList.add('active');
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === name));
     if (name === 'skins') UI.renderSkins();
-}
+};
 
-// Запуск
-loadProgress();
-UI.updateHUD();
-Engine.init();
-UI.addChat("СИСТЕМА", "Добро пожаловать в Neon Abyss v8.5!");
-UI.addChat("CyberHacker", "Промокодов пока нет, фарми кредиты на полигоне!");
+/**
+ * INIT
+ */
+(function init() {
+    loadProgress();
+    UI.updateHUD();
+    Engine.init();
+    UI.addChat("Система загружена. Добро пожаловать.");
+    UI.addChat("Дэвид Мартинес доступен в магазине!");
+})();
 </script>
-
 </body>
 </html>
