@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>NEON ABYSS v8.0</title>
+<title>NEON ABYSS v8.5 PRO</title>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;overflow:hidden}
@@ -21,2061 +21,373 @@ body{background:#03030a;color:#d0d0f0;font-family:'Courier New',monospace;font-s
 @keyframes legendGlow{0%,100%{box-shadow:0 0 6px rgba(255,215,0,.3),inset 0 0 6px rgba(255,215,0,.06)}50%{box-shadow:0 0 18px rgba(255,215,0,.6),inset 0 0 10px rgba(255,215,0,.12)}}
 @keyframes epicGlow{0%,100%{box-shadow:0 0 5px rgba(176,96,255,.3)}50%{box-shadow:0 0 14px rgba(176,96,255,.5)}}
 @keyframes warnBlink{0%,100%{opacity:1}50%{opacity:.4}}
-@keyframes onlinePulse{0%,100%{color:var(--cy)}50%{color:#fff}}
-@keyframes deadzoneStripe{0%{opacity:.3}50%{opacity:.6}100%{opacity:.3}}
-@keyframes lvlUpAnim{0%{opacity:0;transform:scale(.4)}20%{opacity:1;transform:scale(1.08)}80%{opacity:1;transform:scale(1)}100%{opacity:0}}
-@keyframes promoFlash{0%,100%{background:rgba(0,245,212,.06)}50%{background:rgba(0,245,212,.18)}}
-@keyframes promoFail{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
-@keyframes targetPulse{0%,100%{filter:brightness(1)}50%{filter:brightness(1.6)}}
-@keyframes shieldPulse{0%,100%{opacity:.55;transform:scale(1)}50%{opacity:.9;transform:scale(1.06)}}
-@keyframes minigunFlash{0%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(2.5)}}
-@keyframes rocketSplit{0%{opacity:1;transform:scale(1)}50%{opacity:.7;transform:scale(1.4)}100%{opacity:0;transform:scale(.5)}}
 
 ::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:var(--bg0)}::-webkit-scrollbar-thumb{background:rgba(0,245,212,.3);border-radius:2px}
 #app{display:flex;flex-direction:column;height:100vh;overflow:hidden}
-/* HEADER */
 #header{flex-shrink:0;background:var(--bg1);border-bottom:1px solid var(--bpk);padding:9px 18px;display:flex;align-items:center;justify-content:space-between;position:relative;z-index:50}
-#header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--pk),var(--cy),transparent)}
 #logo{font-size:19px;font-weight:bold;letter-spacing:5px;color:var(--pk);animation:logoPulse 3s ease-in-out infinite;user-select:none}
 #logo span{color:var(--cy)}
 .hud-stat{text-align:center}
 .hud-lbl{font-size:9px;color:var(--dim);letter-spacing:1px;text-transform:uppercase}
 .hud-val{font-size:15px;font-weight:bold}
 #hdr-right{display:flex;align-items:center;gap:15px}
-#live-ticker{font-size:10px;color:var(--cy);max-width:170px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;border-left:1px solid var(--border);padding-left:9px;opacity:.8}
-#sound-btn{background:rgba(0,245,212,.08);border:1px solid var(--cy);color:var(--cy);padding:4px 10px;cursor:pointer;font-family:'Courier New',monospace;font-size:11px;border-radius:3px;transition:all .2s;letter-spacing:.5px}
-#sound-btn:hover{background:rgba(0,245,212,.2)}
-/* BODY */
+
 #body{flex:1;display:flex;overflow:hidden}
-/* SIDEBAR */
 #sidebar{width:174px;flex-shrink:0;background:var(--bg1);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:10px 0}
-.nav-sec{font-size:9px;color:var(--dim);letter-spacing:2px;padding:0 12px 6px;margin-top:4px}
 .tab-btn{display:flex;align-items:center;gap:9px;width:100%;background:transparent;border:none;border-left:2px solid transparent;color:var(--mid);padding:10px 12px;cursor:pointer;font-family:'Courier New',monospace;font-size:12px;text-align:left;transition:all .2s}
-.tab-btn:hover{color:#e0e0ff;background:rgba(255,255,255,.03)}
 .tab-btn.active{color:var(--cy);border-left-color:var(--cy);background:rgba(0,245,212,.06)}
-.tab-icon{font-size:14px;width:17px;text-align:center}
-/* CHAT */
-#chat-wrap{margin-top:auto;border-top:1px solid var(--border);padding:8px}
-.chat-lbl{font-size:9px;color:var(--dim);letter-spacing:2px;margin-bottom:5px}
-#chat-msgs{height:128px;overflow-y:auto;display:flex;flex-direction:column;gap:1px}
-.chat-line{font-size:10px;line-height:1.4;padding:2px 0;border-bottom:1px solid rgba(255,255,255,.03);word-break:break-word}
-.chat-row{display:flex;gap:4px;margin-top:5px}
-#chat-in{flex:1;background:var(--bg2);border:1px solid var(--border);color:#e0e0ff;padding:4px 7px;font-family:'Courier New',monospace;font-size:11px;border-radius:3px;outline:none}
-#chat-in:focus{border-color:var(--cy)}
-.chat-send{background:rgba(0,245,212,.1);border:1px solid var(--cy);color:var(--cy);padding:4px 8px;cursor:pointer;font-size:11px;border-radius:3px;transition:all .2s}
-.chat-send:hover{background:rgba(0,245,212,.2)}
-/* MAIN */
+
 #main{flex:1;overflow-y:auto;padding:16px 20px;position:relative}
 .tab-pane{display:none;animation:fadeIn .3s ease}.tab-pane.active{display:block}
-.sec-title{font-size:12px;color:var(--cy);letter-spacing:3px;text-transform:uppercase;margin-bottom:13px;display:flex;align-items:center;gap:8px}
-.sec-title::before{content:'▸';color:var(--pk)}
-.sec-sub{font-size:9px;color:var(--dim);letter-spacing:2px;text-transform:uppercase;margin:13px 0 8px}
-/* CARDS */
+.sec-title{font-size:12px;color:var(--cy);letter-spacing:3px;text-transform:uppercase;margin-bottom:13px}
 .card{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:12px}
-.rarity-common{border-color:rgba(112,112,144,.4)}
-.rarity-epic{border-color:rgba(176,96,255,.5);animation:epicGlow 3s ease-in-out infinite}
-.rarity-legendary{border-color:rgba(255,215,0,.6);animation:legendGlow 2s ease-in-out infinite}
-/* BUTTONS */
-.btn{background:transparent;border:1px solid;padding:7px 14px;cursor:pointer;font-family:'Courier New',monospace;font-size:12px;border-radius:4px;transition:all .2s;text-transform:uppercase;letter-spacing:1px}
-.btn:disabled{opacity:.4;cursor:not-allowed}
-.btn-cy{border-color:var(--cy);color:var(--cy)}.btn-cy:hover:not(:disabled){background:rgba(0,245,212,.12);box-shadow:0 0 10px rgba(0,245,212,.3)}
-.btn-pk{border-color:var(--pk);color:var(--pk)}.btn-pk:hover:not(:disabled){background:rgba(255,45,120,.12);box-shadow:0 0 10px rgba(255,45,120,.3)}
-.btn-go{border-color:var(--go);color:var(--go)}.btn-go:hover:not(:disabled){background:rgba(255,215,0,.12);box-shadow:0 0 10px rgba(255,215,0,.3)}
-.btn-lg{padding:10px 22px;font-size:13px}.btn-sm{padding:5px 10px;font-size:11px}.btn-full{width:100%}
-.btn-act{background:rgba(0,245,212,.12)!important;box-shadow:0 0 8px rgba(0,245,212,.25)!important}
-/* CANVAS */
-#game-outer{position:relative;border:1px solid rgba(0,245,212,.3);border-radius:8px;overflow:hidden;background:#000;margin-bottom:12px;box-shadow:0 0 24px rgba(0,245,212,.07),inset 0 0 40px rgba(0,0,0,.7)}
-#game-canvas{display:block;width:100%;cursor:crosshair}
-#g-hud{position:absolute;top:0;left:0;right:0;display:flex;justify-content:space-between;padding:8px 11px;pointer-events:none}
-.g-box{display:flex;flex-direction:column;gap:3px}
-.g-lbl{font-size:8px;color:rgba(0,245,212,.55);letter-spacing:1.5px}
-.g-val{font-size:13px;font-weight:bold;color:var(--cy);text-shadow:0 0 8px var(--cy)}
-.g-val.pk{color:var(--pk);text-shadow:0 0 8px var(--pk)}.g-val.go{color:var(--go);text-shadow:0 0 8px var(--go)}
-#goal-bar{position:absolute;top:35px;left:50%;transform:translateX(-50%);background:rgba(4,4,18,.92);border:1px solid rgba(0,245,212,.3);border-radius:20px;padding:3px 13px;pointer-events:none;display:none;align-items:center;gap:10px}
-#goal-text{font-size:9px;color:var(--cy);letter-spacing:1px;white-space:nowrap}
-#goal-pw{width:78px;height:3px;background:rgba(0,0,0,.5);border-radius:2px;overflow:hidden}
-#goal-prog{height:100%;background:linear-gradient(90deg,var(--pk),var(--cy));border-radius:2px;width:0%;transition:width .3s}
-#goal-cnt{font-size:9px;color:var(--go);white-space:nowrap}
-#lvl-timer{position:absolute;top:35px;right:10px;font-size:11px;color:var(--go);pointer-events:none;text-shadow:0 0 8px var(--go);font-weight:bold;display:none}
-#dead-stripe{position:absolute;bottom:28px;left:0;right:0;height:50px;background:repeating-linear-gradient(45deg,rgba(255,45,120,.05) 0,rgba(255,45,120,.05) 4px,transparent 4px,transparent 12px);pointer-events:none;border-top:1px dashed rgba(255,45,120,.22);animation:deadzoneStripe 2.5s ease-in-out infinite}
-#g-hint{position:absolute;bottom:4px;left:50%;transform:translateX(-50%);font-size:7px;color:rgba(0,245,212,.3);letter-spacing:1.5px;pointer-events:none;white-space:nowrap}
-#cd-wrap{position:absolute;bottom:0;left:0;right:0;height:3px;background:rgba(0,0,0,.6)}
-#cd-bar{height:100%;background:linear-gradient(90deg,var(--pk),var(--cy));width:100%}
-#abuse-ov{position:absolute;inset:0;border-radius:8px;pointer-events:none;opacity:0;background:rgba(255,45,120,.18);transition:opacity .12s}
-#lvlup-banner{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:20;opacity:0}
-#lvlup-inner{background:rgba(0,0,0,.92);border:1px solid var(--go);border-radius:12px;padding:18px 36px;text-align:center}
-#lvlup-h{font-size:20px;color:var(--go);letter-spacing:4px;margin-bottom:5px;text-shadow:0 0 20px var(--go)}
-#lvlup-sub{font-size:11px;color:var(--cy)}
-/* POLY SIDE */
-#poly-side{flex:0 0 180px;background:var(--bg2);border:1px solid var(--bpk);border-radius:8px;padding:12px;display:flex;flex-direction:column;gap:9px}
-.pi-lbl{font-size:9px;color:var(--dim);letter-spacing:1px;margin-bottom:2px}
-.pi-v{font-size:14px;font-weight:bold;color:var(--cy)}
-.pi-v.pk{color:var(--pk)}.pi-v.go{color:var(--go)}
-.s-row{font-size:11px;color:var(--dim)}.s-row span{color:#c0c0e0}
-.dot{width:7px;height:7px;border-radius:50%;display:inline-block;margin-right:4px}
-.dot.ready{background:#00ff88;box-shadow:0 0 6px #00ff88}
-.dot.cd{background:var(--pk);box-shadow:0 0 6px var(--pk);animation:warnBlink .5s infinite}
-.divider{height:1px;background:var(--border);margin:5px 0}
-/* ARSENAL */
-#wgrid,#sgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.a-card{position:relative;cursor:pointer;transition:transform .15s}.a-card:hover{transform:translateY(-2px)}
-.ci{font-size:21px;margin-bottom:4px}.cn{font-size:11px;font-weight:bold;margin-bottom:1px}
-.cr{font-size:9px;color:var(--dim);letter-spacing:1px;margin-bottom:6px}
-.cst{font-size:10px;color:var(--dim);margin-bottom:2px}.cst span{color:#c0c0e0}
-.eq-tag{display:inline-block;font-size:9px;color:var(--cy);border:1px solid rgba(0,245,212,.4);background:rgba(0,245,212,.08);padding:2px 8px;border-radius:10px;margin-top:4px;letter-spacing:1px}
-.lock-ov{position:absolute;inset:0;background:rgba(3,3,10,.7);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--dim);flex-direction:column;gap:2px}
-/* SHOP */
-#shop-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}
-.sic{font-size:27px;margin-bottom:6px}.sn{font-size:12px;font-weight:bold;margin-bottom:2px}
-.sar{font-size:9px;letter-spacing:1px;margin-bottom:4px}
-.sd{font-size:10px;color:var(--mid);margin-bottom:8px;line-height:1.5}
-.ss{font-size:10px;color:var(--dim);margin-bottom:9px}.ss span{color:#c0c0e0}
-.sold-tag{display:flex;align-items:center;justify-content:center;color:#00cc66;border:1px solid #00cc6650;background:rgba(0,204,102,.08);padding:7px;border-radius:4px;font-size:11px}
-#shop-warn{display:none;background:rgba(255,45,120,.1);border:1px solid rgba(255,45,120,.5);color:var(--pk);padding:9px 14px;border-radius:6px;margin-bottom:12px;text-align:center;font-size:12px;animation:warnBlink .8s infinite}
-/* CAMPAIGN */
-#lvl-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
-.lc{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:10px;cursor:pointer;transition:all .2s;text-align:center}
-.lc:hover{border-color:var(--cy);transform:translateY(-2px)}.lc.locked{opacity:.35;cursor:not-allowed;pointer-events:none}.lc.done{border-color:var(--go)}
-.lc-n{font-size:18px;font-weight:bold;color:var(--cy);margin-bottom:3px}.lc-nm{font-size:11px;font-weight:bold;margin-bottom:3px}
-.lc-g{font-size:9px;color:var(--dim);margin-bottom:5px;line-height:1.5}.lc-r{font-size:10px;color:var(--go)}
-/* ENTERTAINMENT */
-#ent-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
-.ent-t{font-size:10px;color:var(--dim);letter-spacing:2px;text-align:center;margin-bottom:13px;text-transform:uppercase}
-#reels-wrap{display:flex;gap:7px;justify-content:center;margin-bottom:12px}
-.reel-win{width:66px;height:66px;overflow:hidden;background:#000;border:1px solid var(--border);border-radius:5px;position:relative}
-.reel-win::before,.reel-win::after{content:'';position:absolute;left:0;right:0;height:18px;z-index:2;pointer-events:none}
-.reel-win::before{top:0;background:linear-gradient(to bottom,rgba(14,14,34,1),transparent)}
-.reel-win::after{bottom:0;background:linear-gradient(to top,rgba(14,14,34,1),transparent)}
-.reel-strip{display:flex;flex-direction:column;transition:transform 0s}
-.reel-item{height:66px;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0}
-#slot-res,#whl-res{min-height:20px;font-size:13px;font-weight:bold;margin-bottom:10px;text-align:center}
-#whl-outer{position:relative;width:200px;height:200px;margin:0 auto 12px}
-#whl-ptr{position:absolute;top:-12px;left:50%;transform:translateX(-50%);font-size:20px;color:var(--go);text-shadow:0 0 8px var(--go);z-index:10}
-#casino-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;text-align:center}
-.csl{font-size:9px;color:var(--dim);letter-spacing:1px;margin-bottom:3px}.csv{font-size:16px;font-weight:bold}
-/* INVENTORY */
-#inv-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-#inv-empty{color:var(--dim);text-align:center;padding:46px 20px;font-size:12px;border:1px dashed var(--border);border-radius:8px}
-.iv-i{font-size:25px;margin-bottom:4px}.iv-n{font-size:11px;font-weight:bold;margin-bottom:2px}
-.iv-r{font-size:9px;letter-spacing:1px;margin-bottom:5px}.iv-s{font-size:10px;color:var(--dim)}.iv-s span{color:#c0c0e0}
-.tip{position:relative}.tip-txt{display:none;position:absolute;bottom:calc(100% + 5px);left:50%;transform:translateX(-50%);background:var(--bg3);border:1px solid var(--border);color:#c0c0e0;font-size:10px;padding:5px 9px;border-radius:4px;white-space:nowrap;z-index:200}
-.tip:hover .tip-txt{display:block}
-/* SETTINGS */
-#set-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.set-t{font-size:10px;color:var(--cy);letter-spacing:2px;margin-bottom:12px;text-transform:uppercase}
-.set-t.pk{color:var(--pk)}.set-l{font-size:11px;color:var(--mid);margin-bottom:6px}
-.set-row{display:flex;gap:6px;margin-bottom:6px}.set-row .btn{flex:1;font-size:10px;padding:6px 4px}
-input[type=range]{-webkit-appearance:none;width:100%;height:3px;background:var(--bg3);border-radius:2px;outline:none;cursor:pointer}
-input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:13px;height:13px;border-radius:50%;background:var(--cy);box-shadow:0 0 6px var(--cy);cursor:pointer}
-.tog{display:flex;align-items:center;gap:9px;cursor:pointer}
-.tog-tr{width:34px;height:17px;border-radius:9px;border:1px solid var(--border);background:var(--bg3);position:relative;transition:all .2s}
-.tog-tr.on{background:rgba(0,245,212,.2);border-color:rgba(0,245,212,.5)}
-.tog-th{width:11px;height:11px;border-radius:50%;background:var(--dim);position:absolute;top:2px;left:2px;transition:all .2s}
-.tog-tr.on .tog-th{background:var(--cy);left:19px;box-shadow:0 0 5px var(--cy)}
-.ver-badge{font-size:9px;color:var(--dim);border:1px solid var(--border);padding:2px 7px;border-radius:10px;display:inline-block;margin-top:4px}
 
-/* ================================================================
-   SKIN MANAGER STYLES v8
-================================================================ */
+.btn{background:transparent;border:1px solid;padding:7px 14px;cursor:pointer;font-family:'Courier New',monospace;font-size:12px;border-radius:4px;transition:all .2s;text-transform:uppercase;letter-spacing:1px}
+.btn-cy{border-color:var(--cy);color:var(--cy)}.btn-cy:hover{background:rgba(0,245,212,0.1)}
+.btn-pk{border-color:var(--pk);color:var(--pk)}.btn-pk:hover{background:rgba(255,45,120,0.1)}
+.btn-go{border-color:var(--go);color:var(--go)}.btn-go:hover{background:rgba(255,215,0,0.1)}
+.btn-full{width:100%}
+
+#game-outer{position:relative;border:1px solid rgba(0,245,212,.3);border-radius:8px;overflow:hidden;background:#000;margin-bottom:12px}
+#game-canvas{display:block;width:100%;cursor:crosshair;background: #020208;}
+
+/* SKINS UI */
 #skin-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:10px}
-.skin-card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px;text-align:center;cursor:pointer;transition:all .25s;position:relative;overflow:hidden}
-.skin-card::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .3s;border-radius:8px}
-.skin-card:hover:not(.skin-locked)::before{opacity:1}
-.skin-card:hover:not(.skin-locked){transform:translateY(-3px);border-color:var(--cy);box-shadow:0 0 16px rgba(0,245,212,.2)}
-.skin-card.skin-equipped{border-color:var(--go);box-shadow:0 0 14px rgba(255,215,0,.35)}
-.skin-card.skin-locked{opacity:.52;cursor:not-allowed}
-/* Rarity border glow overrides */
-.skin-card.sk-legendary{border-color:rgba(255,215,0,.5);animation:legendGlow 2s ease-in-out infinite}
-.skin-card.sk-epic{border-color:rgba(176,96,255,.45);animation:epicGlow 3s ease-in-out infinite}
-.skin-card.sk-david{border-color:rgba(255,170,0,.7);box-shadow:0 0 20px rgba(255,170,0,.3),0 0 40px rgba(0,180,255,.12)}
-.skin-canvas-wrap{width:64px;height:80px;margin:0 auto 8px;position:relative;border-radius:4px;overflow:hidden}
-.skin-canvas-wrap canvas{display:block}
-.skin-name{font-size:12px;font-weight:bold;margin-bottom:3px;letter-spacing:.5px}
-.skin-rarity{font-size:9px;letter-spacing:1px;margin-bottom:5px}
-.skin-desc{font-size:10px;color:var(--mid);margin-bottom:8px;line-height:1.45}
-.skin-passive{font-size:9px;color:var(--cy);margin-bottom:7px;letter-spacing:.5px;border:1px solid rgba(0,245,212,.2);border-radius:3px;padding:2px 6px;display:inline-block}
-.skin-price{font-size:11px;color:var(--go);margin-bottom:6px;font-weight:bold}
-.skin-price .xt-price{color:var(--pu)}
-.skin-equip-btn{font-size:10px;padding:5px 12px}
-.skin-equipped-tag{font-size:9px;color:var(--go);border:1px solid rgba(255,215,0,.4);background:rgba(255,215,0,.08);padding:2px 10px;border-radius:10px;display:inline-block;letter-spacing:1px}
-.skin-new-badge{position:absolute;top:8px;right:8px;background:var(--pk);color:#fff;font-size:8px;padding:2px 6px;border-radius:10px;letter-spacing:1px;font-weight:bold}
-.skin-storage-banner{background:rgba(0,245,212,.06);border:1px solid rgba(0,245,212,.2);border-radius:6px;padding:8px 12px;margin-bottom:12px;font-size:10px;color:var(--cy);letter-spacing:.5px}
-@keyframes sandevistanFlash{0%{opacity:.8;transform:scaleX(1)}100%{opacity:0;transform:scaleX(2.5)}}
-@keyframes davidActivate{0%{filter:hue-rotate(0deg) brightness(1)}50%{filter:hue-rotate(180deg) brightness(2)}100%{filter:hue-rotate(360deg) brightness(1)}}
-/* PROMO */
-#promo-panel{position:fixed;bottom:46px;right:18px;z-index:1000;background:var(--bg2);border:1px solid rgba(0,245,212,.4);border-radius:8px;padding:11px 13px;width:205px;box-shadow:0 0 18px rgba(0,245,212,.1)}
-#promo-panel h4{font-size:10px;color:var(--cy);letter-spacing:2px;margin-bottom:8px}
-#promo-row{display:flex;gap:5px}
-#promo-in{flex:1;background:var(--bg3);border:1px solid var(--border);color:#e0e0ff;padding:5px 7px;font-family:'Courier New',monospace;font-size:11px;border-radius:3px;outline:none;text-transform:uppercase;letter-spacing:1px}
-#promo-in:focus{border-color:var(--cy)}
-#promo-btn{background:rgba(0,245,212,.1);border:1px solid var(--cy);color:var(--cy);padding:5px 10px;cursor:pointer;font-size:11px;border-radius:3px;font-family:'Courier New',monospace;transition:all .2s}
-#promo-btn:hover{background:rgba(0,245,212,.22)}
-#promo-msg{font-size:10px;margin-top:6px;min-height:14px}
-/* NOTIFICATIONS */
-#notifs{position:fixed;right:14px;bottom:18px;display:flex;flex-direction:column;gap:6px;z-index:9000;pointer-events:none;max-width:265px}
-.notif{background:var(--bg2);border:1px solid var(--cy);border-radius:5px;padding:8px 12px;font-size:11px;color:var(--cy);animation:notifIn .35s ease;box-shadow:0 0 12px rgba(0,245,212,.14)}
-.notif.pl{border-color:var(--go);color:var(--go)}.notif.out{animation:notifOut .35s ease forwards}
-/* AUTHOR */
-#author{position:fixed;left:10px;bottom:7px;font-size:10px;color:rgba(0,245,212,.26);letter-spacing:.5px;z-index:2000;user-select:none;pointer-events:none}
-/* COLOR HELPERS */
-.col-com{color:var(--com)}.col-epi{color:var(--epi)}.col-leg{color:var(--leg)}
+.skin-card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px;text-align:center;transition:all .25s;position:relative}
+.skin-card.active-skin{border-color:var(--go);box-shadow:0 0 15px rgba(255,215,0,0.2)}
+.skin-name{font-size:13px;font-weight:bold;margin-bottom:5px;color:#fff}
+.skin-price{font-size:11px;color:var(--go);margin:8px 0;font-weight:bold}
+.skin-canvas-wrap{width:64px;height:64px;margin:0 auto 10px;background:rgba(0,0,0,0.3);border-radius:4px}
+
+#notifs{position:fixed;right:14px;bottom:18px;display:flex;flex-direction:column;gap:6px;z-index:9000;pointer-events:none}
+.notif{background:var(--bg2);border:1px solid var(--cy);border-radius:5px;padding:8px 12px;font-size:11px;color:var(--cy);animation:notifIn .35s ease}
+
+#chat-msgs{height:100px;overflow-y:auto;padding:5px;font-size:10px;background:rgba(0,0,0,0.2)}
+#shop-warn{display:none;color:var(--pk);text-align:center;font-weight:bold;margin-bottom:10px;animation:warnBlink 0.5s infinite}
 </style>
 </head>
 <body>
+
 <div id="app">
 <header id="header">
-  <div style="display:flex;align-items:center;gap:16px">
-    <div id="logo">NEON <span>ABYSS</span></div>
-    <div class="hud-stat"><div class="hud-lbl">Онлайн</div><div class="hud-val" style="color:var(--cy);animation:onlinePulse 4s infinite" id="online-cnt">—</div></div>
-  </div>
+  <div id="logo">NEON <span>ABYSS</span></div>
   <div id="hdr-right">
-    <button id="sound-btn" onclick="AudioSys.toggle()">🔊 Звук</button>
-    <div id="live-ticker">▶ Neon Abyss Online...</div>
-    <div class="hud-stat"><div class="hud-lbl">Уровень</div><div class="hud-val" style="color:var(--pu)" id="hud-lvl">1</div></div>
-    <div class="hud-stat"><div class="hud-lbl">Кредиты</div><div class="hud-val" style="color:var(--go)" id="hud-cr">1 500</div></div>
-    <div class="hud-stat"><div class="hud-lbl">Кристаллы</div><div class="hud-val" style="color:var(--pu)" id="hud-xt">10</div></div>
+    <div class="hud-stat"><div class="hud-lbl">Кредиты</div><div class="hud-val" style="color:var(--go)" id="hud-cr">0</div></div>
+    <div class="hud-stat"><div class="hud-lbl">Кристаллы</div><div class="hud-val" style="color:var(--pu)" id="hud-xt">0</div></div>
   </div>
 </header>
+
 <div id="body">
   <aside id="sidebar">
-    <div class="nav-sec">НАВИГАЦИЯ</div>
-    <button class="tab-btn active" data-tab="home"          onclick="switchTab('home')">         <span class="tab-icon">⚔</span> Полигон</button>
-    <button class="tab-btn"        data-tab="campaign"      onclick="switchTab('campaign')">     <span class="tab-icon">🗺</span> Кампания</button>
-    <button class="tab-btn"        data-tab="shop"          onclick="switchTab('shop')">         <span class="tab-icon">🏪</span> Магазин</button>
-    <button class="tab-btn"        data-tab="entertainment" onclick="switchTab('entertainment')"><span class="tab-icon">🎮</span> Развлечения</button>
-    <button class="tab-btn"        data-tab="inventory"     onclick="switchTab('inventory')">    <span class="tab-icon">🎒</span> Инвентарь</button>
-    <button class="tab-btn"        data-tab="settings"      onclick="switchTab('settings')">     <span class="tab-icon">⚙</span>  Настройки</button>
-    <button class="tab-btn"        data-tab="skins"        onclick="switchTab('skins')">       <span class="tab-icon">👤</span> Скины</button>
-    <div id="chat-wrap">
-      <div class="chat-lbl">GLOBAL CHAT</div>
-      <div id="chat-msgs"></div>
-      <div class="chat-row">
-        <input type="text" id="chat-in" placeholder="Написать..." maxlength="80" onkeydown="if(event.key==='Enter')UI.sendChat()">
-        <button class="chat-send" onclick="UI.sendChat()">▶</button>
-      </div>
+    <button class="tab-btn active" data-tab="home" onclick="switchTab('home')">⚔ Полигон</button>
+    <button class="tab-btn" data-tab="skins" onclick="switchTab('skins')">👤 Скины</button>
+    <div style="margin-top:auto; padding:10px;">
+        <div style="font-size:9px; color:var(--dim)">CHAT</div>
+        <div id="chat-msgs"></div>
     </div>
   </aside>
+
   <main id="main">
     <!-- POLYGON -->
     <div id="tab-home" class="tab-pane active">
-      <div class="sec-title">Боевой Полигон 2D</div>
-      <div style="display:flex;gap:12px;margin-bottom:12px">
-        <div style="flex:1;min-width:0">
-          <div id="game-outer">
-            <canvas id="game-canvas"></canvas>
-            <div id="g-hud">
-              <div class="g-box">
-                <div><div class="g-lbl">ОРУЖИЕ</div><div class="g-val" id="g-weapon">Pulse Rifle</div></div>
-                <div style="margin-top:4px"><div class="g-lbl">МИШЕНИ</div><div class="g-val pk" id="g-targets">6</div></div>
-              </div>
-              <div class="g-box" style="align-items:flex-end">
-                <div style="text-align:right"><div class="g-lbl">УРОН/СЕССИЯ</div><div class="g-val go" id="g-dmg">0</div></div>
-                <div style="text-align:right;margin-top:4px"><div class="g-lbl">ПОПАДАНИЯ</div><div class="g-val" id="g-hits">0</div></div>
-              </div>
-            </div>
-            <div id="goal-bar"><span id="goal-text">Цель</span><div id="goal-pw"><div id="goal-prog"></div></div><span id="goal-cnt">0/0</span></div>
-            <div id="lvl-timer">⏱ 00:00</div>
-            <div id="dead-stripe"></div>
-            <div id="g-hint">WASD/↑←↓→ движение · W/↑ прыжок · ЛКМ/ПРОБЕЛ огонь · F зарядка лазера</div>
-            <div id="cd-wrap"><div id="cd-bar"></div></div>
-            <div id="abuse-ov"></div>
-            <div id="lvlup-banner"><div id="lvlup-inner"><div id="lvlup-h">УРОВЕНЬ ПРОЙДЕН!</div><div id="lvlup-sub">+1000 кр.</div></div></div>
-          </div>
-        </div>
-        <div id="poly-side">
-          <div><div class="pi-lbl">ЭКИПИРОВАНО</div><div class="pi-v" id="eq-name">Pulse Rifle</div></div>
-          <div style="display:flex;flex-direction:column;gap:4px">
-            <div class="s-row">УРН: <span id="eq-dmg">120</span></div>
-            <div class="s-row">КД: <span id="eq-cd">0.45</span> с</div>
-            <div class="s-row">Тип: <span id="eq-type">Очередь</span></div>
-          </div>
-          <div><div class="pi-lbl">СТАТУС</div>
-            <div id="poly-status"><span class="dot ready" id="sdot"></span><span id="stxt" style="font-size:11px;color:#00ff88">ГОТОВ</span></div>
-          </div>
-          <div class="divider"></div>
-          <button class="btn btn-pk btn-full" onclick="Engine.manualFire()" style="font-size:12px;padding:9px">💥 ВЫСТРЕЛ</button>
-          <div style="font-size:9px;color:var(--dim);text-align:center">+50 кр. за попадание</div>
-          <button class="btn btn-cy btn-full btn-sm" onclick="Engine.resetTargets()" style="font-size:10px">↺ Сброс мишеней</button>
-          <div id="abuse-msg" style="font-size:9px;color:var(--pk);text-align:center;min-height:12px"></div>
-        </div>
+      <div class="sec-title">Боевой Полигон</div>
+      <div id="game-outer">
+        <canvas id="game-canvas" width="800" height="400"></canvas>
       </div>
-      <div class="sec-sub">Оружие</div><div id="wgrid"></div>
-      <div class="sec-sub" style="margin-top:13px">Заклинания / Спецоружие</div><div id="sgrid"></div>
-    </div>
-    <!-- CAMPAIGN -->
-    <div id="tab-campaign" class="tab-pane">
-      <div class="sec-title">Кампания</div>
-      <div id="camp-free">
-        <div id="lvl-cards"></div>
-        <div style="display:flex;gap:10px;align-items:center">
-          <button class="btn btn-cy" onclick="LevelManager.startSelected()">▶ Старт уровня <span id="start-lvl-n">1</span></button>
-          <span style="font-size:10px;color:var(--dim)">Открыто: <span id="lvls-ul" style="color:var(--cy)">1</span></span>
-        </div>
-      </div>
-      <div id="camp-active" style="display:none">
-        <div class="card" style="margin-bottom:10px;border-color:rgba(0,245,212,.3)">
-          <div style="display:flex;justify-content:space-between;align-items:center">
-            <div>
-              <div style="font-size:10px;color:var(--dim);letter-spacing:1px">АКТИВНЫЙ УРОВЕНЬ</div>
-              <div id="act-name" style="font-size:15px;font-weight:bold;color:var(--cy)">—</div>
-              <div id="act-goal" style="font-size:11px;color:var(--mid);margin-top:2px">—</div>
-            </div>
-            <div style="text-align:right"><div id="act-timer" style="font-size:20px;font-weight:bold;color:var(--go)">00:00</div><div style="font-size:9px;color:var(--dim)">ОСТАЛОСЬ</div></div>
-          </div>
-          <div style="margin-top:8px">
-            <div style="font-size:9px;color:var(--dim);margin-bottom:3px">ПРОГРЕСС</div>
-            <div style="height:5px;background:var(--bg3);border-radius:3px;overflow:hidden"><div id="act-prog" style="height:100%;background:linear-gradient(90deg,var(--pk),var(--cy));width:0%;transition:width .3s"></div></div>
-            <div id="act-prog-txt" style="font-size:10px;color:var(--cy);margin-top:3px">0 / 0</div>
-          </div>
-        </div>
-        <div style="display:flex;gap:9px">
-          <button class="btn btn-cy" style="flex:1" onclick="switchTab('home')">⚔ Полигон</button>
-          <button class="btn btn-pk btn-sm" onclick="LevelManager.abandon()">✕ Прервать</button>
-        </div>
-      </div>
-    </div>
-    <!-- SHOP -->
-    <div id="tab-shop" class="tab-pane">
-      <div class="sec-title">Магазин</div>
-      <div id="shop-warn">⚠ НЕДОСТАТОЧНО КРЕДИТОВ!</div>
-      <div id="shop-grid"></div>
-    </div>
-    <!-- ENTERTAINMENT -->
-    <div id="tab-entertainment" class="tab-pane">
-      <div class="sec-title">Зона Развлечений</div>
-      <div id="ent-grid">
-        <div class="card" style="border-color:rgba(0,245,212,.25)">
-          <div class="ent-t">🎰 Слот-Машина</div>
-          <div id="reels-wrap">
-            <div class="reel-win"><div class="reel-strip" id="reel-0"></div></div>
-            <div class="reel-win"><div class="reel-strip" id="reel-1"></div></div>
-            <div class="reel-win"><div class="reel-strip" id="reel-2"></div></div>
-          </div>
-          <div id="slot-res" style="color:var(--go)">— КРУТИТЬ —</div>
-          <div style="font-size:10px;color:var(--dim);margin-bottom:8px;text-align:center">Ставка: <span style="color:var(--go)">200 кр.</span></div>
-          <button id="slot-btn" class="btn btn-go btn-full btn-lg" onclick="Entertainment.spinSlots()">🎰 КРУТИТЬ!</button>
-        </div>
-        <div class="card" style="border-color:rgba(255,45,120,.25)">
-          <div class="ent-t">🎡 Колесо Фортуны</div>
-          <div id="whl-outer"><div id="whl-ptr">▼</div><canvas id="whl-canvas" width="200" height="200"></canvas></div>
-          <div id="whl-res" style="color:var(--go)">— ВРАЩАТЬ —</div>
-          <div style="font-size:10px;color:var(--dim);margin-bottom:8px;text-align:center">Ставка: <span style="color:var(--go)">150 кр.</span></div>
-          <button id="whl-btn" class="btn btn-pk btn-full btn-lg" onclick="Entertainment.spinWheel()">🎡 ВРАЩАТЬ!</button>
-        </div>
-      </div>
-      <div class="card"><div style="font-size:10px;color:var(--dim);letter-spacing:2px;margin-bottom:10px">📊 СТАТИСТИКА</div>
-        <div id="casino-stats">
-          <div><div class="csl">Прокруток</div><div class="csv" style="color:var(--cy)" id="c-spins">0</div></div>
-          <div><div class="csl">Выиграно</div><div class="csv" style="color:#00cc66" id="c-wins">0</div></div>
-          <div><div class="csl">Проиграно</div><div class="csv" style="color:var(--pk)" id="c-losses">0</div></div>
-          <div><div class="csl">Макс.</div><div class="csv" style="color:var(--go)" id="c-max">0</div></div>
-        </div>
-      </div>
-    </div>
-    <!-- SKINS -->
-    <div id="tab-skins" class="tab-pane">
-      <div class="sec-title">Магазин скинов</div>
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
-        <span style="font-size:10px;color:var(--dim)">Выбери облик персонажа. Скины — только визуальные.</span>
-        <span style="font-size:10px;color:var(--cy)">Экипировано: <span id="skin-equipped-name" style="color:var(--go)">Дефолт</span></span>
-      </div>
-      <div id="skin-grid"></div>
+      <p style="font-size:10px; color:var(--dim)">WASD - движение, ЛКМ - огонь (Скин Дэвида активирует Сандевистан при движении)</p>
     </div>
 
-    <!-- INVENTORY -->
-    <div id="tab-inventory" class="tab-pane">
-      <div class="sec-title">Инвентарь</div>
-      <div id="inv-grid"></div>
-      <div id="inv-empty">🔒 Инвентарь пуст.<br><span style="color:var(--dim)">Купи предметы в Магазине.</span></div>
-    </div>
-    <!-- SETTINGS -->
-    <div id="tab-settings" class="tab-pane">
-      <div class="sec-title">Настройки</div>
-      <div id="set-grid">
-        <div class="card">
-          <div class="set-t">⚡ Графика</div>
-          <div class="set-l">Режим:</div>
-          <div class="set-row">
-            <button id="gfx-eco" class="btn btn-cy" onclick="Settings.setGfx('eco')">Эко</button>
-            <button id="gfx-ultra" class="btn btn-cy btn-act" onclick="Settings.setGfx('ultra')">Ультра</button>
-          </div>
-          <div id="gfx-status" style="font-size:11px;color:#00cc66;margin-top:4px">● Ультра-режим</div>
-        </div>
-        <div class="card">
-          <div class="set-t">🔊 Звук</div>
-          <div class="set-l">SFX: <span id="vol-v" style="color:var(--cy)">70</span>%</div>
-          <input type="range" min="0" max="100" value="70" step="1" oninput="el('vol-v').textContent=this.value;AudioSys.setVol(this.value/100)">
-          <div style="font-size:9px;color:var(--dim);margin-top:9px">Музыка: <span id="mus-v" style="color:var(--cy)">50</span>%</div>
-          <input type="range" min="0" max="100" value="50" step="1" style="margin-top:4px" oninput="el('mus-v').textContent=this.value">
-        </div>
-        <div class="card">
-          <div class="set-t pk">🎨 Тема</div>
-          <div style="display:flex;flex-direction:column;gap:6px">
-            <button class="btn btn-cy btn-act" id="th-cy" onclick="Settings.setTheme('cyan')">◈ Бирюзовый</button>
-            <button class="btn btn-pk" id="th-pk" onclick="Settings.setTheme('pink')">◈ Розовый</button>
-            <button class="btn" id="th-dk" style="border-color:#666;color:#888" onclick="Settings.setTheme('dark')">◈ Мрачный</button>
-          </div>
-        </div>
-        <div class="card">
-          <div class="set-t pk">🖥 Интерфейс</div>
-          <div class="set-l">Чат:</div>
-          <div class="tog" onclick="Settings.toggleChat()"><div id="tog-chat" class="tog-tr on"><div class="tog-th"></div></div><span id="tog-chat-l" style="color:var(--mid);font-size:11px">Показывать</span></div>
-          <div style="height:8px"></div>
-          <div class="set-l">Уведомления:</div>
-          <div class="tog" onclick="Settings.toggleNotifs()"><div id="tog-notif" class="tog-tr on"><div class="tog-th"></div></div><span id="tog-notif-l" style="color:var(--mid);font-size:11px">Включены</span></div>
-          <div style="height:8px"></div>
-          <div class="ver-badge">NEON ABYSS v5.0</div>
-          <div style="font-size:9px;color:var(--dim);margin-top:5px">Сессий: <span style="color:var(--cy)" id="sess-cnt">—</span></div>
-        </div>
-      </div>
+    <!-- SKINS -->
+    <div id="tab-skins" class="tab-pane">
+      <div class="sec-title">Магазин Обликов</div>
+      <div id="shop-warn">⚠ НЕДОСТАТОЧНО СРЕДСТВ!</div>
+      <div id="skin-grid"></div>
     </div>
   </main>
 </div>
 </div>
-<!-- PROMO -->
-<div id="promo-panel">
-  <h4>💠 ПРОМОКОД</h4>
-  <div id="promo-row">
-    <input type="text" id="promo-in" placeholder="HOLKIP" maxlength="20" onkeydown="if(event.key==='Enter')PromoCodeSystem.redeem()">
-    <button id="promo-btn" onclick="PromoCodeSystem.redeem()">ОК</button>
-  </div>
-  <div id="promo-msg"></div>
-</div>
+
 <div id="notifs"></div>
-<div id="author">Разработчик: Komiljanov B.</div>
+
 <script>
-'use strict';
-/* ================================================================
-   GLOBAL STATE
-================================================================ */
-/* ── LocalStorage helpers ── */
-function saveProgress(){
-  try{
-    localStorage.setItem('nabyss_skins', JSON.stringify(GS.ownedSkins));
-    localStorage.setItem('nabyss_equipped_skin', SkinManager.getEquippedId());
-    localStorage.setItem('nabyss_credits', GS.credits);
-    localStorage.setItem('nabyss_crystals', GS.crystals);
-  }catch(e){}
-}
-function loadProgress(){
-  try{
-    const sk=localStorage.getItem('nabyss_skins');
-    if(sk)GS.ownedSkins=JSON.parse(sk);
-    const cr=localStorage.getItem('nabyss_credits');
-    if(cr)GS.credits=parseInt(cr)||1500;
-    const xt=localStorage.getItem('nabyss_crystals');
-    if(xt)GS.crystals=parseInt(xt)||10;
-    const eqSk=localStorage.getItem('nabyss_equipped_skin');
-    if(eqSk)GS._savedEquippedSkin=eqSk;
-  }catch(e){}
-}
-
-const GS={
-  credits:1500,crystals:10,equippedId:'pulse',inventory:['pulse'],
-  ownedSkins:['default'],
-  _savedEquippedSkin:null,
-  casino:{spins:0,wins:0,losses:0,maxWin:0},
-  gfx:'ultra',chatOn:true,notifsOn:true,soundOn:true,masterVol:.7,
-  sessions:Math.floor(Math.random()*300+500),
-  wheelAngle:0,wheelSpinning:false,slotsSpinning:false,
-  currentTab:'home',sessionDmg:0,sessionHits:0,playerLevel:1
+/**
+ * GLOBAL STATE
+ */
+const GS = {
+    credits: 1500,
+    crystals: 10,
+    ownedSkins: ['default'],
+    equippedSkin: 'default',
+    currentTab: 'home'
 };
-const el=id=>document.getElementById(id);
-const fmt=n=>Math.round(n).toLocaleString('ru-RU');
-const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
-const rarLbl=r=>r==='legendary'?'ЛЕГЕНДАРНЫЙ':r==='epic'?'ЭПИЧЕСКИЙ':'ОБЫЧНЫЙ';
-const rarCls=r=>'rarity-'+r;
-const rarCol=r=>r==='legendary'?'col-leg':r==='epic'?'col-epi':'col-com';
 
-/* ================================================================
-   MODULE: AudioSys — Web Audio API synthesized sounds
-================================================================ */
-const AudioSys=(()=>{
-  let ctx=null,vol=.7;
-  const getCtx=()=>{if(!ctx)ctx=new(window.AudioContext||window.webkitAudioContext)();return ctx;};
-  const tone=({freq=440,type='sine',dur=.12,v=.35,attack=.005,freqEnd=null})=>{
-    if(!GS.soundOn)return;
-    try{
-      const ac=getCtx(),osc=ac.createOscillator(),gain=ac.createGain();
-      osc.connect(gain);gain.connect(ac.destination);
-      osc.type=type;osc.frequency.setValueAtTime(freq,ac.currentTime);
-      if(freqEnd)osc.frequency.linearRampToValueAtTime(freqEnd,ac.currentTime+dur);
-      gain.gain.setValueAtTime(0,ac.currentTime);
-      gain.gain.linearRampToValueAtTime(v*vol,ac.currentTime+attack);
-      gain.gain.exponentialRampToValueAtTime(.001,ac.currentTime+dur);
-      osc.start();osc.stop(ac.currentTime+dur+.05);
-    }catch(e){}
-  };
-  const noise=(dur=.18,v=.35)=>{
-    if(!GS.soundOn)return;
-    try{
-      const ac=getCtx(),buf=ac.createBuffer(1,ac.sampleRate*dur,ac.sampleRate),d=buf.getChannelData(0);
-      for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1);
-      const src=ac.createBufferSource(),gain=ac.createGain(),filt=ac.createBiquadFilter();
-      filt.type='bandpass';filt.frequency.value=300;
-      src.buffer=buf;src.connect(filt);filt.connect(gain);gain.connect(ac.destination);
-      gain.gain.setValueAtTime(v*vol,ac.currentTime);
-      gain.gain.exponentialRampToValueAtTime(.001,ac.currentTime+dur);
-      src.start();src.stop(ac.currentTime+dur+.05);
-    }catch(e){}
-  };
-  /* Unique sound per weapon kind */
-  const SFX={
-    rapid:    ()=>tone({freq:800,type:'square',dur:.06,v:.22,freqEnd:400}),
-    spread:   ()=>tone({freq:500,type:'sawtooth',dur:.1,v:.28,freqEnd:200}),
-    beam:     ()=>tone({freq:1200,type:'sine',dur:.4,v:.42,freqEnd:300}),
-    burst:    ()=>tone({freq:600,type:'square',dur:.08,v:.18}),
-    plasma:   ()=>tone({freq:200,type:'sawtooth',dur:.25,v:.48,freqEnd:80}),
-    laser:    ()=>tone({freq:1600,type:'sine',dur:.15,v:.38,freqEnd:900}),
-    rocket:   ()=>{tone({freq:180,type:'sawtooth',dur:.3,v:.48});noise(.1,.18);},
-    mine:     ()=>tone({freq:900,type:'square',dur:.08,v:.28,freqEnd:1400}),
-    minigun:  ()=>tone({freq:700,type:'square',dur:.04,v:.13}),
-    shotgun:  ()=>{for(let i=0;i<3;i++)setTimeout(()=>tone({freq:500+Math.random()*400,type:'sawtooth',dur:.06,v:.14}),i*20);},
-    shield:   ()=>tone({freq:440,type:'sine',dur:.3,v:.2}),
-    hit:      ()=>noise(.18,.38),
-    explode:  ()=>{noise(.4,.48);tone({freq:80,type:'sine',dur:.5,v:.48,freqEnd:30});},
-    promo_ok: ()=>{[523,659,784,1047].forEach((f,i)=>setTimeout(()=>tone({freq:f,type:'sine',dur:.18,v:.38}),i*100));},
-    promo_fail:()=>tone({freq:200,type:'sawtooth',dur:.3,v:.38,freqEnd:100}),
-    dead_zone: ()=>tone({freq:150,type:'square',dur:.15,v:.28,freqEnd:80}),
-    /* ── Skin-specific SFX ── */
-    /* David Martinez — Sandevistan cyberware activation crackle */
-    david_crit: ()=>{
-      tone({freq:2200,type:'sawtooth',dur:.06,v:.35,freqEnd:400});
-      setTimeout(()=>tone({freq:800,type:'sine',dur:.18,v:.28,freqEnd:1800}),60);
-      setTimeout(()=>noise(.12,.22),80);
-    },
-    /* Chrome Samurai — katana swoosh */
-    katana: ()=>{
-      tone({freq:900,type:'sawtooth',dur:.04,v:.25,freqEnd:3000});
-      setTimeout(()=>tone({freq:400,type:'sine',dur:.25,v:.18,freqEnd:50}),40);
-    },
-    level_up:  ()=>{[523,659,784,1047,1568].forEach((f,i)=>setTimeout(()=>tone({freq:f,type:'triangle',dur:.25,v:.42}),i*110));},
-  };
-  return{
-    play:name=>{if(SFX[name])SFX[name]();},
-    toggle(){GS.soundOn=!GS.soundOn;el('sound-btn').textContent=(GS.soundOn?'🔊':'🔇')+' Звук';},
-    setVol(v){vol=clamp(v,0,1);GS.masterVol=vol;},
-  };
-})();
-
-/* ================================================================
-   MODULE: AntiCheat — Farm exploit prevention
-   Rules enforced BEFORE any score is awarded:
-   1. Bullet must travel MIN_TRAVEL px (no point-blank credit)
-   2. Hit Y must be above DEAD_ZONE_Y fraction of canvas height
-   3. Hit X must be within canvas width – EDGE_PX margins
-   4. Per-target MIN_HIT_MS cooldown (anti-spam same target)
-   5. Global MAX_HITS_PER_SEC rate cap
-================================================================ */
-const AntiCheat=(()=>{
-  const MIN_TRAVEL=55,DEAD_Y=.80,EDGE=28,MIN_HIT_MS=180,MAX_HPS=14;
-  const tgtHit={};  // targetId -> timestamp
-  const ghits=[];   // ring buffer timestamps
-  function check(tgt,bullet,canvas){
-    const now=performance.now(),cw=canvas.width,ch=canvas.height;
-    if((bullet.distTravelled||0)<MIN_TRAVEL){warn('Слишком близко');return false;}
-    if(bullet.y>ch*DEAD_Y){warn('Мёртвая зона');AudioSys.play('dead_zone');return false;}
-    if(bullet.x<EDGE||bullet.x>cw-EDGE){warn('Краевая зона');return false;}
-    const last=tgtHit[tgt.id]||0;
-    if(now-last<MIN_HIT_MS){warn('Анти-спам');return false;}
-    const fresh=ghits.filter(t=>now-t<1000);
-    if(fresh.length>=MAX_HPS){warn('Лимит попаданий');return false;}
-    // PASS
-    tgtHit[tgt.id]=now;fresh.push(now);
-    ghits.length=0;fresh.forEach(t=>ghits.push(t));
-    return true;
-  }
-  function warn(msg){
-    const ov=el('abuse-ov');if(ov){ov.style.opacity='1';setTimeout(()=>ov.style.opacity='0',350);}
-    const am=el('abuse-msg');if(am){am.textContent='⚠ '+msg;setTimeout(()=>am.textContent='',1800);}
-  }
-  function resetTarget(id){tgtHit[id]=0;}
-  function isDead(y,canvas){return y>canvas.height*DEAD_Y;}
-  return{check,resetTarget,isDead,warn};
-})();
-
-/* ================================================================
-   MODULE: PromoCodeSystem
-================================================================ */
-const PromoCodeSystem=(()=>{
-  const CODES={
-    'HOLKIP':{cr:5000,xt:0,used:false},
-    'NEON10':{cr:1000,xt:5,used:false},
-    'ABYSS': {cr:2500,xt:10,used:false},
-  };
-  function redeem(){
-    const inp=el('promo-in'),msg=el('promo-msg');
-    const code=(inp.value||'').trim().toUpperCase();
-    if(!code){msg.style.color='var(--dim)';msg.textContent='Введите промокод';return;}
-    const e=CODES[code];
-    if(!e){
-      msg.style.color='var(--pk)';msg.textContent='❌ Неверный промокод';
-      inp.style.animation='promoFail .4s ease';
-      setTimeout(()=>inp.style.animation='',450);
-      AudioSys.play('promo_fail');return;
-    }
-    if(e.used){msg.style.color='var(--dim)';msg.textContent='⚠ Уже использован';AudioSys.play('promo_fail');return;}
-    e.used=true; // флаг isRedeemed
-    GS.credits+=e.cr;GS.crystals+=e.xt;
-    updateHUD();inp.value='';
-    msg.style.color='var(--cy)';
-    msg.textContent=`✅ +${fmt(e.cr)} кр.${e.xt?` +${e.xt} 💠`:''}`;
-    msg.style.animation='promoFlash .5s ease';
-    setTimeout(()=>msg.style.animation='',550);
-    AudioSys.play('promo_ok');
-    UI.showNotif(`💠 Промокод «${code}» активирован! +${fmt(e.cr)} кр.`,true);
-    UI.addChat('СИСТЕМА',`Промокод «${code}» активирован!`);
-  }
-  return{redeem};
-})();
-
-/* ================================================================
-   MODULE: WeaponSystem — full item database (11 weapons)
-================================================================ */
-const WeaponSystem=(()=>{
-  const ITEMS=[
-    {id:'pulse',  type:'weapon',name:'Pulse Rifle',   icon:'🔫',rarity:'common',   dmg:120, cd:.45,cost:0,   desc:'Частые зелёные импульсы. Идеальный стартер.',shot:{kind:'rapid',  col:'#00ff88',spd:560,sz:4, cnt:1}},
-    {id:'vortex', type:'weapon',name:'Vortex Blade',  icon:'⚔', rarity:'epic',     dmg:280, cd:1.4,cost:800, desc:'Фиолетовый веер зарядов. Широкий хитбокс.',  shot:{kind:'spread', col:'#b060ff',spd:440,sz:6, cnt:3}},
-    {id:'railgun',type:'weapon',name:'Abyss Railgun', icon:'🚀',rarity:'legendary',dmg:950, cd:8.0,cost:2500,desc:'Бирюзовый луч, пронизывает насквозь.',         shot:{kind:'beam',   col:'#00f5d4',spd:1100,sz:5,cnt:1}},
-    {id:'blink',  type:'spell', name:'Neon Blink',    icon:'⚡',rarity:'common',   dmg:200, cd:3.0,cost:350, desc:'8 электрических разрядов во все стороны.',     shot:{kind:'burst',  col:'#ffff00',spd:480,sz:5, cnt:8}},
-    {id:'overload',type:'spell',name:'Cyber Overload',icon:'💥',rarity:'epic',     dmg:600, cd:10, cost:1200,desc:'Огромный EMP-взрыв оранжевой плазмы.',          shot:{kind:'plasma', col:'#ff7a00',spd:300,sz:13,cnt:1}},
-    {id:'chrono', type:'spell', name:'Chrono Shield', icon:'🛡',rarity:'legendary',dmg:0,   cd:20, cost:3000,desc:'Щит остановки времени. Защита на 3 с.',         shot:{kind:'shield', col:'#80aaff',spd:0,  sz:20,cnt:0}},
-    // ── 5 NEW WEAPONS ──
-    {id:'laser',  type:'weapon',name:'Laser Beam',    icon:'🔆',rarity:'epic',     dmg:50,  cd:0,  cost:1500,desc:'[NEW] Непрерывный лазер. Зарядка 1.5 с, луч 2 с.',shot:{kind:'laser',  col:'#ff0066',spd:900,sz:3,cnt:1},spec:{chargeTime:1.5,beamDur:2.0}},
-    {id:'rocket', type:'weapon',name:'Split Rocket',  icon:'🎆',rarity:'epic',     dmg:400, cd:4.0,cost:2000,desc:'[NEW] Ракета делится на 3 осколка при попадании.',shot:{kind:'rocket', col:'#ff6600',spd:200,sz:10,cnt:1},spec:{shardN:3,shardDmg:150,shardCol:'#ffaa33',shardSpd:380}},
-    {id:'mine',   type:'spell', name:'Orbital Mine',  icon:'💣',rarity:'legendary',dmg:0,   cd:6.0,cost:3500,desc:'[NEW] Мина на платформе. Взрывается при приближении.',shot:{kind:'mine',col:'#ff2244',spd:0,sz:13,cnt:0},spec:{trigR:60,blastDmg:800,blastR:80}},
-    {id:'minigun',type:'weapon',name:'Gold Minigun',  icon:'🔱',rarity:'legendary',dmg:60,  cd:.08,cost:4000,desc:'[NEW] Экстремальный темп. 5% шанс x2 кредиты.',   shot:{kind:'minigun',col:'#ffd700',spd:620,sz:3,cnt:1},spec:{x2:0.05}},
-    {id:'shotgun',type:'weapon',name:'Plasma Shotgun',icon:'🌀',rarity:'epic',     dmg:220, cd:1.2,cost:1800,desc:'[NEW] 5 плазменных зарядов веером.',               shot:{kind:'shotgun',col:'#00ccff',spd:500,sz:7,cnt:5}},
-  ];
-  const TYPE_NAMES={rapid:'Очередь',spread:'Веер',beam:'Луч',burst:'Разброс',plasma:'Плазма',laser:'Лазер▲',rocket:'Ракета→',mine:'Мина',minigun:'Миниган',shotgun:'Дробь',shield:'Щит'};
-  const get=id=>ITEMS.find(i=>i.id===id);
-  const getEq=()=>get(GS.equippedId);
-  const owned=id=>GS.inventory.includes(id);
-  const weapons=()=>ITEMS.filter(i=>i.type==='weapon');
-  const spells=()=>ITEMS.filter(i=>i.type==='spell');
-  const all=()=>ITEMS;
-  const forSale=()=>ITEMS.filter(i=>i.cost>0);
-  const typeName=k=>TYPE_NAMES[k]||'—';
-  return{ITEMS,get,getEq,owned,weapons,spells,all,forSale,typeName};
-})();
-
-/* ================================================================
-   MODULE: SkinManager — Full skin system with LocalStorage persistence,
-   Sandevistan effect, passive bonuses, and unique draw functions.
-   
-   Architecture:
-     SKINS[]         — skin database with draw(), passive, sfx
-     equip(id)       — equip skin + save to localStorage
-     drawPlayer()    — delegate to active skin's draw()
-     drawPreview()   — render 64x80 miniature preview
-     getSandevistan()— return true if David skin active (for Engine)
-     getCdMultiplier()— return CD reduction multiplier from passive
-================================================================ */
-const SkinManager = (() => {
-
-  /* ────────────────────────────────────────────────
-     SKIN DATABASE — 6 skins total
-  ──────────────────────────────────────────────── */
-  const SKINS = [
-
-    /* ── 1. DEFAULT — Neon Runner (free) ── */
-    {
-      id: 'default',
-      name: 'Неоновый Беглец',
-      subname: 'Neon Runner',
-      rarity: 'common',
-      costCredits: 0,
-      costCrystals: 0,
-      isFree: true,
-      desc: 'Базовый кибер-боец. Ярко-розовое неоновое свечение. Входит в комплект.',
-      passive: null,
-      passiveLabel: null,
-      sfx: null,
-      hitParticleColor: null, // null = use weapon color
-      draw(ctx, px, py, pw, ph, col, anx, any, muzzle){
-        // Body — neon pink tinted
-        const bc=ctx.createLinearGradient(px,py,px,py+ph);
-        bc.addColorStop(0,'rgba(30,8,22,.96)');bc.addColorStop(1,'rgba(10,2,8,.96)');
-        ctx.fillStyle=bc;ctx.fillRect(px,py,pw,ph);
-        // Pink border glow
-        ctx.shadowColor='#ff2d78';ctx.shadowBlur=12;
-        ctx.strokeStyle='#ff2d78';ctx.lineWidth=1.5;ctx.strokeRect(px,py,pw,ph);
-        // Visor
-        ctx.globalAlpha=.7;ctx.fillStyle='#ff2d78';ctx.fillRect(px+3,py+4,pw-6,7);ctx.globalAlpha=1;
-        // Legs pink
-        ctx.globalAlpha=.5;ctx.fillStyle='#ff2d78';
-        ctx.fillRect(px+2,py+ph-7,6,7);ctx.fillRect(px+pw-8,py+ph-7,6,7);ctx.globalAlpha=1;
-        // Arm
-        const cx=px+pw/2,cy=py+ph/2;
-        ctx.shadowColor='#ff2d78';ctx.shadowBlur=8;
-        ctx.strokeStyle='#ff2d78';ctx.lineWidth=3;
-        ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+anx*18,cy+any*18);ctx.stroke();
-        if(muzzle){ctx.globalAlpha=.9;ctx.shadowBlur=24;ctx.fillStyle='#ff2d78';ctx.beginPath();ctx.arc(cx+anx*22,cy+any*22,7,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;}
-        ctx.shadowBlur=0;
-      }
-    },
-
-    /* ── 2. DAVID MARTINEZ — Legendary Edgerunner ── */
-    {
-      id: 'david',
-      name: 'Дэвид Мартинес',
-      subname: 'Edgerunner',
-      rarity: 'legendary',
-      costCredits: 8000,
-      costCrystals: 50,
-      isFree: false,
-      isNew: true,
-      desc: '«Я стану легендой.» Жёлтая куртка скорой помощи. Имплант Сандевистан даёт шлейф при стрельбе и ускоряет перезарядку на 15%.',
-      passive: 'sandevistan',
-      passiveLabel: '⚡ САНДЕВИСТАН: КД −15%',
-      sfx: 'david_crit', // cyberware implant sound on crit
-      hitParticleColor: null,
-      /* ── David's unique draw: yellow jacket, cyberware arm, spiky hair ── */
-      draw(ctx, px, py, pw, ph, col, anx, any, muzzle){
-        const cx=px+pw/2,cy=py+ph/2;
-
-        // ── YELLOW JACKET BODY ──
-        const jg=ctx.createLinearGradient(px,py+5,px,py+ph);
-        jg.addColorStop(0,'#f5c200');jg.addColorStop(.4,'#e8a800');jg.addColorStop(1,'#b07800');
-        ctx.fillStyle=jg;ctx.fillRect(px,py+5,pw,ph-5);
-
-        // Jacket collar — white/light
-        ctx.fillStyle='rgba(230,220,200,.9)';ctx.fillRect(px+3,py+5,pw-6,5);
-
-        // Red ambulance cross on chest (iconic logo)
-        ctx.fillStyle='#e8162a';ctx.shadowColor='#ff2244';ctx.shadowBlur=6;
-        const mx=px+pw/2-3,my=py+10;
-        ctx.fillRect(mx,my-1,6,8);  // vertical bar
-        ctx.fillRect(mx-2,my+1,10,4); // horizontal bar
-        ctx.shadowBlur=0;
-
-        // Left red stripe
-        ctx.fillStyle='#cc1122';ctx.fillRect(px+1,py+6,2,ph-8);
-
-        // ── HEAD ──
-        ctx.fillStyle='#c8956c';ctx.fillRect(px+4,py-2,pw-8,8);
-
-        // Black spiky hair (David's iconic look)
-        ctx.fillStyle='#1a1828';ctx.fillRect(px+3,py-6,pw-6,5);
-        // Individual spikes
-        const spikes=[[0,'#22204a'],[3,'#1a1828'],[6,'#2a2060'],[9,'#1a1828']];
-        spikes.forEach(([ox,sc])=>{
-          ctx.fillStyle=sc;
-          ctx.beginPath();ctx.moveTo(px+4+ox,py-5);
-          ctx.lineTo(px+4+ox+2,py-9-Math.sin(ox)*2);
-          ctx.lineTo(px+4+ox+4,py-5);ctx.fill();
-        });
-        // White streak highlight
-        ctx.fillStyle='#d0d0ff';ctx.fillRect(px+8,py-7,2,4);
-
-        // ── EYES — one glowing (cyber) one normal ──
-        ctx.fillStyle='#00c8ff';ctx.shadowColor='#00c8ff';ctx.shadowBlur=7;
-        ctx.fillRect(px+5,py,3,2); // cybereye
-        ctx.shadowBlur=0;
-        ctx.fillStyle='#2a2020';ctx.fillRect(px+10,py,2,2); // normal eye
-
-        // ── PANTS — dark ──
-        ctx.fillStyle='#1e1e30';
-        ctx.fillRect(px+2,py+ph-8,6,8);ctx.fillRect(px+pw-8,py+ph-8,6,8);
-        // White sole boots
-        ctx.fillStyle='#e0e0e0';
-        ctx.fillRect(px+2,py+ph-3,6,3);ctx.fillRect(px+pw-8,py+ph-3,6,3);
-
-        // ── SANDEVISTAN CYBERWARE ARM (right, chrome) ──
-        ctx.shadowColor='#a0b8ff';ctx.shadowBlur=10;
-        ctx.fillStyle='#8a8aaa';ctx.fillRect(px+pw-4,py+7,5,ph-12);
-        ctx.fillStyle='#c0c8ff';ctx.fillRect(px+pw-3,py+9,1,ph-14); // highlight stripe
-        ctx.fillStyle='#5050a0';ctx.fillRect(px+pw+1,py+10,1,ph-16); // shadow
-        // Implant node glow
-        ctx.fillStyle='#00c8ff';ctx.shadowColor='#00c8ff';ctx.shadowBlur=8;
-        ctx.beginPath();ctx.arc(px+pw-2,py+12,2,0,Math.PI*2);ctx.fill();
-        ctx.shadowBlur=0;
-
-        // ── GUN ARM ──
-        ctx.shadowColor='#a0b8ff';ctx.shadowBlur=12;
-        ctx.strokeStyle='#8a8aaa';ctx.lineWidth=3;
-        ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+anx*18,cy+any*18);ctx.stroke();
-        ctx.fillStyle='#606080';
-        ctx.beginPath();ctx.arc(cx+anx*16,cy+any*16,4,0,Math.PI*2);ctx.fill();
-        ctx.shadowBlur=0;
-
-        if(muzzle){
-          // Orange muzzle flash — Sandevistan colors
-          ctx.globalAlpha=.9;ctx.shadowColor='#ff8800';ctx.shadowBlur=22;
-          ctx.fillStyle='#ff8800';
-          ctx.beginPath();ctx.arc(cx+anx*22,cy+any*22,8,0,Math.PI*2);ctx.fill();
-          ctx.shadowColor='#00c8ff';ctx.shadowBlur=14;ctx.fillStyle='#00c8ff';
-          ctx.beginPath();ctx.arc(cx+anx*22,cy+any*22,4,0,Math.PI*2);ctx.fill();
-          ctx.globalAlpha=1;ctx.shadowBlur=0;
-        }
-
-        // ── SUBTLE NAME TAG ──
-        ctx.globalAlpha=.32;ctx.fillStyle='#fff';ctx.font='5px monospace';ctx.textAlign='center';
-        ctx.fillText('DAVID',cx,py+ph-1);ctx.globalAlpha=1;ctx.textAlign='left';
-      }
-    },
-
-    /* ── 3. VOID HACKER — Matrix digital code sparks ── */
-    {
-      id: 'void_hacker',
-      name: 'Хакер Пустоты',
-      subname: 'Void Hacker',
-      rarity: 'epic',
-      costCredits: 3500,
-      costCrystals: 20,
-      isFree: false,
-      desc: 'Тёмно-фиолетовые тона. Заменяет стандартные искры на зелёный цифровой код — как в Матрице.',
-      passive: 'matrix_sparks',
-      passiveLabel: '💚 МАТРИЦА: цифровые искры',
-      sfx: null,
-      hitParticleColor: '#00ff41', // Matrix green override
-      draw(ctx, px, py, pw, ph, col, anx, any, muzzle){
-        const cx=px+pw/2,cy=py+ph/2;
-        // Dark body
-        ctx.fillStyle='rgba(8,4,20,.97)';ctx.fillRect(px,py,pw,ph);
-        ctx.shadowColor='#b060ff';ctx.shadowBlur=10;
-        ctx.strokeStyle='#5020a0';ctx.lineWidth=1.5;ctx.strokeRect(px,py,pw,ph);
-        // Purple circuit lines on body
-        ctx.strokeStyle='#3010a0';ctx.lineWidth=.8;
-        ctx.beginPath();ctx.moveTo(px+4,py+8);ctx.lineTo(px+pw-4,py+8);ctx.stroke();
-        ctx.beginPath();ctx.moveTo(px+4,py+14);ctx.lineTo(px+pw-4,py+14);ctx.stroke();
-        // Visor — deep purple
-        ctx.globalAlpha=.7;ctx.fillStyle='#4020a0';ctx.fillRect(px+3,py+4,pw-6,7);ctx.globalAlpha=1;
-        // Eye — single green glow
-        ctx.fillStyle='#00ff41';ctx.shadowColor='#00ff41';ctx.shadowBlur=8;
-        ctx.fillRect(px+5,py+6,8,2);ctx.shadowBlur=0;
-        // Dark legs
-        ctx.fillStyle='#2010a0';ctx.globalAlpha=.6;
-        ctx.fillRect(px+2,py+ph-7,6,7);ctx.fillRect(px+pw-8,py+ph-7,6,7);ctx.globalAlpha=1;
-        // Arm — purple glow
-        ctx.shadowColor='#b060ff';ctx.shadowBlur=8;
-        ctx.strokeStyle='#8040d0';ctx.lineWidth=3;
-        ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+anx*18,cy+any*18);ctx.stroke();
-        ctx.shadowBlur=0;
-        if(muzzle){ctx.globalAlpha=.88;ctx.shadowColor='#00ff41';ctx.shadowBlur=20;ctx.fillStyle='#00ff41';ctx.beginPath();ctx.arc(cx+anx*22,cy+any*22,7,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;ctx.shadowBlur=0;}
-      }
-    },
-
-    /* ── 4. CHROME SAMURAI — Katana sound on near-kill ── */
-    {
-      id: 'chrome_samurai',
-      name: 'Хромированный Самурай',
-      subname: 'Chrome Samurai',
-      rarity: 'legendary',
-      costCredits: 6000,
-      costCrystals: 35,
-      isFree: false,
-      desc: 'Стальной металлический отблеск. При уничтожении мишени вблизи — звук взмаха катаны.',
-      passive: 'katana_sound',
-      passiveLabel: '⚔ КАТАНА: звук ближнего боя',
-      sfx: 'katana',
-      hitParticleColor: '#c8d8ff', // steel blue-white sparks
-      draw(ctx, px, py, pw, ph, col, anx, any, muzzle){
-        const cx=px+pw/2,cy=py+ph/2;
-        // Chrome body
-        const cg=ctx.createLinearGradient(px,py,px+pw,py+ph);
-        cg.addColorStop(0,'#9090b8');cg.addColorStop(.5,'#e0e0f8');cg.addColorStop(1,'#5050a0');
-        ctx.fillStyle=cg;ctx.fillRect(px,py+4,pw,ph-4);
-        ctx.strokeStyle='#c0c0e0';ctx.lineWidth=1;ctx.strokeRect(px,py+4,pw,ph-4);
-        // Armour plates
-        ctx.fillStyle='rgba(200,200,240,.3)';ctx.fillRect(px+3,py+8,pw-6,4);ctx.fillRect(px+3,py+14,pw-6,4);
-        // Chrome helmet
-        ctx.fillStyle='#b0b0d0';ctx.fillRect(px+3,py-3,pw-6,8);
-        ctx.strokeStyle='#e0e0ff';ctx.lineWidth=.7;ctx.strokeRect(px+3,py-3,pw-6,8);
-        // Gold visor
-        ctx.fillStyle='rgba(255,215,0,.85)';ctx.shadowColor='#ffd700';ctx.shadowBlur=8;
-        ctx.fillRect(px+5,py,pw-10,4);ctx.shadowBlur=0;
-        // Shoulder pads
-        ctx.fillStyle='#8080a8';ctx.fillRect(px-2,py+5,4,6);ctx.fillRect(px+pw-2,py+5,4,6);
-        // Chrome legs with gold trim
-        ctx.fillStyle='#9090b0';ctx.fillRect(px+2,py+ph-8,6,8);ctx.fillRect(px+pw-8,py+ph-8,6,8);
-        ctx.fillStyle='#ffd700';ctx.fillRect(px+2,py+ph-3,6,3);ctx.fillRect(px+pw-8,py+ph-3,6,3);
-        // Katana on back (decorative)
-        ctx.save();ctx.translate(px+pw-1,py+8);ctx.rotate(Math.PI/12);
-        ctx.strokeStyle='#e8e8ff';ctx.lineWidth=1.5;ctx.shadowColor='#c0c0ff';ctx.shadowBlur=6;
-        ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(0,ph*.9);ctx.stroke();
-        ctx.fillStyle='#ffd700';ctx.fillRect(-2,0,4,4); // hilt
-        ctx.restore();ctx.shadowBlur=0;
-        // Arm
-        ctx.shadowColor='#e0e0ff';ctx.shadowBlur=10;
-        ctx.strokeStyle='#c0c0e0';ctx.lineWidth=3;
-        ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+anx*18,cy+any*18);ctx.stroke();
-        ctx.shadowBlur=0;
-        if(muzzle){ctx.globalAlpha=.9;ctx.shadowColor='#ffd700';ctx.shadowBlur=24;ctx.fillStyle='#ffd700';ctx.beginPath();ctx.arc(cx+anx*22,cy+any*22,8,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;ctx.shadowBlur=0;}
-      }
-    },
-
-    /* ── 5. LUCY — Netrunner from the Moon ── */
-    {
-      id: 'lucy',
-      name: 'Люси',
-      subname: 'Netrunner',
-      rarity: 'epic',
-      costCredits: 2800,
-      costCrystals: 15,
-      isFree: false,
-      desc: 'Нетраннер с Луны. Белые волосы, ледяной взгляд, хакерский имплант.',
-      passive: null,
-      passiveLabel: null,
-      sfx: null,
-      hitParticleColor: '#a0c0ff',
-      draw(ctx, px, py, pw, ph, col, anx, any, muzzle){
-        const cx=px+pw/2,cy=py+ph/2;
-        // White bodysuit
-        const wg=ctx.createLinearGradient(px,py,px,py+ph);
-        wg.addColorStop(0,'rgba(210,215,245,.96)');wg.addColorStop(1,'rgba(130,135,185,.96)');
-        ctx.fillStyle=wg;ctx.fillRect(px,py+5,pw,ph-5);
-        ctx.strokeStyle='#8898d8';ctx.lineWidth=1;ctx.strokeRect(px,py+5,pw,ph-5);
-        // Blue trim
-        ctx.fillStyle='#5568c0';ctx.fillRect(px,py+5,2,ph-8);ctx.fillRect(px+pw-2,py+5,2,ph-8);
-        // Skin head
-        ctx.fillStyle='#d4a882';ctx.fillRect(px+4,py-2,pw-8,8);
-        // Long white hair
-        ctx.fillStyle='#e8e8f8';ctx.fillRect(px+2,py-7,pw-4,6);
-        ctx.fillRect(px+1,py-2,3,ph);ctx.fillRect(px+pw-4,py-2,3,ph); // flowing sides
-        // Eyes — violet
-        ctx.fillStyle='#b060ff';ctx.shadowColor='#b060ff';ctx.shadowBlur=6;
-        ctx.fillRect(px+5,py,3,2);ctx.fillRect(px+pw-8,py,3,2);ctx.shadowBlur=0;
-        // Dark legs
-        ctx.fillStyle='#1a1a3e';ctx.fillRect(px+2,py+ph-8,6,8);ctx.fillRect(px+pw-8,py+ph-8,6,8);
-        // Arm
-        ctx.shadowColor='#8898d8';ctx.shadowBlur=8;ctx.strokeStyle='#8898d8';ctx.lineWidth=3;
-        ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+anx*18,cy+any*18);ctx.stroke();ctx.shadowBlur=0;
-        if(muzzle){ctx.globalAlpha=.88;ctx.shadowColor='#b060ff';ctx.shadowBlur=18;ctx.fillStyle='#b060ff';ctx.beginPath();ctx.arc(cx+anx*22,cy+any*22,7,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;ctx.shadowBlur=0;}
-      }
-    },
-
-    /* ── 6. MAINE — Edgerunner Leader ── */
-    {
-      id: 'maine',
-      name: 'Мэйн',
-      subname: 'Edgerunner Leader',
-      rarity: 'epic',
-      costCredits: 3200,
-      costCrystals: 18,
-      isFree: false,
-      desc: 'Лидер Edgerunners. Массивный, хромированный, бесстрашный.',
-      passive: null,
-      passiveLabel: null,
-      sfx: null,
-      hitParticleColor: '#ff6600',
-      draw(ctx, px, py, pw, ph, col, anx, any, muzzle){
-        const cx=px+pw/2,cy=py+ph/2;
-        const ox=px-2,ow=pw+4;
-        ctx.fillStyle='#1e0e0a';ctx.fillRect(ox,py+4,ow,ph-4);
-        ctx.fillStyle='#606070';ctx.fillRect(ox+2,py+6,ow-4,ph-12);
-        ctx.fillStyle='#6a1010';ctx.fillRect(ox,py+4,ow,5);
-        // Implants
-        ctx.fillStyle='#ff6600';ctx.shadowColor='#ff6600';ctx.shadowBlur=6;
-        ctx.fillRect(ox+4,py+10,4,2);ctx.fillRect(ox+ow-8,py+10,4,2);ctx.shadowBlur=0;
-        // Head bald
-        ctx.fillStyle='#5c3d2e';ctx.fillRect(ox+3,py-3,ow-6,8);
-        ctx.fillStyle='#3a2520';ctx.fillRect(ox+4,py+2,ow-8,3);
-        // Eyes orange
-        ctx.fillStyle='#ff6600';ctx.shadowColor='#ff6600';ctx.shadowBlur=6;
-        ctx.fillRect(ox+5,py-1,3,2);ctx.fillRect(ox+ow-8,py-1,3,2);ctx.shadowBlur=0;
-        // Chrome arm
-        ctx.fillStyle='#888';ctx.fillRect(ox+ow-4,py+5,6,ph-8);
-        ctx.fillStyle='#aaa';ctx.fillRect(ox+ow-3,py+7,2,ph-12);
-        // Legs
-        ctx.fillStyle='#1a1010';ctx.fillRect(ox+2,py+ph-8,8,8);ctx.fillRect(ox+ow-10,py+ph-8,8,8);
-        ctx.strokeStyle='#888';ctx.lineWidth=4;ctx.shadowColor='#aaaacc';ctx.shadowBlur=8;
-        ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+anx*18,cy+any*18);ctx.stroke();ctx.shadowBlur=0;
-        if(muzzle){ctx.globalAlpha=.9;ctx.shadowColor='#ff6600';ctx.shadowBlur=22;ctx.fillStyle='#ff6600';ctx.beginPath();ctx.arc(cx+anx*22,cy+any*22,8,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;ctx.shadowBlur=0;}
-      }
-    },
-  ];
-
-  let equippedId = 'default';
-
-  /* ── API ── */
-  const get         = id  => SKINS.find(s => s.id === id);
-  const getAll      = ()  => SKINS;
-  const getEq       = ()  => get(equippedId) || SKINS[0];
-  const getEquippedId = () => equippedId;
-  const isOwned     = id  => GS.ownedSkins.includes(id);
-
-  function equip(id){
-    if(!isOwned(id)) return;
-    equippedId = id;
-    /* Sandevistan toggle */
-    sandevistanActive = (id === 'david');
-    /* Persist */
-    saveProgress();
-    if(typeof UI !== 'undefined') UI.renderSkins();
-  }
-
-  /* Restore saved skin after init */
-  function restoreEquipped(){
-    const saved = GS._savedEquippedSkin;
-    if(saved && isOwned(saved)) equippedId = saved;
-    sandevistanActive = (equippedId === 'david');
-  }
-
-  /* CD multiplier — David passive: -15% cooldown */
-  function getCdMultiplier(){
-    if(equippedId === 'david') return 0.85;
-    return 1.0;
-  }
-
-  /* Hit particle color override (Void Hacker = matrix green) */
-  function getHitParticleColor(fallback){
-    const skin = getEq();
-    return skin.hitParticleColor || fallback;
-  }
-
-  /* Draw full player using active skin */
-  function drawPlayer(ctx, px, py, pw, ph, weaponCol, anx, any, muzzle){
-    const skin = getEq();
-    ctx.save();
-    ctx.shadowColor = weaponCol; ctx.shadowBlur = 16;
-    skin.draw(ctx, px, py, pw, ph, weaponCol, anx, any, muzzle);
-    ctx.restore();
-  }
-
-  /* Draw 64x80 preview for shop card */
-  function drawPreview(canvas, skin){
-    const ctx = canvas.getContext('2d');
-    ctx.clearRect(0,0,64,80);
-    ctx.fillStyle='rgba(8,8,22,.95)';ctx.fillRect(0,0,64,80);
-    // Subtle grid
-    ctx.strokeStyle='rgba(0,245,212,.05)';ctx.lineWidth=.5;
-    for(let y=0;y<80;y+=10){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(64,y);ctx.stroke();}
-    // Draw skin centered
-    skin.draw(ctx, 22, 18, 20, 30, '#00f5d4', 1, 0, false);
-  }
-
-  /* Sandevistan after-image trail draw — called from Engine render */
-  function drawSandevistanTrail(ctx, trail){
-    if(!sandevistanActive || trail.length < 2) return;
-    const now = performance.now();
-    trail.forEach((pt,i)=>{
-      const age = now - pt.ts;
-      const maxAge = 220;
-      if(age > maxAge) return;
-      const alpha = (1 - age/maxAge) * 0.55;
-      const r = pt.sz * (1 - age/maxAge * .4);
-      /* Alternate cyan and orange — Sandevistan signature colors */
-      const col = i % 2 === 0 ? '#00c8ff' : '#ff8800';
-      ctx.save();
-      ctx.globalAlpha = alpha;
-      ctx.shadowColor = col; ctx.shadowBlur = 6;
-      ctx.fillStyle = col;
-      ctx.beginPath(); ctx.arc(pt.x, pt.y, Math.max(r, .5), 0, Math.PI*2); ctx.fill();
-      ctx.restore();
-    });
-  }
-
-  return {
-    SKINS, get, getAll, getEq, getEquippedId, isOwned,
-    equip, restoreEquipped, getCdMultiplier, getHitParticleColor,
-    drawPlayer, drawPreview, drawSandevistanTrail,
-  };
-})();
-
-/* ================================================================
-   MODULE: LevelManager — 10-level campaign
-================================================================ */
-const LevelManager=(()=>{
-  const LEVELS=[
-    {id:1, name:'Первая кровь',      gt:'kill',   gn:8,    time:90,  desc:'Уничтожь 8 мишеней',           tgt:6,  mv:false,bh:false,bg:'#02020c',cr:500, xt:2},
-    {id:2, name:'Скорострел',        gt:'score',  gn:3000, time:60,  desc:'Набери 3000 урона за 60 с',    tgt:8,  mv:false,bh:false,bg:'#020c04',cr:900, xt:3},
-    {id:3, name:'Подвижные угрозы',  gt:'kill',   gn:12,   time:120, desc:'12 мишеней (платформы движутся)',tgt:6, mv:true, bh:false,bg:'#040012',cr:1400,xt:5,sineAmp:60},
-    {id:4, name:'Гравитационный хаос',gt:'kill',  gn:15,   time:150, desc:'15 мишеней + чёрные дыры',     tgt:8,  mv:true, bh:true, bg:'#0a0005',cr:2000,xt:8},
-    {id:5, name:'Босс: Щит Бездны',  gt:'boss',   gn:1,    time:120, desc:'Убей Босса (10 HP). Щит блокирует снаряды!',tgt:5,mv:true,bh:false,bg:'#0a0005',cr:3000,xt:15,hasBoss:true},
-    {id:6, name:'Выживание',          gt:'survive',gn:45,   time:45,  desc:'Выживи 45 секунд',              tgt:10, mv:true, bh:true, bg:'#050010',cr:4000,xt:20},
-    {id:7, name:'Без промахов',      gt:'accuracy',gn:20,  time:90,  desc:'20 попаданий без промахов',     tgt:6,  mv:false,bh:false,bg:'#001004',cr:3500,xt:18},
-    {id:8, name:'Волновой натиск',   gt:'kill',   gn:25,   time:180, desc:'25 мишеней, постоянный спавн', tgt:10, mv:true, bh:true, bg:'#060006',cr:5000,xt:25},
-    {id:9, name:'Нано-мишени',       gt:'kill',   gn:30,   time:180, desc:'30 быстрых дронов',             tgt:8,  mv:true, bh:true, bg:'#020a00',cr:6000,xt:30},
-    {id:10,name:'Апокалипсис',       gt:'score',  gn:15000,time:240, desc:'15000 урона — только для легенд',tgt:10,mv:true, bh:true, bg:'#080000',cr:10000,xt:50},
-  ];
-  let S={cur:1,unlocked:1,completed:[],active:false,timer:0,progress:0,gTarget:0,gType:'',startDmg:0,accuracy:0,misses:0,intv:null,lvl:null};
-  function renderCards(){
-    const c=el('lvl-cards');c.innerHTML='';
-    LEVELS.forEach(lv=>{
-      const unl=lv.id<=S.unlocked,done=S.completed.includes(lv.id);
-      const d=document.createElement('div');
-      d.className='lc'+(unl?'':' locked')+(done?' done':'');
-      d.onclick=()=>{if(unl){S.cur=lv.id;updateSel();}};
-      d.innerHTML=`<div class="lc-n" style="color:${lv.id===S.cur?'var(--cy)':'var(--dim)'}">${lv.id}</div><div class="lc-nm">${lv.name}</div><div class="lc-g">${lv.desc}</div><div class="lc-r">💰${fmt(lv.cr)} 💠${lv.xt}</div><div style="font-size:14px;margin-top:4px">${done?'⭐':'○'}${!unl?' 🔒':''}</div>`;
-      c.appendChild(d);
-    });
-  }
-  function updateSel(){el('start-lvl-n').textContent=S.cur;el('lvls-ul').textContent=S.unlocked;renderCards();}
-  function startSelected(){startLevel(S.cur);}
-  function startLevel(id){
-    const lv=LEVELS.find(l=>l.id===id);if(!lv)return;
-    S.active=true;S.timer=lv.time;S.progress=0;S.gTarget=lv.gn;S.gType=lv.gt;
-    S.startDmg=GS.sessionDmg;S.accuracy=0;S.misses=0;S.lvl=lv;
-    el('camp-free').style.display='none';el('camp-active').style.display='block';
-    el('act-name').textContent=`Уровень ${lv.id}: ${lv.name}`;
-    el('act-goal').textContent=lv.desc;
-    updateActUI();
-    Engine.spawnTargets(lv.tgt,lv);
-    if(lv.mv)Engine.activateMoving();
-    if(lv.bh)Engine.spawnHoles();
-    el('goal-bar').style.display='flex';el('goal-text').textContent=lv.desc;
-    el('lvl-timer').style.display='block';
-    if(S.intv)clearInterval(S.intv);
-    S.intv=setInterval(tick,1000);
-    switchTab('home');
-    UI.showNotif(`▶ Уровень ${lv.id}: ${lv.name}`,false);
-    UI.addChat('СИСТЕМА',`Уровень ${lv.id} запущен!`);
-  }
-  function tick(){
-    if(!S.active)return;
-    S.timer--;updateActUI();
-    const t=el('lvl-timer');
-    if(t){t.textContent=`⏱ ${String(Math.floor(S.timer/60)).padStart(2,'0')}:${String(S.timer%60).padStart(2,'0')}`;t.style.color=S.timer<=10?'#ff2d78':'var(--go)';}
-    if(S.timer<=0){if(S.gType==='survive')complete();else fail('Время вышло!');}
-  }
-  function updateActUI(){
-    if(!S.lvl)return;
-    const p=Math.min(1,S.progress/S.gTarget);
-    el('act-prog').style.width=(p*100)+'%';el('act-prog-txt').textContent=`${S.progress} / ${S.gTarget}`;
-    el('goal-prog').style.width=(p*100)+'%';el('goal-cnt').textContent=`${S.progress}/${S.gTarget}`;
-    el('act-timer').textContent=`${String(Math.floor(S.timer/60)).padStart(2,'0')}:${String(S.timer%60).padStart(2,'0')}`;
-  }
-  function recordKill(){if(!S.active)return;if(S.gType==='kill'||S.gType==='boss'){S.progress++;updateActUI();if(S.progress>=S.gTarget)complete();}}
-  function recordHit(){if(!S.active)return;if(S.gType==='accuracy'){S.accuracy++;S.progress=S.accuracy;updateActUI();if(S.accuracy>=S.gTarget)complete();}}
-  function recordMiss(){if(!S.active)return;if(S.gType==='accuracy'){S.misses++;if(S.misses>3)fail('Слишком много промахов!');}}
-  function checkScore(){if(!S.active||S.gType!=='score')return;const e=GS.sessionDmg-S.startDmg;S.progress=e;updateActUI();if(e>=S.gTarget)complete();}
-  function complete(){
-    if(!S.active)return;S.active=false;clearInterval(S.intv);
-    const lv=S.lvl;
-    GS.credits+=lv.cr;GS.crystals+=lv.xt;GS.playerLevel=Math.max(GS.playerLevel,lv.id+1);
-    if(!S.completed.includes(lv.id))S.completed.push(lv.id);
-    if(lv.id+1<=LEVELS.length&&lv.id+1>S.unlocked)S.unlocked=lv.id+1;
-    updateHUD();hideOv();
-    showBanner(`УРОВЕНЬ ${lv.id} ПРОЙДЕН!`,`+${fmt(lv.cr)} кр. · +${lv.xt} 💠`);
-    AudioSys.play('level_up');
-    UI.showNotif(`🏆 Уровень ${lv.id} пройден! +${fmt(lv.cr)} кр.`,true);
-    UI.addChat('СИСТЕМА',`Уровень ${lv.id} пройден! Награда: ${fmt(lv.cr)} кр.`);
-    Engine.clearDynamic();
-    setTimeout(()=>{el('camp-free').style.display='block';el('camp-active').style.display='none';updateSel();},3200);
-  }
-  function fail(reason){
-    if(!S.active)return;S.active=false;clearInterval(S.intv);hideOv();
-    Engine.clearDynamic();
-    UI.showNotif(`❌ Провал: ${reason}`,false);UI.addChat('СИСТЕМА',`Провал: ${reason}`);
-    el('camp-free').style.display='block';el('camp-active').style.display='none';
-  }
-  function abandon(){fail('Прервано');}
-  function hideOv(){el('goal-bar').style.display='none';el('lvl-timer').style.display='none';}
-  function showBanner(h,s){
-    const b=el('lvlup-banner');el('lvlup-h').textContent=h;el('lvlup-sub').textContent=s;
-    b.style.animation='lvlUpAnim 3.1s ease forwards';b.style.opacity='1';
-    setTimeout(()=>{b.style.opacity='0';b.style.animation='none';},3200);
-  }
-  function isActive(){return S.active;}
-  function getActiveLvl(){return S.lvl;}
-  return{renderCards,updateSel,startSelected,startLevel,recordKill,recordHit,recordMiss,checkScore,fail,abandon,isActive,getActiveLvl};
-})();
-
-/* ================================================================
-   MODULE: Engine — 2D Canvas game loop, physics, rendering
-================================================================ */
-const Engine=(()=>{
-  const CH=370,GRAV=820;
-  let canvas,ctx,animId=null,lastTs=0;
-  const PLATS=[
-    {x:60,y:280,w:130,h:13},{x:280,y:238,w:110,h:13},
-    {x:490,y:268,w:120,h:13},{x:170,y:178,w:90,h:13},
-    {x:430,y:196,w:95,h:13},{x:620,y:306,w:85,h:13},
-  ];
-  const P={x:90,y:0,w:18,h:22,vx:0,vy:0,onGround:false,trail:[],shootCd:0,
-           laserCharging:false,laserChgT:0,laserFiring:false,laserFireT:0};
-  let bullets=[],targets=[],mines=[],floats=[],exps=[],sparks=[];
-  /* Juicy particle system — separate from basic sparks */
-  let particles=[];   // burst particles with gravity, color, size, life
-  let ricoParticles=[];  // small flat ricochet sparks off platforms
-  let sineTime=0;
-  /* Sandevistan after-image trail (David Martinez skin) */
-  let sandevistanTrail=[];  // [{x,y,col,alpha,ts}] — bullet position history for after-image
-  let sandevistanActive=false;  // true when David skin equipped     // global time for Math.sin platform movement
-  /* Boss state */
-  let boss=null;      // ref to boss target object
-  let bossShield={on:false,timer:0,cdTimer:3.5}; // shield cycle
-  let movingOn=false,bHoles=[],lvlBg='#02020c';
-  const KEYS={};let mouse={x:400,y:200};
-  const TDEFS=[{x:100,y:258},{x:310,y:216},{x:520,y:246},{x:198,y:156},{x:463,y:174},{x:648,y:284},{x:240,y:200},{x:400,y:148},{x:560,y:220},{x:140,y:218}];
-  const TCOLS=['#ff4488','#44ffaa','#ffaa00','#aa44ff','#ff8844','#44aaff','#ff88ff','#88ffff','#ff6600','#66ff00'];
-
-  function init(){
-    canvas=el('game-canvas');canvas.height=CH;resize();ctx=canvas.getContext('2d');
-    canvas.addEventListener('mousemove',e=>{
-      const r=canvas.getBoundingClientRect(),sx=canvas.width/r.width,sy=canvas.height/r.height;
-      mouse.x=(e.clientX-r.left)*sx;mouse.y=(e.clientY-r.top)*sy;
-    });
-    canvas.addEventListener('click',()=>{if(GS.currentTab==='home')tryShoot();});
-    canvas.addEventListener('mousedown',()=>{if(WeaponSystem.getEq()?.shot.kind==='laser')startCharge();});
-    canvas.addEventListener('mouseup',()=>stopCharge());
-    window.addEventListener('keydown',e=>{
-      KEYS[e.code]=true;
-      if(e.code==='Space'&&GS.currentTab==='home'){e.preventDefault();tryShoot();}
-      if(e.code==='KeyF'&&GS.currentTab==='home')startCharge();
-    });
-    window.addEventListener('keyup',e=>{KEYS[e.code]=false;if(e.code==='KeyF')stopCharge();});
-    spawnTargets(6,null);
-    if(animId)cancelAnimationFrame(animId);lastTs=0;animId=requestAnimationFrame(loop);
-  }
-  function resize(){if(!canvas)return;const w=canvas.offsetWidth;if(w>0)canvas.width=w;}
-  function gy(){return canvas.height-30;}
-
-  /* TARGETS */
-  function spawnTargets(n,lvl){
-    targets=[]; boss=null;
-    bossShield={on:false,timer:0,cdTimer:3.5};
-    const isBossLvl=lvl?.hasBoss||lvl?.gt==='boss';
-    for(let i=0;i<Math.min(n,TDEFS.length);i++){
-      const d=TDEFS[i];
-      const isBoss=isBossLvl&&i===0;
-      const t={
-        id:i, x:isBoss?canvas.width/2-30:d.x, y:isBoss?80:d.y-30,
-        w:isBoss?60:30, h:isBoss?60:30,
-        hp:isBoss?10:3, maxHp:isBoss?10:3,
-        alive:true, hitT:0, phase:Math.random()*Math.PI*2,
-        baseY:isBoss?80:d.y-30, col:isBoss?'#ff2d78':TCOLS[i],
-        isBoss,
-        /* Boss sinusoidal float range */
-        floatAmp:isBoss?22:5,
-      };
-      targets.push(t);
-      if(isBoss) boss=t;
-    }
-    updGHud();
-  }
-  function resetTargets(){const lv=LevelManager.getActiveLvl();spawnTargets(lv?lv.tgt:6,lv);UI.addChat('СИСТЕМА','Мишени сброшены.');}
-  function activateMoving(){
-    movingOn=true;
-    PLATS.forEach((pl,i)=>{pl.ox=pl.ox??pl.x;pl.dir=i%2?1:-1;pl.range=55+i*8;pl.spd=30+i*7;});
-  }
-  function spawnHoles(){
-    const cw=canvas?canvas.width:700;
-    bHoles=[{x:cw*.3,y:160,r:22,str:180,a:0},{x:cw*.7,y:200,r:22,str:160,a:Math.PI}];
-  }
-  function clearDynamic(){movingOn=false;PLATS.forEach(pl=>{if(pl.ox!==undefined)pl.x=pl.ox;});bHoles=[];lvlBg='#02020c';}
-
-  /* LOOP */
-  function loop(ts){
-    animId=requestAnimationFrame(loop);
-    const dt=Math.min((ts-lastTs)/1000,.05);lastTs=ts;
-    if(GS.currentTab!=='home')return;
-    update(dt);render(ts);
-  }
-  function update(dt){
-    updPlayer(dt);updPlats(dt);updHoles(dt);
-    updBullets(dt);updTargets(dt);updMines(dt);
-    updFloats(dt);updExps(dt);updSparks(dt);updParticles(dt);updSandevistanTrail();
-    updCdBar();LevelManager.checkScore();
-  }
-
-  /* PLAYER */
-  function updPlayer(dt){
-    const item=WeaponSystem.getEq();
-    const left=KEYS['KeyA']||KEYS['ArrowLeft'],right=KEYS['KeyD']||KEYS['ArrowRight'],jump=KEYS['KeyW']||KEYS['ArrowUp'];
-    if(left)P.vx=-165;else if(right)P.vx=165;else P.vx*=.72;
-    if(jump&&P.onGround){P.vy=-430;P.onGround=false;}
-    P.vy+=GRAV*dt;P.x+=P.vx*dt;P.y+=P.vy*dt;P.onGround=false;
-    const g=gy();
-    if(P.y+P.h>=g){P.y=g-P.h;P.vy=0;P.onGround=true;}
-    PLATS.forEach(pl=>{
-      if(P.x+P.w>pl.x&&P.x<pl.x+pl.w){
-        const prev=P.y+P.h-P.vy*dt;
-        if(P.vy>=0&&prev<=pl.y+4&&P.y+P.h>=pl.y){P.y=pl.y-P.h;P.vy=0;P.onGround=true;}
-      }
-    });
-    if(P.x<0){P.x=0;P.vx=0;}if(P.x+P.w>canvas.width){P.x=canvas.width-P.w;P.vx=0;}
-    const cx=P.x+P.w/2,cy=P.y+P.h/2;
-    P.trail.push({x:cx,y:cy,a:.5});if(P.trail.length>14)P.trail.shift();
-    P.trail.forEach(t=>t.a-=dt*2.5);P.trail=P.trail.filter(t=>t.a>0);
-    if(item?.shot.kind==='minigun'&&(KEYS['Space']||KEYS['KeyJ'])&&P.shootCd<=0)tryShoot();
-    if(item?.shot.kind==='laser'){
-      if(P.laserCharging){P.laserChgT+=dt;if(P.laserChgT>=item.spec.chargeTime){P.laserCharging=false;P.laserFiring=true;P.laserFireT=item.spec.beamDur;}}
-      if(P.laserFiring){P.laserFireT-=dt;fireLaserTick(dt,item);if(P.laserFireT<=0){P.laserFiring=false;P.shootCd=2.0;}}
-    }
-    if(P.shootCd>0)P.shootCd-=dt;
-  }
-
-  /* SHOOTING */
-  function tryShoot(){
-    const item=WeaponSystem.getEq();
-    if(!item||P.shootCd>0)return;
-    if(item.shot.kind==='shield'||item.shot.kind==='laser')return;
-    if(item.shot.kind==='mine'){placeMine(item);return;}
-    /* Apply passive CD reduction (David: -15%) */
-    P.shootCd = item.cd * SkinManager.getCdMultiplier();
-    const ox=P.x+P.w/2,oy=P.y+P.h/2;
-    let dx=mouse.x-ox,dy=mouse.y-oy;const len=Math.sqrt(dx*dx+dy*dy)||1;dx/=len;dy/=len;
-    AudioSys.play(item.shot.kind);
-    const k=item.shot.kind;
-    if(k==='rapid'||k==='beam'||k==='plasma'||k==='minigun')spawnBul(ox,oy,dx,dy,item);
-    else if(k==='spread'){for(let i=0;i<3;i++){const a=(i-1)*.22,c=Math.cos(a),s=Math.sin(a);spawnBul(ox,oy,dx*c-dy*s,dx*s+dy*c,item);}}
-    else if(k==='burst'){for(let i=0;i<8;i++){const a=(Math.PI*2/8)*i;spawnBul(ox,oy,Math.cos(a),Math.sin(a),item);}}
-    else if(k==='rocket')spawnBul(ox,oy,dx,dy,item);
-    else if(k==='shotgun'){for(let i=0;i<5;i++){const a=(i-2)*.18,c=Math.cos(a),s=Math.sin(a);spawnBul(ox,oy,dx*c-dy*s,dx*s+dy*c,item);}}
-    updStatusUI(true);
-  }
-  function manualFire(){tryShoot();}
-  function startCharge(){const it=WeaponSystem.getEq();if(!it||it.shot.kind!=='laser'||P.laserFiring||P.shootCd>0)return;P.laserCharging=true;P.laserChgT=0;}
-  function stopCharge(){P.laserCharging=false;}
-  function fireLaserTick(dt,item){
-    const ox=P.x+P.w/2,oy=P.y+P.h/2;let dx=mouse.x-ox,dy=mouse.y-oy;const len=Math.sqrt(dx*dx+dy*dy)||1;dx/=len;dy/=len;
-    if(Math.random()<.65)bullets.push({x:ox,y:oy,dx,dy,spd:900,sz:3,col:'#ff0066',dmg:item.dmg,ttl:.8,maxTtl:.8,isBeam:false,isRocket:false,isShard:false,itemRef:item,trail:[],distTravelled:0});
-  }
-  function spawnBul(x,y,dx,dy,item){
-    bullets.push({x,y,dx,dy,spd:item.shot.spd,sz:item.shot.sz,col:item.shot.col,dmg:item.dmg,
-      ttl:1.6,maxTtl:1.6,isBeam:item.shot.kind==='beam',isRocket:item.shot.kind==='rocket',
-      isShard:false,itemRef:item,trail:[],distTravelled:0});
-  }
-  function placeMine(item){
-    if(P.shootCd>0)return;P.shootCd=item.cd;
-    let best=null,bd=Infinity;
-    PLATS.forEach(pl=>{const d=Math.abs((P.x+P.w/2)-(pl.x+pl.w/2));if(d<bd){bd=d;best=pl;}});
-    if(!best)return;
-    const mx=P.x+P.w/2,my=best.y-10;
-    mines.push({x:mx,y:my,r:item.shot.sz,trigR:item.spec.trigR,blastDmg:item.spec.blastDmg,blastR:item.spec.blastR,col:item.shot.col,armed:false,armT:1.2,alive:true,pulse:0});
-    addFloat(mx,my-20,'МИНА!','#ff2244');AudioSys.play('mine');updStatusUI(true);
-  }
-  function shardRocket(b,hx,hy){
-    const sp=b.itemRef.spec;
-    /* Split into 3 shards at -30°, 0°, +30° relative to rocket direction */
-    const baseAngle=Math.atan2(b.dy,b.dx);
-    const spreadAngles=[-Math.PI/6, 0, Math.PI/6]; // -30°, 0°, +30°
-    spreadAngles.forEach(offset=>{
-      const a=baseAngle+offset;
-      bullets.push({
-        x:hx, y:hy,
-        dx:Math.cos(a), dy:Math.sin(a),
-        spd:sp.shardSpd, sz:4, col:sp.shardCol, dmg:sp.shardDmg,
-        ttl:.75, maxTtl:.75,
-        isBeam:false, isRocket:false, isShard:true,
-        itemRef:null, trail:[], distTravelled:999
-      });
-    });
-    /* Split flash burst */
-    addBurstParticles(hx,hy,'#ff6600',8,150);
-    addExp(hx,hy,48,'#ff6600');
-    /* Spawn +1 Rico sparks at split point */
-    addRicoParticles(hx,hy,'#ffaa33',5);
-  }
-
-  /* BULLETS */
-  function updBullets(dt){
-    bullets=bullets.filter(b=>{
-      b.ttl-=dt;if(b.ttl<=0)return false;
-      b.x+=b.dx*b.spd*dt;b.y+=b.dy*b.spd*dt;b.distTravelled+=b.spd*dt;
-      b.trail.push({x:b.x,y:b.y});if(b.trail.length>10)b.trail.shift();
-      /* Sandevistan after-image: record position with timestamp */
-      if(sandevistanActive){
-        sandevistanTrail.push({x:b.x,y:b.y,ts:performance.now(),sz:b.sz,col:b.col});
-        if(sandevistanTrail.length>80)sandevistanTrail.shift();
-      }
-      if(b.x<-30||b.x>canvas.width+30||b.y<-30||b.y>canvas.height+30)return false;
-      for(let t of targets){
-        if(!t.alive)continue;
-        if(b.x>t.x&&b.x<t.x+t.w&&b.y>t.y&&b.y<t.y+t.h){
-          /* BOSS SHIELD: if shield is active, deflect bullet & spark ricochet */
-          if(t.isBoss&&bossShield.on){
-            addRicoParticles(b.x,b.y,'#00f5d4',6);
-            addFloat(b.x,b.y-14,'ЩИТ!','#00f5d4');
-            return false; // bullet destroyed by shield
-          }
-          /* ANTI-CHEAT */
-          const ok=b.isShard||AntiCheat.check(t,b,canvas);
-          if(!ok)return false;
-          hitTarget(t,b.dmg,b.col,b.x,b.y);
-          if(b.isRocket)shardRocket(b,b.x,b.y);
-          if(!b.isBeam)return false;
-        }
-      }
-      /* Ricochet sparks off moving platforms */
-      if(movingOn){
-        for(let pl of PLATS){
-          if(b.x>pl.x&&b.x<pl.x+pl.w&&b.y>pl.y&&b.y<pl.y+pl.h){
-            addRicoParticles(b.x,b.y,b.col,4);
-            return false; // bullet absorbed by platform
-          }
-        }
-      }
-      return true;
-    });
-  }
-
-  /* HIT TARGET */
-  function hitTarget(t,dmg,col,bx,by){
-    t.hp--;t.hitT=.25;GS.sessionDmg+=dmg;GS.sessionHits++;
-    const item=WeaponSystem.getEq();
-    let cred=50;
-    /* Gold Minigun — 5% double credit with golden flash text */
-    if(item?.shot.kind==='minigun'&&Math.random()<item.spec.x2){
-      cred=100;
-      addFloat(P.x+P.w/2,P.y-20,'+КРЕДИТЫ x2!','#ffd700');
-      /* Extra golden particle burst at player position */
-      addBurstParticles(P.x+P.w/2,P.y,'#ffd700',6,120);
-    }
-    GS.credits+=cred;updateHUD();
-    /* Void Hacker: override spark color; others: use weapon color */
-    const sparkCol = SkinManager.getHitParticleColor(col);
-    addFloat(t.x+t.w/2,t.y+t.h/2,'-'+fmt(dmg)+'!',col);
-    addSparks(bx,by,sparkCol,8);LevelManager.recordHit();AudioSys.play('hit');
-    /* Small hit-burst of 5 particles */
-    addBurstParticles(bx,by,sparkCol,5,90);
-    /* Void Hacker — matrix code character on hit */
-    if(SkinManager.getEq().id==='void_hacker'){
-      const chars='01アイウエオABCDEF∆∑∏';
-      const ch=chars[Math.floor(Math.random()*chars.length)];
-      addFloat(bx+Math.random()*20-10,by-10,ch,'#00ff41');
-    }
-    /* Chrome Samurai — katana SFX on close-range kill */
-    if(SkinManager.getEq().id==='chrome_samurai'){
-      const dist=Math.sqrt((bx-P.x)**2+(by-P.y)**2);
-      if(dist<120) AudioSys.play('katana');
-    }
-    /* David crit — Sandevistan SFX on hit */
-    if(SkinManager.getEq().id==='david' && Math.random()<0.25){
-      AudioSys.play('david_crit');
-    }
-    if(t.hp<=0){
-      t.alive=false;
-      /* JUICY EXPLOSION BURST — 15-20 particles matching target color */
-      const cx=t.x+t.w/2,cy=t.y+t.h/2;
-      addBurstParticles(cx,cy,t.col,15+Math.floor(Math.random()*6),200);
-      /* Secondary ring burst in white */
-      addBurstParticles(cx,cy,'#ffffff',8,140);
-      addExp(cx,cy,t.isBoss?110:72,t.col);
-      if(t.isBoss){addExp(cx,cy,80,'#ffffff');addExp(cx,cy,50,'#ffd700');}
-      GS.credits+=t.isBoss?1000:200;updateHUD();
-      addFloat(cx,t.y-14,t.isBoss?'БОСС УНИЧТОЖЕН! +1000':'УНИЧТОЖЕН! +200','#ffd700');
-      LevelManager.recordKill();AudioSys.play('explode');
-      AntiCheat.resetTarget(t.id);
-      if(Math.random()<.35)UI.addChat(rndBot(),['уничтожена!🔥','отличный выстрел!','дамаг!'][0|Math.random()*3]);
-      if(!t.isBoss)setTimeout(()=>{t.hp=t.maxHp;t.alive=true;t.hitT=0;},3000+Math.random()*2000);
-    }
-    updGHud();
-  }
-  function updTargets(dt){
-    targets.forEach(t=>{
-      if(!t.alive)return;
-      t.phase+=dt*(t.isBoss?0.7:1.1);
-      t.y=t.baseY+Math.sin(t.phase)*(t.floatAmp||5);
-      if(t.hitT>0)t.hitT-=dt;
-    });
-    /* Boss shield cycle: opens every 3.5s for 1.8s */
-    if(boss&&boss.alive){
-      if(bossShield.on){
-        bossShield.timer-=dt;
-        if(bossShield.timer<=0){bossShield.on=false;bossShield.cdTimer=3.5;}
-      } else {
-        bossShield.cdTimer-=dt;
-        if(bossShield.cdTimer<=0){bossShield.on=true;bossShield.timer=1.8;}
-      }
-    }
-  }
-  function updMines(dt){
-    mines.forEach(m=>{
-      if(!m.alive)return;m.pulse+=dt*3;
-      if(!m.armed){m.armT-=dt;if(m.armT<=0)m.armed=true;return;}
-      targets.forEach(t=>{if(!t.alive)return;const dx=m.x-(t.x+t.w/2),dy=m.y-(t.y+t.h/2);if(Math.sqrt(dx*dx+dy*dy)<m.trigR)detMine(m);});
-    });
-    mines=mines.filter(m=>m.alive);
-  }
-  function detMine(m){
-    m.alive=false;addExp(m.x,m.y,m.blastR,m.col);
-    targets.forEach(t=>{if(!t.alive)return;const dx=m.x-(t.x+t.w/2),dy=m.y-(t.y+t.h/2);if(Math.sqrt(dx*dx+dy*dy)<m.blastR)hitTarget(t,m.blastDmg,m.col,m.x,m.y);});
-    addSparks(m.x,m.y,m.col,24);AudioSys.play('explode');
-  }
-  function updPlats(dt){
-    if(!movingOn)return;
-    sineTime+=dt;
-    const lv=LevelManager.getActiveLvl();
-    const useSine=lv?.sineAmp; // level 3 uses sine wave motion
-    PLATS.forEach((pl,i)=>{
-      if(!pl.spd)return;
-      if(useSine){
-        /* Math.sin-driven smooth oscillation — each platform offset by phase */
-        const phase=i*Math.PI/3;
-        const amp=lv.sineAmp+(i%3)*15;
-        pl.x=(pl.ox||60)+Math.sin(sineTime*0.9+phase)*amp;
-      } else {
-        /* Linear bounce (levels 4+) */
-        pl.x+=pl.dir*pl.spd*dt;
-        if(Math.abs(pl.x-(pl.ox||0))>=pl.range)pl.dir*=-1;
-      }
-    });
-  }
-  function updHoles(dt){
-    bHoles.forEach(bh=>{bh.a+=dt*1.2;
-      bullets.forEach(b=>{const dx=bh.x-b.x,dy=bh.y-b.y,dist=Math.sqrt(dx*dx+dy*dy);
-        if(dist<bh.r*3&&dist>5){const f=bh.str/(dist*dist+1)*dt;b.dx+=(dx/dist)*f;b.dy+=(dy/dist)*f;const dl=Math.sqrt(b.dx*b.dx+b.dy*b.dy)||1;b.dx/=dl;b.dy/=dl;}
-      });
-    });
-  }
-  /* ── JUICY PARTICLE SYSTEM ── */
-  /**
-   * addBurstParticles — generates 15-20 colored sparks with gravity.
-   * Each particle: random direction, speed, size, fade-out.
-   * @param {number} x,y  — epicenter
-   * @param {string} col  — neon color (matches target color)
-   * @param {number} n    — count
-   * @param {number} baseSpd — base speed px/s
-   */
-  function addBurstParticles(x,y,col,n,baseSpd){
-    for(let i=0;i<n;i++){
-      const a=Math.random()*Math.PI*2;
-      const spd=baseSpd*(0.4+Math.random()*0.9);
-      const sz=1.5+Math.random()*3.5; // varied sizes for juice
-      const life=0.55+Math.random()*0.5;
-      particles.push({
-        x,y,
-        vx:Math.cos(a)*spd,
-        vy:Math.sin(a)*spd-30, // slight upward bias
-        life, maxLife:life,
-        col,sz,
-        grav:220+Math.random()*80, // each particle has unique gravity
-        rot:Math.random()*Math.PI*2, // rotation for diamond shapes
-      });
-    }
-  }
-  /**
-   * addRicoParticles — small flat sparks for platform ricochet.
-   * No gravity, short life, sharp angles.
-   */
-  function addRicoParticles(x,y,col,n){
-    for(let i=0;i<n;i++){
-      const a=(Math.random()-.5)*Math.PI; // half-circle spread
-      const spd=60+Math.random()*120;
-      ricoParticles.push({x,y,vx:Math.cos(a)*spd,vy:Math.sin(a)*spd-spd*.5,life:.3+Math.random()*.2,col,sz:.8+Math.random()*1.5});
-    }
-  }
-
-  function addFloat(x,y,text,col){floats.push({x,y,text,col,life:1.0,maxLife:1.0,vy:-52});}
-  function addExp(x,y,maxR,col){exps.push({x,y,r:0,maxR,col,life:.5});}
-  function addSparks(x,y,col,n){for(let i=0;i<n;i++){const a=Math.random()*Math.PI*2,spd=80+Math.random()*120;sparks.push({x,y,vx:Math.cos(a)*spd,vy:Math.sin(a)*spd,life:.6,col,sz:2+Math.random()*2});}}
-  function updSandevistanTrail(){
-    /* Prune entries older than 220ms */
-    const now=performance.now();
-    sandevistanTrail=sandevistanTrail.filter(pt=>now-pt.ts<220);
-  }
-  function updFloats(dt){floats=floats.filter(f=>{f.life-=dt;f.y+=f.vy*dt;return f.life>0;});}
-  /* Update juicy burst particles */
-  function updParticles(dt){
-    particles=particles.filter(p=>{
-      p.life-=dt;
-      p.x+=p.vx*dt; p.y+=p.vy*dt;
-      p.vx*=0.94;    // air drag
-      p.vy+=p.grav*dt; // gravity pull-down
-      return p.life>0;
-    });
-    ricoParticles=ricoParticles.filter(r=>{
-      r.life-=dt;
-      r.x+=r.vx*dt; r.y+=r.vy*dt;
-      r.vx*=0.88;
-      return r.life>0;
-    });
-  }
-  function updExps(dt){exps=exps.filter(e=>{e.life-=dt;e.r+=(e.maxR-e.r)*.18;return e.life>0;});}
-  function updSparks(dt){sparks=sparks.filter(s=>{s.life-=dt;s.x+=s.vx*dt;s.y+=s.vy*dt;s.vy+=200*dt;return s.life>0;});}
-  function updCdBar(){
-    const item=WeaponSystem.getEq();if(!el('cd-bar'))return;
-    let pct=1;
-    if(item?.shot.kind==='laser'){if(P.laserCharging)pct=P.laserChgT/(item.spec.chargeTime||1.5);else if(P.laserFiring)pct=1-P.laserFireT/(item.spec.beamDur||2);else pct=P.shootCd>0?0:1;}
-    else pct=item?.cd>0?Math.max(0,1-P.shootCd/item.cd):1;
-    el('cd-bar').style.width=(pct*100)+'%';
-  }
-  function updGHud(){const a=targets.filter(t=>t.alive).length;el('g-targets').textContent=a+'/'+targets.length;el('g-dmg').textContent=fmt(GS.sessionDmg);el('g-hits').textContent=GS.sessionHits;}
-  function updStatusUI(fired){
-    const item=WeaponSystem.getEq(),dot=el('sdot'),txt=el('stxt');if(!item)return;
-    if(fired&&item.cd>.6){dot.className='dot cd';txt.textContent='ПЕРЕЗАРЯДКА';txt.style.color='var(--pk)';
-      setTimeout(()=>{dot.className='dot ready';txt.textContent='ГОТОВ';txt.style.color='#00ff88';},item.cd*1000);}
-  }
-
-  /* RENDER */
-  function render(ts){
-    if(!ctx||!canvas)return;
-    const W=canvas.width,H=canvas.height,g=gy();
-    const lv=LevelManager.getActiveLvl();
-    ctx.fillStyle=lv?lv.bg:lvlBg;ctx.fillRect(0,0,W,H);
-    const bg=ctx.createRadialGradient(W/2,H/2,60,W/2,H/2,W*.72);
-    bg.addColorStop(0,'rgba(10,5,42,.85)');bg.addColorStop(1,'rgba(2,2,12,0)');
-    ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
-    rGrid(W,g);rHoles(ts);rPlats();rMines(ts);
-    rTargets(ts);rTrail();
-    /* Sandevistan after-image (David skin) — drawn behind bullets */
-    SkinManager.drawSandevistanTrail(ctx, sandevistanTrail);
-    rBullets();rPlayer();
-    rExps();rSparks();rParticles();rRicoParticles();rFloats();rGround(W,H,g);
-    /* Laser beam visual */
-    if(P.laserFiring){
-      ctx.save();const ox=P.x+P.w/2,oy=P.y+P.h/2;let dx=mouse.x-ox,dy=mouse.y-oy;const l=Math.sqrt(dx*dx+dy*dy)||1;dx/=l;dy/=l;
-      ctx.strokeStyle='rgba(255,0,102,.22)';ctx.lineWidth=12;ctx.shadowColor='#ff0066';ctx.shadowBlur=22;
-      ctx.beginPath();ctx.moveTo(ox+dx*20,oy+dy*20);ctx.lineTo(ox+dx*W,oy+dy*W);ctx.stroke();
-      ctx.strokeStyle='#ff0066';ctx.lineWidth=2.5;ctx.shadowBlur=14;
-      ctx.beginPath();ctx.moveTo(ox+dx*20,oy+dy*20);ctx.lineTo(ox+dx*W,oy+dy*W);ctx.stroke();
-      ctx.restore();
-    }
-    if(P.laserCharging){
-      const item=WeaponSystem.getEq(),prog=Math.min(1,P.laserChgT/(item?.spec.chargeTime||1.5));
-      ctx.save();ctx.strokeStyle=`rgba(255,0,102,${prog})`;ctx.lineWidth=2.5;ctx.shadowColor='#ff0066';ctx.shadowBlur=14;
-      ctx.beginPath();ctx.arc(P.x+P.w/2,P.y+P.h/2,18+prog*8,-Math.PI/2,-Math.PI/2+prog*Math.PI*2);ctx.stroke();ctx.restore();
-    }
-  }
-
-  function rGrid(W,g){
-    const gs=38;ctx.lineWidth=.5;
-    ctx.strokeStyle='rgba(0,245,212,.035)';
-    for(let y=0;y<g;y+=gs){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
-    for(let x=0;x<W;x+=gs){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,g);ctx.stroke();}
-    ctx.strokeStyle='rgba(255,45,120,.02)';
-    for(let x=0;x<W;x+=gs*2){ctx.beginPath();ctx.moveTo(x,g);ctx.lineTo(W/2,-20);ctx.stroke();}
-  }
-  function rGround(W,H,g){
-    ctx.save();ctx.shadowColor='#00f5d4';ctx.shadowBlur=14;ctx.strokeStyle='rgba(0,245,212,.55)';ctx.lineWidth=2;
-    ctx.beginPath();ctx.moveTo(0,g);ctx.lineTo(W,g);ctx.stroke();ctx.restore();
-    const gr=ctx.createLinearGradient(0,g,0,H);gr.addColorStop(0,'rgba(0,245,212,.07)');gr.addColorStop(1,'rgba(0,0,0,0)');
-    ctx.fillStyle=gr;ctx.fillRect(0,g,W,H-g);
-  }
-  function rPlats(){
-    PLATS.forEach(pl=>{
-      ctx.fillStyle='rgba(10,10,26,.94)';ctx.fillRect(pl.x,pl.y,pl.w,pl.h);
-      ctx.save();ctx.shadowColor='#00f5d4';ctx.shadowBlur=7;
-      const eg=ctx.createLinearGradient(pl.x,0,pl.x+pl.w,0);
-      eg.addColorStop(0,'rgba(255,45,120,.35)');eg.addColorStop(.5,'rgba(0,245,212,.85)');eg.addColorStop(1,'rgba(255,45,120,.35)');
-      ctx.fillStyle=eg;ctx.fillRect(pl.x,pl.y,pl.w,2);ctx.restore();
-      ctx.fillStyle='rgba(0,245,212,.2)';ctx.fillRect(pl.x,pl.y,2,pl.h);ctx.fillRect(pl.x+pl.w-2,pl.y,2,pl.h);
-      if(movingOn&&pl.spd){ctx.save();ctx.strokeStyle='rgba(255,160,0,.35)';ctx.lineWidth=1;ctx.strokeRect(pl.x,pl.y,pl.w,pl.h);ctx.restore();}
-    });
-  }
-  function rHoles(ts){
-    const t=ts/1000;
-    bHoles.forEach(bh=>{
-      ctx.save();
-      for(let i=0;i<3;i++){ctx.globalAlpha=.28-.09*i;ctx.strokeStyle='#b060ff';ctx.lineWidth=1.5-.4*i;ctx.shadowColor='#b060ff';ctx.shadowBlur=10;ctx.beginPath();ctx.arc(bh.x,bh.y,bh.r+i*8,t*(1+i*.3),t*(1+i*.3)+Math.PI*1.5);ctx.stroke();}
-      ctx.globalAlpha=.9;const gr=ctx.createRadialGradient(bh.x,bh.y,0,bh.x,bh.y,bh.r);gr.addColorStop(0,'rgba(0,0,0,1)');gr.addColorStop(1,'rgba(100,0,200,.3)');
-      ctx.fillStyle=gr;ctx.beginPath();ctx.arc(bh.x,bh.y,bh.r,0,Math.PI*2);ctx.fill();ctx.restore();
-    });
-  }
-  function rMines(ts){
-    mines.forEach(m=>{
-      if(!m.alive)return;const p=Math.sin(m.pulse)*.4+.6;ctx.save();
-      ctx.shadowColor=m.armed?m.col:'#888';ctx.shadowBlur=m.armed?14:5;
-      ctx.globalAlpha=p*.35;ctx.fillStyle=m.armed?m.col:'#666';ctx.beginPath();ctx.arc(m.x,m.y,m.r*1.6,0,Math.PI*2);ctx.fill();
-      ctx.globalAlpha=p*.9;ctx.fillStyle=m.armed?m.col:'#555';ctx.beginPath();ctx.arc(m.x,m.y,m.r,0,Math.PI*2);ctx.fill();
-      if(m.armed){ctx.globalAlpha=p*.18;ctx.strokeStyle=m.col;ctx.lineWidth=1;ctx.beginPath();ctx.arc(m.x,m.y,m.trigR,0,Math.PI*2);ctx.stroke();}
-      ctx.restore();
-    });
-  }
-
-  /* TARGETS — advanced neon hologram with gradient & scan-line */
-  function rTargets(ts){
-    const t=performance.now()/1000;
-    targets.forEach(tgt=>{
-      if(!tgt.alive){ctx.save();ctx.strokeStyle='rgba(255,255,255,.04)';ctx.lineWidth=1;ctx.strokeRect(tgt.x,tgt.baseY,tgt.w,tgt.h);ctx.restore();return;}
-      const hit=tgt.hitT>0;ctx.save();ctx.translate(tgt.x+tgt.w/2,tgt.y+tgt.h/2);ctx.shadowColor=tgt.col;ctx.shadowBlur=hit?28:tgt.boss?20:10;
-      /* Gradient fill — unique neon texture */
-      const gf=ctx.createRadialGradient(0,0,2,0,0,tgt.w*.7);gf.addColorStop(0,tgt.col+'44');gf.addColorStop(1,tgt.col+'08');
-      ctx.fillStyle=gf;ctx.fillRect(-tgt.w/2,-tgt.h/2,tgt.w,tgt.h);
-      /* Pulsing border */
-      ctx.strokeStyle=hit?'#fff':tgt.col;ctx.lineWidth=hit?2.5:tgt.boss?2:1.5;ctx.strokeRect(-tgt.w/2,-tgt.h/2,tgt.w,tgt.h);
-      /* Inner cross */
-      ctx.globalAlpha=hit?.7:.3;ctx.beginPath();ctx.moveTo(-tgt.w/2,0);ctx.lineTo(tgt.w/2,0);ctx.moveTo(0,-tgt.h/2);ctx.lineTo(0,tgt.h/2);ctx.stroke();ctx.globalAlpha=1;
-      /* Animated scan-line */
-      const sy=((t*28)%tgt.h)-tgt.h/2;ctx.globalAlpha=.22;ctx.fillStyle=tgt.col;ctx.fillRect(-tgt.w/2,sy,tgt.w,2);ctx.globalAlpha=1;
-      /* HP pips */
-      const pw=(tgt.w-(tgt.maxHp-1)*2)/tgt.maxHp;
-      for(let i=0;i<tgt.maxHp;i++){
-        const pg=ctx.createLinearGradient(-tgt.w/2+i*(pw+2),0,-tgt.w/2+i*(pw+2)+pw,0);
-        if(i<tgt.hp){pg.addColorStop(0,tgt.col);pg.addColorStop(1,'#fff');}else{pg.addColorStop(0,'rgba(255,255,255,.08)');pg.addColorStop(1,'rgba(255,255,255,.08)');}
-        ctx.fillStyle=pg;ctx.fillRect(-tgt.w/2+i*(pw+2),-tgt.h/2-9,pw,4);
-      }
-      /* Corner reticle */
-      const cs=tgt.boss?12:8;ctx.strokeStyle=tgt.col;ctx.lineWidth=2;ctx.shadowBlur=6;ctx.beginPath();
-      ctx.moveTo(-tgt.w/2+cs,-tgt.h/2);ctx.lineTo(-tgt.w/2,-tgt.h/2);ctx.lineTo(-tgt.w/2,-tgt.h/2+cs);
-      ctx.moveTo( tgt.w/2-cs,-tgt.h/2);ctx.lineTo( tgt.w/2,-tgt.h/2);ctx.lineTo( tgt.w/2,-tgt.h/2+cs);
-      ctx.moveTo(-tgt.w/2+cs, tgt.h/2);ctx.lineTo(-tgt.w/2, tgt.h/2);ctx.lineTo(-tgt.w/2, tgt.h/2-cs);
-      ctx.moveTo( tgt.w/2-cs, tgt.h/2);ctx.lineTo( tgt.w/2, tgt.h/2);ctx.lineTo( tgt.w/2, tgt.h/2-cs);
-      ctx.stroke();
-      if(tgt.isBoss){
-        /* Boss outer orbit ring */
-        ctx.globalAlpha=.4+Math.sin(t*3)*.2;ctx.strokeStyle=tgt.col;ctx.lineWidth=1.5;
-        ctx.beginPath();ctx.arc(0,0,tgt.w*.8+Math.sin(t*2)*5,0,Math.PI*2);ctx.stroke();
-        /* Second orbit ring — offset phase */
-        ctx.globalAlpha=.25+Math.sin(t*4+1)*.15;ctx.strokeStyle='#ffffff';ctx.lineWidth=1;
-        ctx.beginPath();ctx.arc(0,0,tgt.w*.95+Math.sin(t*1.5)*4,0,Math.PI*2);ctx.stroke();
-        ctx.globalAlpha=1;
-        /* Shield render (drawn on top of boss, inside translate block) */
-        rBossShield(tgt,t);
-        /* HP label above boss */
-        ctx.globalAlpha=1;ctx.fillStyle='#ff2d78';ctx.font='bold 11px Courier New';ctx.textAlign='center';
-        ctx.shadowColor='#ff2d78';ctx.shadowBlur=6;
-        ctx.fillText(`HP: ${tgt.hp}/${tgt.maxHp}`,0,-tgt.h/2-16);
-      }
-      ctx.restore();
-    });
-  }
-  function rTrail(){P.trail.forEach(pt=>{ctx.save();ctx.globalAlpha=Math.max(0,pt.a*.42);ctx.fillStyle='#00f5d4';ctx.shadowColor='#00f5d4';ctx.shadowBlur=6;ctx.beginPath();ctx.arc(pt.x,pt.y,3*pt.a,0,Math.PI*2);ctx.fill();ctx.restore();});}
-
-  /* PLAYER */
-  function rPlayer(){
-    const item=WeaponSystem.getEq(),col=item?item.shot.col:'#00f5d4';
-    const px=Math.round(P.x),py=Math.round(P.y),pw=P.w,ph=P.h,cx=px+pw/2,cy=py+ph/2;
-    const adx=mouse.x-cx,ady=mouse.y-cy,al=Math.sqrt(adx*adx+ady*ady)||1;
-    const anx=adx/al,any=ady/al;
-    /* Muzzle flash condition */
-    const muzzle=P.shootCd>0&&item&&P.shootCd>item.cd-.08;
-    /* Delegate all rendering to active skin */
-    SkinManager.drawPlayer(ctx, px, py, pw, ph, col, anx, any, muzzle);
-  }
-
-  /* BULLETS — unique textures per weapon type */
-  function rBullets(){
-    bullets.forEach(b=>{
-      ctx.save();ctx.shadowColor=b.col;ctx.shadowBlur=14;
-      if(b.trail.length>1){for(let i=1;i<b.trail.length;i++){const a=(i/b.trail.length)*.55;ctx.globalAlpha=a;ctx.strokeStyle=b.col;ctx.lineWidth=b.sz*.5;ctx.beginPath();ctx.moveTo(b.trail[i-1].x,b.trail[i-1].y);ctx.lineTo(b.trail[i].x,b.trail[i].y);ctx.stroke();}ctx.globalAlpha=1;}
-      const k=b.itemRef?.shot.kind||'rapid';
-      if(b.isBeam){ctx.fillStyle=b.col;ctx.globalAlpha=.92;ctx.beginPath();ctx.ellipse(b.x,b.y,b.sz*2.5,b.sz*.55,Math.atan2(b.dy,b.dx),0,Math.PI*2);ctx.fill();}
-      else if(k==='rocket'||b.isRocket){
-        ctx.save();ctx.translate(b.x,b.y);ctx.rotate(Math.atan2(b.dy,b.dx));
-        ctx.fillStyle=b.col;ctx.beginPath();ctx.moveTo(b.sz*2,0);ctx.lineTo(-b.sz,b.sz);ctx.lineTo(-b.sz,-b.sz);ctx.closePath();ctx.fill();
-        ctx.globalAlpha=.5;ctx.fillStyle='#ff4400';ctx.beginPath();ctx.ellipse(-b.sz*2,0,b.sz*1.5,b.sz*.5,0,0,Math.PI*2);ctx.fill();ctx.restore();
-      }
-      else if(k==='shotgun'){
-        ctx.save();ctx.translate(b.x,b.y);ctx.rotate(Math.atan2(b.dy,b.dx));
-        ctx.fillStyle=b.col;ctx.globalAlpha=.85;ctx.beginPath();ctx.ellipse(0,0,b.sz*1.5,b.sz*.7,0,0,Math.PI*2);ctx.fill();ctx.restore();
-      }
-      else if(k==='plasma'){
-        const pulse=Math.sin(Date.now()*.02)*.3+.7;
-        ctx.globalAlpha=.48*pulse;ctx.fillStyle=b.col;ctx.beginPath();ctx.arc(b.x,b.y,b.sz*1.6,0,Math.PI*2);ctx.fill();
-        ctx.globalAlpha=.85;ctx.beginPath();ctx.arc(b.x,b.y,b.sz,0,Math.PI*2);ctx.fill();
-        ctx.globalAlpha=.38;ctx.strokeStyle=b.col;ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(b.x,b.y,b.sz*2.2,0,Math.PI*2);ctx.stroke();
-      }
-      else{
-        ctx.globalAlpha=.48;ctx.fillStyle=b.col;ctx.beginPath();ctx.arc(b.x,b.y,b.sz*1.4,0,Math.PI*2);ctx.fill();
-        ctx.globalAlpha=1;ctx.fillStyle=b.col;ctx.beginPath();ctx.arc(b.x,b.y,b.sz,0,Math.PI*2);ctx.fill();
-        ctx.fillStyle='#fff';ctx.globalAlpha=.65;ctx.beginPath();ctx.arc(b.x,b.y,b.sz*.35,0,Math.PI*2);ctx.fill();
-      }
-      ctx.globalAlpha=1;ctx.restore();
-    });
-  }
-  /* Render juicy burst particles — neon glowing with varied shapes */
-  function rParticles(){
-    particles.forEach(p=>{
-      const alpha=Math.max(0,(p.life/p.maxLife));
-      ctx.save();
-      ctx.globalAlpha=alpha*0.9;
-      ctx.shadowColor=p.col; ctx.shadowBlur=8;
-      ctx.fillStyle=p.col;
-      /* Alternate between circle and diamond for visual variety */
-      if(p.sz>3){
-        // Diamond shape — rotate square
-        ctx.translate(p.x,p.y); ctx.rotate(p.rot+p.life*4);
-        ctx.fillRect(-p.sz*.6,-p.sz*.6,p.sz*1.2,p.sz*1.2);
-      } else {
-        ctx.beginPath(); ctx.arc(p.x,p.y,p.sz,0,Math.PI*2); ctx.fill();
-      }
-      ctx.restore();
-    });
-  }
-  /* Render ricochet sparks — small, bright, short-lived */
-  function rRicoParticles(){
-    ricoParticles.forEach(r=>{
-      ctx.save();
-      ctx.globalAlpha=r.life*3;
-      ctx.shadowColor=r.col; ctx.shadowBlur=5;
-      ctx.strokeStyle=r.col; ctx.lineWidth=r.sz;
-      ctx.beginPath();
-      ctx.moveTo(r.x,r.y);
-      ctx.lineTo(r.x-r.vx*.04,r.y-r.vy*.04); // streak look
-      ctx.stroke();
-      ctx.restore();
-    });
-  }
-  /* Render boss shield — pulsing hexagonal ring */
-  function rBossShield(tgt,t){
-    if(!tgt.isBoss||!bossShield.on)return;
-    const cx=0,cy=0; // already translated to target center
-    const pulse=0.55+Math.sin(t*8)*0.2;
-    const sides=6;
-    const R=tgt.w*.82+Math.sin(t*5)*4;
-    ctx.save();
-    ctx.rotate(t*.6);
-    ctx.globalAlpha=pulse;
-    ctx.strokeStyle='#00f5d4'; ctx.lineWidth=2.5;
-    ctx.shadowColor='#00f5d4'; ctx.shadowBlur=18;
-    ctx.beginPath();
-    for(let i=0;i<sides;i++){
-      const a=(i/sides)*Math.PI*2;
-      i===0?ctx.moveTo(Math.cos(a)*R,Math.sin(a)*R):ctx.lineTo(Math.cos(a)*R,Math.sin(a)*R);
-    }
-    ctx.closePath(); ctx.stroke();
-    /* Inner glow fill */
-    ctx.globalAlpha=pulse*.15;
-    ctx.fillStyle='#00f5d4'; ctx.fill();
-    /* Rotating dashes */
-    ctx.rotate(-t*1.4);
-    ctx.globalAlpha=pulse*.6;
-    ctx.setLineDash([8,10]);
-    ctx.strokeStyle='#ffffff'; ctx.lineWidth=1;
-    ctx.beginPath(); ctx.arc(cx,cy,R+6,0,Math.PI*2); ctx.stroke();
-    ctx.setLineDash([]);
-    ctx.restore();
-  }
-
-  function rExps(){exps.forEach(e=>{const a=Math.min(1,e.life*2.2);ctx.save();ctx.globalAlpha=a;ctx.shadowColor=e.col;ctx.shadowBlur=22;ctx.strokeStyle=e.col;ctx.lineWidth=2;ctx.beginPath();ctx.arc(e.x,e.y,e.r,0,Math.PI*2);ctx.stroke();ctx.globalAlpha=a*.25;ctx.fillStyle=e.col;ctx.beginPath();ctx.arc(e.x,e.y,e.r*.5,0,Math.PI*2);ctx.fill();ctx.restore();});}
-  function rSparks(){sparks.forEach(s=>{ctx.save();ctx.globalAlpha=s.life*1.3;ctx.shadowColor=s.col;ctx.shadowBlur=8;ctx.fillStyle=s.col;ctx.beginPath();ctx.arc(s.x,s.y,s.sz,0,Math.PI*2);ctx.fill();ctx.restore();});}
-  function rFloats(){floats.forEach(f=>{ctx.save();ctx.globalAlpha=Math.min(1,f.life/f.maxLife*1.8);ctx.fillStyle=f.col;ctx.shadowColor=f.col;ctx.shadowBlur=9;ctx.font='bold 14px Courier New';ctx.textAlign='center';ctx.fillText(f.text,f.x,f.y);ctx.restore();});}
-
-  return{init,resize,spawnTargets,resetTargets,manualFire,activateMoving,spawnHoles,clearDynamic};
-})();
-
-/* ================================================================
-   MODULE: Entertainment — slots + wheel
-================================================================ */
-const Entertainment=(()=>{
-  const SYM=['💎','🔥','⚡','💀','🌀','🏆'];
-  function buildSlots(){for(let i=0;i<3;i++){const s=el('reel-'+i);if(s&&!s.children.length){const all=[];for(let r=0;r<7;r++)all.push(...SYM);s.innerHTML=all.map(x=>`<div class="reel-item">${x}</div>`).join('');s.style.transform='translateY(0)';}}}
-  function spinSlots(){
-    if(GS.slotsSpinning)return;if(GS.credits<200){el('slot-res').textContent='❌ Нужно 200 кредитов!';el('slot-res').style.color='var(--pk)';return;}
-    GS.credits-=200;GS.slotsSpinning=true;GS.casino.spins++;updateHUD();
-    const btn=el('slot-btn');btn.disabled=true;el('slot-res').textContent='⏳ вращение...';el('slot-res').style.color='var(--dim)';
-    const f=[SYM[Math.floor(Math.random()*SYM.length)],SYM[Math.floor(Math.random()*SYM.length)],SYM[Math.floor(Math.random()*SYM.length)]];
-    const d=[420,720,1020],IH=66;
-    for(let i=0;i<3;i++){const s=el('reel-'+i);const fi=SYM.indexOf(f[i]);s.style.transition=`transform ${d[i]+220}ms cubic-bezier(.2,.8,.5,1)`;s.style.transform=`translateY(-${(Math.floor(Math.random()*3+2)*SYM.length+fi)*IH}px)`;}
-    setTimeout(()=>{
-      let win=0,msg='';const [s0,s1,s2]=f;
-      if(s0===s1&&s1===s2){if(s0==='💎'){win=5000;msg='💎 ДЖЕКПОТ! +5 000!';}else if(s0==='🏆'){win=3000;msg='🏆 ПОБЕДА! +3 000!';}else if(s0==='🔥'){win=2000;msg='🔥 МЕГА! +2 000!';}else{win=1000;msg=`${s0} ТРОЙНИК! +1 000!`;}}
-      else if(s0===s1||s1===s2||s0===s2){win=400;msg='✨ Пара! +400!';}else{msg='❌ Нет совпадений.';}
-      if(win>0){GS.credits+=win;GS.casino.wins++;if(win>GS.casino.maxWin)GS.casino.maxWin=win;el('slot-res').style.color='var(--go)';if(win>=1000)UI.showNotif(`${rndBot()} сорвал ${fmt(win)} кр.!`,false);}
-      else{GS.casino.losses++;el('slot-res').style.color='var(--pk)';}
-      GS.credits=Math.max(0,GS.credits);el('slot-res').textContent=msg;updateHUD();updCStats();GS.slotsSpinning=false;btn.disabled=false;
-    },d[2]+320);
-  }
-  const WSEG=[{l:'x0',m:0,f:null,c:'#cc2244'},{l:'+200',m:null,f:200,c:'#1a2a3a'},{l:'x2',m:2,f:null,c:'#005544'},{l:'+500',m:null,f:500,c:'#3a1a6a'},{l:'ДЖЕКПОТ',m:null,f:3000,c:'#7a6000'},{l:'x0',m:0,f:null,c:'#cc2244'},{l:'+300',m:null,f:300,c:'#005544'},{l:'x1.5',m:1.5,f:null,c:'#2a3a1a'}];
-  function drawWheel(){
-    const wc=el('whl-canvas');if(!wc)return;const wctx=wc.getContext('2d');const cx=100,cy=100,r=96,n=WSEG.length,sa=(Math.PI*2)/n;wctx.clearRect(0,0,200,200);
-    WSEG.forEach((seg,i)=>{const s=GS.wheelAngle+i*sa-Math.PI/2,e=s+sa;wctx.beginPath();wctx.moveTo(cx,cy);wctx.arc(cx,cy,r,s,e);wctx.closePath();wctx.fillStyle=seg.c;wctx.fill();wctx.strokeStyle='#000';wctx.lineWidth=1.5;wctx.stroke();wctx.save();wctx.translate(cx,cy);wctx.rotate(s+sa/2);wctx.textAlign='right';wctx.fillStyle='#fff';wctx.font=`bold ${seg.l==='ДЖЕКПОТ'?9:11}px Courier New`;wctx.fillText(seg.l,r-8,4);wctx.restore();});
-    wctx.beginPath();wctx.arc(cx,cy,14,0,Math.PI*2);wctx.fillStyle='#050510';wctx.fill();wctx.strokeStyle='rgba(0,245,212,.5)';wctx.lineWidth=1.5;wctx.stroke();wctx.beginPath();wctx.arc(cx,cy,4,0,Math.PI*2);wctx.fillStyle='#00f5d4';wctx.fill();
-  }
-  function spinWheel(){
-    if(GS.wheelSpinning)return;if(GS.credits<150){el('whl-res').textContent='❌ Нужно 150 кредитов!';el('whl-res').style.color='var(--pk)';return;}
-    GS.credits-=150;GS.wheelSpinning=true;GS.casino.spins++;updateHUD();const btn=el('whl-btn');btn.disabled=true;
-    el('whl-res').textContent='⏳ вращается...';el('whl-res').style.color='var(--dim)';
-    const wi=Math.floor(Math.random()*WSEG.length),n=WSEG.length,sa=(Math.PI*2)/n,cur=GS.wheelAngle%(Math.PI*2),tgt=-wi*sa-sa/2;
-    const total=Math.PI*2*(8+Math.floor(Math.random()*5))+((tgt-cur+Math.PI*4)%(Math.PI*2));
-    const sA=GS.wheelAngle,eA=sA+total,dur=3500,st=performance.now();
-    const ease=t=>1-Math.pow(1-t,4);
-    const frame=now=>{const t=Math.min(1,(now-st)/dur);GS.wheelAngle=sA+(eA-sA)*ease(t);drawWheel();if(t<1){requestAnimationFrame(frame);return;}
-      GS.wheelAngle=eA;drawWheel();const seg=WSEG[wi];let win=0,msg='';
-      if(seg.f!==null&&seg.f!==undefined){win=seg.f;msg=`🎡 +${fmt(win)} кр.!`;}else if(seg.m!==null){if(seg.m===0)msg='❌ Ничего!';else{win=Math.floor(150*seg.m);msg=`🎡 x${seg.m}! +${fmt(win)} кр.!`;}}
-      if(win>0){GS.credits+=win;GS.casino.wins++;if(win>GS.casino.maxWin)GS.casino.maxWin=win;el('whl-res').style.color='var(--go)';}else{GS.casino.losses++;el('whl-res').style.color='var(--pk)';}
-      GS.credits=Math.max(0,GS.credits);el('whl-res').textContent=msg;updateHUD();updCStats();GS.wheelSpinning=false;btn.disabled=false;
-    };requestAnimationFrame(frame);
-  }
-  function updCStats(){el('c-spins').textContent=GS.casino.spins;el('c-wins').textContent=GS.casino.wins;el('c-losses').textContent=GS.casino.losses;el('c-max').textContent=fmt(GS.casino.maxWin);}
-  return{buildSlots,spinSlots,drawWheel,spinWheel};
-})();
-
-/* ================================================================
-   MODULE: Settings
-================================================================ */
-const Settings=(()=>{
-  function setGfx(m){GS.gfx=m;const eco=el('gfx-eco'),ultra=el('gfx-ultra'),s=el('gfx-status');if(m==='eco'){eco.classList.add('btn-act');ultra.classList.remove('btn-act');el('logo').style.animation='none';el('logo').style.textShadow='none';s.style.color='var(--cy)';s.textContent='● Эко-режим';}else{ultra.classList.add('btn-act');eco.classList.remove('btn-act');el('logo').style.animation='logoPulse 3s ease-in-out infinite';el('logo').style.textShadow='';s.style.color='#00cc66';s.textContent='● Ультра-режим';}}
-  function setTheme(t){const r=document.documentElement;['th-cy','th-pk','th-dk'].forEach(id=>el(id).classList.remove('btn-act'));if(t==='cyan'){r.style.setProperty('--cy','#00f5d4');r.style.setProperty('--pk','#ff2d78');el('th-cy').classList.add('btn-act');}else if(t==='pink'){r.style.setProperty('--cy','#ff2d78');r.style.setProperty('--pk','#ff7a00');el('th-pk').classList.add('btn-act');}else{r.style.setProperty('--cy','#aaaaaa');r.style.setProperty('--pk','#666666');el('th-dk').classList.add('btn-act');}if(GS.currentTab==='entertainment')Entertainment.drawWheel();}
-  function toggleChat(){GS.chatOn=!GS.chatOn;el('tog-chat').classList.toggle('on',GS.chatOn);el('tog-chat-l').textContent=GS.chatOn?'Показывать':'Скрыть';const m=el('chat-msgs'),r=document.querySelector('.chat-row');if(m)m.style.display=GS.chatOn?'flex':'none';if(r)r.style.display=GS.chatOn?'flex':'none';}
-  function toggleNotifs(){GS.notifsOn=!GS.notifsOn;el('tog-notif').classList.toggle('on',GS.notifsOn);el('tog-notif-l').textContent=GS.notifsOn?'Включены':'Отключены';}
-  return{setGfx,setTheme,toggleChat,toggleNotifs};
-})();
-
-/* ================================================================
-   MODULE: UI — HUD, arsenal, shop, inventory, chat, notifications
-================================================================ */
-const UI=(()=>{
-  function renderArsenal(){fillGrid('wgrid',WeaponSystem.weapons());fillGrid('sgrid',WeaponSystem.spells());updPolyPanel();}
-  function fillGrid(cid,items){
-    const c=el(cid);c.innerHTML='';
-    items.forEach(item=>{
-      const owned=WeaponSystem.owned(item.id),equipped=GS.equippedId===item.id;
-      const d=document.createElement('div');d.className='card a-card '+rarCls(item.rarity);
-      d.innerHTML=`<div class="ci">${item.icon}</div><div class="cn ${rarCol(item.rarity)}">${item.name}</div><div class="cr ${rarCol(item.rarity)}">${rarLbl(item.rarity)}</div><div class="cst">УРН:&nbsp;<span>${fmt(item.dmg||0)}</span></div><div class="cst">КД:&nbsp;&nbsp;<span>${item.cd} с</span></div>${equipped?`<div class="eq-tag">✓ АКТИВНО</div>`:''}`;
-      if(!owned){const l=document.createElement('div');l.className='lock-ov';l.innerHTML=`<span style="font-size:18px">🔒</span><span>${fmt(item.cost)} кр.</span>`;d.appendChild(l);}
-      else if(!equipped){d.style.cursor='pointer';d.addEventListener('click',()=>equipItem(item.id));}
-      c.appendChild(d);
-    });
-  }
-  function equipItem(id){if(!WeaponSystem.owned(id)||GS.equippedId===id)return;GS.equippedId=id;renderArsenal();updPolyPanel();showNotif(`${WeaponSystem.get(id).icon} ${WeaponSystem.get(id).name} экипировано`,false);}
-  function updPolyPanel(){const item=WeaponSystem.getEq();if(!item)return;el('eq-name').textContent=item.name;el('eq-dmg').textContent=fmt(item.dmg||0);el('eq-cd').textContent=item.cd;el('g-weapon').textContent=item.name;el('eq-type').textContent=WeaponSystem.typeName(item.shot.kind);}
-  window.updPolyPanel=updPolyPanel;
-  function renderShop(){
-    const g=el('shop-grid');g.innerHTML='';
-    WeaponSystem.forSale().forEach(item=>{
-      const owned=WeaponSystem.owned(item.id);const d=document.createElement('div');d.className='card '+rarCls(item.rarity);
-      d.innerHTML=`<div class="sic">${item.icon}</div><div class="sn ${rarCol(item.rarity)}">${item.name}</div><div class="sar ${rarCol(item.rarity)}">${rarLbl(item.rarity)}</div><div class="sd">${item.desc}</div><div class="ss">УРН:<span>${fmt(item.dmg||0)}</span>·КД:<span>${item.cd}с</span></div><div>${owned?`<div class="sold-tag">✓ КУПЛЕНО</div>`:`<button class="btn btn-go btn-full" onclick="UI.buyItem('${item.id}')">💰 ${fmt(item.cost)} кр.</button>`}</div>`;
-      g.appendChild(d);
-    });
-  }
-  function buyItem(id){
-    const item=WeaponSystem.get(id);if(!item||WeaponSystem.owned(id))return;
-    if(GS.credits<item.cost){const w=el('shop-warn');w.style.display='block';setTimeout(()=>w.style.display='none',2800);return;}
-    GS.credits-=item.cost;GS.inventory.push(id);updateHUD();saveProgress();renderShop();renderArsenal();showNotif(`${item.icon} ${item.name} куплено!`,true);addChat('СИСТЕМА',`Игрок приобрёл ${item.name}!`);
-  }
-  function renderInventory(){
-    const g=el('inv-grid'),em=el('inv-empty');g.innerHTML='';
-    const owned=WeaponSystem.all().filter(i=>WeaponSystem.owned(i.id));em.style.display=owned.length===0?'block':'none';
-    owned.forEach(item=>{
-      const equipped=GS.equippedId===item.id;const d=document.createElement('div');d.className='card '+rarCls(item.rarity);
-      d.innerHTML=`<div class="tip"><div class="iv-i">${item.icon}</div><div class="tip-txt">${item.desc}<br>УРН:${fmt(item.dmg||0)}·КД:${item.cd}с</div></div><div class="iv-n ${rarCol(item.rarity)}">${item.name}</div><div class="iv-r ${rarCol(item.rarity)}">${rarLbl(item.rarity)}</div><div class="iv-s">УРН:<span>${fmt(item.dmg||0)}</span></div><div class="iv-s">КД:<span>${item.cd} с</span></div>${equipped?`<div class="eq-tag" style="display:inline-block;margin-top:6px;font-size:9px">✓ АКТИВНО</div>`:`<button class="btn btn-cy btn-full btn-sm" style="margin-top:6px" onclick="UI.equipItem('${item.id}')">⚡ Экипировать</button>`}`;
-      g.appendChild(d);
-    });
-  }
-  function equipItem(id){
-    if(!WeaponSystem.owned(id)||GS.equippedId===id)return;
-    GS.equippedId=id;renderArsenal();updPolyPanel();renderInventory();showNotif(`${WeaponSystem.get(id).icon} ${WeaponSystem.get(id).name} экипировано`,false);
-  }
-  function showNotif(text,isPlayer){
-    if(!GS.notifsOn&&!isPlayer)return;
-    const c=el('notifs'),d=document.createElement('div');d.className='notif'+(isPlayer?' pl':'');d.textContent=(isPlayer?'✅ ':'📡 ')+text;c.appendChild(d);
-    setTimeout(()=>{d.classList.add('out');setTimeout(()=>d.remove(),380);},3800);while(c.children.length>5)c.removeChild(c.firstChild);
-  }
-  const NCOLS=['#00f5d4','#ff2d78','#b060ff','#ffd700','#00cc66','#ff7a00','#60c0ff'];
-  function nameColor(n){let h=0;for(const c of n)h=(h*31+c.charCodeAt(0))&0xfffffff;return NCOLS[h%NCOLS.length];}
-  function addChat(name,text,isPlayer=false){
-    const c=el('chat-msgs');if(!c)return;const d=document.createElement('div');d.className='chat-line';
-    d.innerHTML=`<span style="color:${isPlayer?'#fff':nameColor(name)};font-weight:bold">${name}:</span> <span style="color:#9090b0">${text}</span>`;
-    c.appendChild(d);c.scrollTop=c.scrollHeight;while(c.children.length>80)c.removeChild(c.firstChild);
-    const tk=el('live-ticker');if(tk)tk.textContent=`${name}: ${text}`;
-  }
-  function sendChat(){const i=el('chat-in'),t=(i.value||'').trim();if(!t)return;addChat('ВЫ',t,true);i.value='';}
-  /* ── SKIN SHOP ── */
-  function renderSkins(){
-    const g=el('skin-grid'); if(!g)return; g.innerHTML='';
-    /* Storage banner */
-    const banner=document.createElement('div');
-    banner.className='skin-storage-banner';
-    banner.textContent='💾 Прогресс скинов сохраняется автоматически в LocalStorage';
-    g.before(banner);
-
-    SkinManager.getAll().forEach(skin=>{
-      const owned=SkinManager.isOwned(skin.id);
-      const equipped=SkinManager.getEq().id===skin.id;
-      const d=document.createElement('div');
-      const rarClass='sk-'+(skin.rarity==='legendary'?'legendary':skin.rarity==='epic'?'epic':'');
-      d.className=`skin-card ${rarClass}`+(equipped?' skin-equipped':'')+((!owned&&!skin.isFree&&skin.costCredits>0)?' skin-locked':'');
-
-      // Canvas preview
-      const pc=document.createElement('canvas');pc.width=64;pc.height=80;
-
-      const rarityColors={common:'var(--com)',epic:'var(--epi)',legendary:'var(--leg)'};
-      const rarityNames={common:'ОБЫЧНЫЙ',epic:'ЭПИЧЕСКИЙ',legendary:'ЛЕГЕНДАРНЫЙ'};
-
-      /* Price label */
-      let priceHTML='';
-      if(!skin.isFree&&!owned){
-        priceHTML=`<div class="skin-price">`;
-        if(skin.costCredits>0) priceHTML+=`💰 ${fmt(skin.costCredits)} кр. `;
-        if(skin.costCrystals>0) priceHTML+=`<span class="xt-price">💠 ${skin.costCrystals}</span>`;
-        priceHTML+=`</div>`;
-      }
-
-      /* Action button */
-      let actionHTML='';
-      if(owned||skin.isFree){
-        if(equipped) actionHTML=`<div class="skin-equipped-tag">⚡ АКТИВЕН</div>`;
-        else actionHTML=`<button class="btn btn-cy skin-equip-btn" onclick="SkinManager.equip('${skin.id}');UI.renderSkins();updateHUD()">Надеть</button>`;
-      } else {
-        actionHTML=`<button class="btn btn-go skin-equip-btn" onclick="UI.buySkin('${skin.id}')">Купить</button>`;
-      }
-
-      d.innerHTML=`
-        ${skin.isNew?'<div class="skin-new-badge">NEW</div>':''}
-        <div class="skin-canvas-wrap" id="sp-${skin.id}"></div>
-        <div class="skin-name">${skin.name}</div>
-        <div class="skin-rarity" style="color:${rarityColors[skin.rarity]}">${rarityNames[skin.rarity]}</div>
-        <div class="skin-desc">${skin.desc}</div>
-        ${skin.passiveLabel?`<div class="skin-passive">${skin.passiveLabel}</div>`:''}
-        ${priceHTML}
-        ${actionHTML}
-      `;
-      g.appendChild(d);
-      const wrap=d.querySelector(`#sp-${skin.id}`);
-      if(wrap){wrap.appendChild(pc);SkinManager.drawPreview(pc,skin);}
-    });
-
-    const eqName=el('skin-equipped-name');
-    if(eqName)eqName.textContent=SkinManager.getEq().name;
-  }
-
-    function buySkin(id){
-    const skin=SkinManager.get(id); if(!skin||SkinManager.isOwned(id))return;
-    /* Check credits */
-    if(GS.credits < skin.costCredits){
-      const w=el('shop-warn');w.style.display='block';setTimeout(()=>w.style.display='none',2800);return;
-    }
-    /* Check crystals */
-    if(skin.costCrystals > 0 && GS.crystals < skin.costCrystals){
-      showNotif('❌ Недостаточно Кристаллов!',false); return;
-    }
-    GS.credits  -= skin.costCredits;
-    GS.crystals -= skin.costCrystals;
-    GS.ownedSkins.push(id);
-    SkinManager.equip(id);
-    saveProgress(); // persist to localStorage
-    updateHUD(); renderSkins();
-    showNotif(`👤 Скин «${skin.name}» куплен и надет!`,true);
-    addChat('СИСТЕМА',`Игрок приобрёл скин «${skin.name}»!`);
-    AudioSys.play('level_up'); // celebratory jingle
-  }
-
-  return{renderArsenal,renderShop,buyItem,renderInventory,equipItem,renderSkins,buySkin,showNotif,addChat,sendChat};
-})();
-
-/* ================================================================
-   GLOBAL HELPERS
-================================================================ */
-function switchTab(name){
-  GS.currentTab=name;
-  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));el('tab-'+name).classList.add('active');
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===name));
-  if(name==='home'){UI.renderArsenal();Engine.resize();}
-  if(name==='shop')UI.renderShop();
-  if(name==='inventory')UI.renderInventory();
-  if(name==='campaign'){LevelManager.renderCards();LevelManager.updateSel();}
-  if(name==='entertainment'){Entertainment.buildSlots();Entertainment.drawWheel();}
-  if(name==='skins')UI.renderSkins();
+/**
+ * SKIN DATABASE
+ */
+const SKINS_DB = [
+    { id: 'default', name: 'Беглец', costCredits: 0, costCrystals: 0, desc: 'Стандартный костюм.' },
+    { id: 'david', name: 'Дэвид Мартинес', costCredits: 2500, costCrystals: 15, desc: 'Легенда Найт-Сити. Эффект шлейфа.' },
+    { id: 'lucy', name: 'Люси', costCredits: 1800, costCrystals: 5, desc: 'Нетраннер. Бирюзовое сияние.' },
+    { id: 'chrome', name: 'Хром Самурай', costCredits: 4000, costCrystals: 20, desc: 'Полная замена тела.' }
+];
+
+const el = id => document.getElementById(id);
+const fmt = n => n.toLocaleString();
+
+/**
+ * PERSISTENCE
+ */
+function saveProgress() {
+    localStorage.setItem('neon_abyss_data', JSON.stringify({
+        credits: GS.credits,
+        crystals: GS.crystals,
+        ownedSkins: GS.ownedSkins,
+        equippedSkin: GS.equippedSkin
+    }));
 }
-function updateHUD(){el('hud-cr').textContent=fmt(GS.credits);el('hud-xt').textContent=fmt(GS.crystals);el('hud-lvl').textContent=GS.playerLevel;}
 
-const BOTS=['CyberGhost_X','NeonHunter_77','Void_Walker','GlitchQueen','Phantom_Pro','Dark_Matter','NullPointer','CyberFox42','Abyss_Lord','Ghost_Code','Player_Zero','Gamer_Cyberpunk','ShadowByte','NeonWraith'];
-const BOT_L=['где выбить Abyss Railgun?','казино сегодня щедрое!','ищу пати на рейд','Laser Beam после зарядки — пушка!','антифарм система топ','Split Rocket разносит сразу 3 мишени!','Gold Minigun дал x2 кредиты!','Plasma Shotgun имба на уровне 8','кто прошёл все 10 уровней?','промокод HOLKIP даёт 5000 кр.!','Orbital Mine + движущиеся платформы = мощь','вот это визуал, мишени с глоу!'];
-const NOTIF_T=[n=>`${n} прошёл уровень ${1+Math.floor(Math.random()*9)} Кампании!`,n=>`${n} выиграл ${fmt(Math.floor(Math.random()*5+1)*1000)} кр. в Развлечениях!`,n=>`${n} зашёл в Лобби Бездны`,n=>`${n} активировал промокод HOLKIP!`,n=>`${n} купил Gold Minigun!`];
-function rndBot(){return BOTS[Math.floor(Math.random()*BOTS.length)];}
+function loadProgress() {
+    const data = localStorage.getItem('neon_abyss_data');
+    if (data) {
+        const parsed = JSON.parse(data);
+        GS.credits = parsed.credits || 1500;
+        GS.crystals = parsed.crystals || 0;
+        GS.ownedSkins = parsed.ownedSkins || ['default'];
+        GS.equippedSkin = parsed.equippedSkin || 'default';
+    }
+}
 
-let onlineBase=Math.floor(Math.random()*3000+5500);
-function tickOnline(){onlineBase+=Math.floor(Math.random()*31)-15;if(onlineBase<4000)onlineBase=4200;if(onlineBase>12000)onlineBase=11500;el('online-cnt').textContent=fmt(onlineBase);}
+/**
+ * UI MODULE
+ */
+const UI = {
+    updateHUD() {
+        el('hud-cr').textContent = fmt(GS.credits);
+        el('hud-xt').textContent = fmt(GS.crystals);
+    },
 
-/* ================================================================
-   INIT
-================================================================ */
-(function init(){
-  /* Load persistent progress before anything renders */
-  loadProgress();
-  updateHUD();tickOnline();el('sess-cnt').textContent=fmt(GS.sessions);
-  UI.renderArsenal();Entertainment.buildSlots();LevelManager.renderCards();LevelManager.updateSel();
-  setTimeout(()=>{
-    Engine.init();
-    /* Restore skin selection from localStorage */
-    SkinManager.restoreEquipped();
-    UI.renderSkins();
-  },150);
-  setTimeout(()=>UI.addChat('СИСТЕМА','NEON ABYSS v8.0 — SkinManager Pro + PromoCode + 10 уровней активны!'),600);
-  setTimeout(()=>UI.addChat('CyberFox42','антифарм система работает — честная игра! 💪'),1900);
-  setTimeout(()=>UI.addChat('NeonHunter_77','промокод HOLKIP даёт 5000 кредитов!'),3300);
-  setTimeout(()=>UI.showNotif('Player_Zero зашёл в Лобби Бездны',false),2600);
-  setTimeout(()=>UI.showNotif('GlitchQueen активировала промокод HOLKIP!',false),6000);
-  setInterval(()=>UI.addChat(rndBot(),BOT_L[Math.floor(Math.random()*BOT_L.length)]),4500);
-  setInterval(()=>{const n=rndBot();UI.showNotif(NOTIF_T[Math.floor(Math.random()*NOTIF_T.length)](n),false);},7200+Math.random()*2800);
-  setInterval(tickOnline,3200);
-  window.addEventListener('resize',()=>{if(GS.currentTab==='home')Engine.resize();});
-})();
+    showNotif(text, isGood = true) {
+        const c = el('notifs');
+        const d = document.createElement('div');
+        d.className = 'notif';
+        if (!isGood) d.style.borderColor = 'var(--pk)';
+        d.textContent = text;
+        c.appendChild(d);
+        setTimeout(() => d.remove(), 3000);
+    },
+
+    addChat(user, msg) {
+        const c = el('chat-msgs');
+        c.innerHTML += `<div><b style="color:var(--cy)">${user}:</b> ${msg}</div>`;
+        c.scrollTop = c.scrollHeight;
+    },
+
+    renderSkins() {
+        const grid = el('skin-grid');
+        grid.innerHTML = '';
+
+        SKINS_DB.forEach(skin => {
+            const isOwned = GS.ownedSkins.includes(skin.id);
+            const isActive = GS.equippedSkin === skin.id;
+            
+            const card = document.createElement('div');
+            card.className = `skin-card ${isActive ? 'active-skin' : ''}`;
+            
+            let actionBtn = '';
+            if (isActive) {
+                actionBtn = `<button class="btn btn-full" disabled style="color:var(--go); border-color:var(--go)">● АКТИВЕН</button>`;
+            } else if (isOwned) {
+                actionBtn = `<button class="btn btn-cy btn-full" onclick="UI.equipSkin('${skin.id}')">НАДЕТЬ</button>`;
+            } else {
+                actionBtn = `<button class="btn btn-go btn-full" onclick="UI.buySkin('${skin.id}')">КУПИТЬ ЗА ${skin.costCredits}</button>`;
+            }
+
+            card.innerHTML = `
+                <div class="skin-canvas-wrap"></div>
+                <div class="skin-name">${skin.name}</div>
+                <div style="font-size:10px; color:var(--dim); margin-bottom:10px">${skin.desc}</div>
+                ${!isOwned ? `<div class="skin-price">💰 ${skin.costCredits} | 💠 ${skin.costCrystals}</div>` : ''}
+                ${actionBtn}
+            `;
+            grid.appendChild(card);
+        });
+    },
+
+    buySkin(id) {
+        const skin = SKINS_DB.find(s => s.id === id);
+        if (!skin) return;
+
+        const canAfford = GS.credits >= skin.costCredits && GS.crystals >= skin.costCrystals;
+
+        if (canAfford) {
+            GS.credits -= skin.costCredits;
+            GS.crystals -= skin.costCrystals;
+            GS.ownedSkins.push(id);
+            
+            this.showNotif(`🔓 Скин "${skin.name}" разблокирован!`);
+            this.equipSkin(id); // Автоматически надеваем
+            saveProgress();
+        } else {
+            const warn = el('shop-warn');
+            warn.style.display = 'block';
+            setTimeout(() => warn.style.display = 'none', 2000);
+            this.showNotif("Недостаточно средств!", false);
+        }
+    },
+
+    equipSkin(id) {
+        GS.equippedSkin = id;
+        this.renderSkins();
+        this.updateHUD();
+        this.showNotif(`👤 Облик изменен на "${SKINS_DB.find(s=>s.id===id).name}"`);
+        saveProgress();
+    }
+};
+
+/**
+ * GAME ENGINE
+ */
+const Engine = {
+    canvas: null,
+    ctx: null,
+    player: { x: 400, y: 200, vx: 0, vy: 0, w: 20, h: 20 },
+    history: [], // Для шлейфа Сандевистана
+    keys: {},
+    mouse: { x: 0, y: 0 },
+
+    init() {
+        this.canvas = el('game-canvas');
+        this.ctx = this.canvas.getContext('2d');
+        
+        window.addEventListener('keydown', e => this.keys[e.code] = true);
+        window.addEventListener('keyup', e => this.keys[e.code] = false);
+        this.canvas.addEventListener('mousemove', e => {
+            const r = this.canvas.getBoundingClientRect();
+            this.mouse.x = e.clientX - r.left;
+            this.mouse.y = e.clientY - r.top;
+        });
+
+        this.loop();
+    },
+
+    update() {
+        // Движение
+        if (this.keys['KeyA']) this.player.vx = -4;
+        else if (this.keys['KeyD']) this.player.vx = 4;
+        else this.player.vx *= 0.8;
+
+        if (this.keys['KeyW']) this.player.vy = -4;
+        else if (this.keys['KeyS']) this.player.vy = 4;
+        else this.player.vy *= 0.8;
+
+        this.player.x += this.player.vx;
+        this.player.y += this.player.vy;
+
+        // Границы
+        this.player.x = Math.max(0, Math.min(800 - this.player.w, this.player.x));
+        this.player.y = Math.max(0, Math.min(400 - this.player.h, this.player.y));
+
+        // Логика шлейфа для Дэвида
+        if (GS.equippedSkin === 'david') {
+            this.history.push({ x: this.player.x, y: this.player.y });
+            if (this.history.length > 8) this.history.shift();
+        } else {
+            this.history = [];
+        }
+    },
+
+    draw() {
+        const ctx = this.ctx;
+        ctx.clearRect(0, 0, 800, 400);
+
+        // Сетка
+        ctx.strokeStyle = 'rgba(0, 245, 212, 0.05)';
+        for(let i=0; i<800; i+=40) { ctx.beginPath(); ctx.moveTo(i,0); ctx.lineTo(i,400); ctx.stroke(); }
+
+        const cx = this.player.x + this.player.w / 2;
+        const cy = this.player.y + this.player.h / 2;
+
+        // 1. Отрисовка Шлейфа (Сандевистан)
+        if (GS.equippedSkin === 'david' && this.history.length > 0) {
+            this.history.forEach((pos, i) => {
+                ctx.save();
+                ctx.globalAlpha = (i / this.history.length) * 0.4;
+                ctx.shadowColor = "#ffb700";
+                ctx.shadowBlur = 10;
+                ctx.fillStyle = "#ffb700";
+                ctx.fillRect(pos.x, pos.y, this.player.w, this.player.h);
+                ctx.restore();
+            });
+        }
+
+        // 2. Отрисовка самого Игрока
+        ctx.save();
+        if (GS.equippedSkin === 'david') {
+            // Эффект Дэвида - неоновый ромб-прицел
+            ctx.translate(cx, cy);
+            ctx.shadowColor = "#ffb700";
+            ctx.shadowBlur = 15;
+            ctx.strokeStyle = "#ffb700";
+            ctx.lineWidth = 3;
+            
+            ctx.beginPath();
+            ctx.moveTo(0, -15);
+            ctx.lineTo(15, 0);
+            ctx.lineTo(0, 15);
+            ctx.lineTo(-15, 0);
+            ctx.closePath();
+            ctx.stroke();
+            
+            ctx.fillStyle = "rgba(255, 183, 0, 0.3)";
+            ctx.fill();
+            
+            // Точка в центре
+            ctx.fillStyle = "#fff";
+            ctx.fillRect(-2, -2, 4, 4);
+        } else {
+            // Стандартный игрок
+            ctx.shadowColor = "var(--cy)";
+            ctx.shadowBlur = 10;
+            ctx.fillStyle = GS.equippedSkin === 'lucy' ? "#b060ff" : "#00f5d4";
+            ctx.fillRect(this.player.x, this.player.y, this.player.w, this.player.h);
+            ctx.strokeStyle = "#fff";
+            ctx.strokeRect(this.player.x, this.player.y, this.player.w, this.player.h);
+        }
+        ctx.restore();
+
+        // Прицел
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+        ctx.beginPath();
+        ctx.moveTo(this.mouse.x - 10, this.mouse.y); ctx.lineTo(this.mouse.x + 10, this.mouse.y);
+        ctx.moveTo(this.mouse.x, this.mouse.y - 10); ctx.lineTo(this.mouse.x, this.mouse.y + 10);
+        ctx.stroke();
+    },
+
+    loop() {
+        Engine.update();
+        Engine.draw();
+        requestAnimationFrame(() => Engine.loop());
+    }
+};
+
+/**
+ * APP INIT
+ */
+function switchTab(name) {
+    GS.currentTab = name;
+    document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+    el('tab-' + name).classList.add('active');
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === name));
+    if (name === 'skins') UI.renderSkins();
+}
+
+// Запуск
+loadProgress();
+UI.updateHUD();
+Engine.init();
+UI.addChat("СИСТЕМА", "Добро пожаловать в Neon Abyss v8.5!");
+UI.addChat("CyberHacker", "Промокодов пока нет, фарми кредиты на полигоне!");
 </script>
+
 </body>
 </html>
