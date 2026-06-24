@@ -634,9 +634,9 @@ const PromoCodeSystem=(()=>{
 ================================================================ */
 const WeaponSystem=(()=>{
   const ITEMS=[
-    {id:'pulse',  type:'weapon',name:'Pulse Rifle',   icon:'🔫',rarity:'common',   dmg:120, cd:.45,cost:0,   desc:'Частые зелёные импульсы. Идеальный стартер.',shot:{kind:'rapid',  col:'#00ff88',spd:560,sz:4, cnt:1}},
-    {id:'vortex', type:'weapon',name:'Vortex Blade',  icon:'⚔', rarity:'epic',     dmg:280, cd:1.4,cost:800, desc:'Фиолетовый веер зарядов. Широкий хитбокс.',  shot:{kind:'spread', col:'#b060ff',spd:440,sz:6, cnt:3}},
-    {id:'railgun',type:'weapon',name:'Abyss Railgun', icon:'🚀',rarity:'legendary',dmg:950, cd:8.0,cost:2500,desc:'Бирюзовый луч, пронизывает насквозь.',         shot:{kind:'beam',   col:'#00f5d4',spd:1100,sz:5,cnt:1}},
+    {id:'pulse',  type:'weapon',name:'Pulse Rifle',   icon:'🔫',rarity:'common',   dmg:120, cd:.45,cost:0,     desc:'Частые зелёные импульсы. Идеальный стартер.',shot:{kind:'rapid',  col:'#00ff88',spd:560,sz:4, cnt:1}},
+    {id:'vortex', type:'weapon',name:'Vortex Blade',  icon:'⚔', rarity:'epic',     dmg:450, cd:.8, cost:15000, desc:'Фиолетовый веер зарядов. Широкий хитбокс.',  shot:{kind:'spread', col:'#b060ff',spd:440,sz:6, cnt:3}},
+    {id:'railgun',type:'weapon',name:'Abyss Ballista',icon:'🚀',rarity:'legendary',dmg:1200,cd:1.4,cost:45000,desc:'Мощная бирюзовая баллиста, пронизывает насквозь.',shot:{kind:'beam',   col:'#00f5d4',spd:1100,sz:5,cnt:1}},
     {id:'blink',  type:'spell', name:'Neon Blink',    icon:'⚡',rarity:'common',   dmg:200, cd:3.0,cost:350, desc:'8 электрических разрядов во все стороны.',     shot:{kind:'burst',  col:'#ffff00',spd:480,sz:5, cnt:8}},
     {id:'overload',type:'spell',name:'Cyber Overload',icon:'💥',rarity:'epic',     dmg:600, cd:10, cost:1200,desc:'Огромный EMP-взрыв оранжевой плазмы.',          shot:{kind:'plasma', col:'#ff7a00',spd:300,sz:13,cnt:1}},
     {id:'chrono', type:'spell', name:'Chrono Shield', icon:'🛡',rarity:'legendary',dmg:0,   cd:20, cost:3000,desc:'Щит остановки времени. Защита на 3 с.',         shot:{kind:'shield', col:'#80aaff',spd:0,  sz:20,cnt:0}},
@@ -644,7 +644,7 @@ const WeaponSystem=(()=>{
     {id:'laser',  type:'weapon',name:'Laser Beam',    icon:'🔆',rarity:'epic',     dmg:50,  cd:0,  cost:1500,desc:'[NEW] Непрерывный лазер. Зарядка 1.5 с, луч 2 с.',shot:{kind:'laser',  col:'#ff0066',spd:900,sz:3,cnt:1},spec:{chargeTime:1.5,beamDur:2.0}},
     {id:'rocket', type:'weapon',name:'Split Rocket',  icon:'🎆',rarity:'epic',     dmg:400, cd:4.0,cost:2000,desc:'[NEW] Ракета делится на 3 осколка при попадании.',shot:{kind:'rocket', col:'#ff6600',spd:200,sz:10,cnt:1},spec:{shardN:3,shardDmg:150,shardCol:'#ffaa33',shardSpd:380}},
     {id:'mine',   type:'spell', name:'Orbital Mine',  icon:'💣',rarity:'legendary',dmg:0,   cd:6.0,cost:3500,desc:'[NEW] Мина на платформе. Взрывается при приближении.',shot:{kind:'mine',col:'#ff2244',spd:0,sz:13,cnt:0},spec:{trigR:60,blastDmg:800,blastR:80}},
-    {id:'minigun',type:'weapon',name:'Gold Minigun',  icon:'🔱',rarity:'legendary',dmg:60,  cd:.08,cost:4000,desc:'[NEW] Экстремальный темп. 5% шанс x2 кредиты.',   shot:{kind:'minigun',col:'#ffd700',spd:620,sz:3,cnt:1},spec:{x2:0.05}},
+    {id:'minigun',type:'weapon',name:'Gold Minigun',  icon:'🔱',rarity:'legendary',dmg:250, cd:.12,cost:90000,costCrystals:20,desc:'Экстремальный темп. 5% шанс x2 кредиты.',shot:{kind:'minigun',col:'#ffd700',spd:620,sz:3,cnt:1},spec:{x2:0.05}},
     {id:'shotgun',type:'weapon',name:'Plasma Shotgun',icon:'🌀',rarity:'epic',     dmg:220, cd:1.2,cost:1800,desc:'[NEW] 5 плазменных зарядов веером.',               shot:{kind:'shotgun',col:'#00ccff',spd:500,sz:7,cnt:5}},
   ];
   const TYPE_NAMES={rapid:'Очередь',spread:'Веер',beam:'Луч',burst:'Разброс',plasma:'Плазма',laser:'Лазер▲',rocket:'Ракета→',mine:'Мина',minigun:'Миниган',shotgun:'Дробь',shield:'Щит'};
@@ -721,11 +721,12 @@ const SkinManager = (() => {
       name: 'Дэвид Мартинес',
       subname: 'Edgerunner',
       rarity: 'legendary',
-      costCredits: 8000,
+      costCredits: 25000,   // ── PRICE: 25 000 кредитов ИЛИ 50 кристаллов ──
       costCrystals: 50,
+      payByEither: true,    // special flag: pay with credits OR crystals, not both
       isFree: false,
       isNew: true,
-      desc: '«Я стану легендой.» Жёлтая куртка скорой помощи. Имплант Сандевистан даёт шлейф при стрельбе и ускоряет перезарядку на 15%.',
+      desc: '«Я стану легендой.» Жёлтая куртка скорой помощи. 25 000 кр. ИЛИ 50 💠. Имплант Сандевистан даёт шлейф при стрельбе и ускоряет перезарядку на 15%.',
       passive: 'sandevistan',
       passiveLabel: '⚡ САНДЕВИСТАН: КД −15%',
       sfx: 'david_crit', // cyberware implant sound on crit
@@ -1192,7 +1193,12 @@ const Engine=(()=>{
   let sineTime=0;
   /* Sandevistan after-image trail (David Martinez skin) */
   let sandevistanTrail=[];  // [{x,y,col,alpha,ts}] — bullet position history for after-image
-  let sandevistanActive=false;  // true when David skin equipped     // global time for Math.sin platform movement
+  let sandevistanActive=false;  // true when David skin equipped
+  /* ── Player crosshair history for Sandevistan after-image effect ──
+     Stores up to 6 recent mouse positions {x,y}; oldest is shift()-ed out
+     each frame. Used to draw fading duplicate crosshairs behind the main one. */
+  let playerHistory=[];
+  const PLAYER_HISTORY_MAX=6;     // global time for Math.sin platform movement
   /* Boss state */
   let boss=null;      // ref to boss target object
   let bossShield={on:false,timer:0,cdTimer:3.5}; // shield cycle
@@ -1223,21 +1229,34 @@ const Engine=(()=>{
   function gy(){return canvas.height-30;}
 
   /* TARGETS */
+  /**
+   * spawnTargets — creates training targets (cubes) for the polygon.
+   * HP FORMULA: target HP scales with current Campaign level.
+   *   maxHp = 120 * campaignLevel   (e.g. Level 1 = 120 HP, Level 5 = 600 HP)
+   * Boss targets get a x10 multiplier on top of the base formula.
+   * @param {number} n   — number of targets to spawn
+   * @param {object} lvl — active level data from LevelManager (or null)
+   */
   function spawnTargets(n,lvl){
     targets=[]; boss=null;
     bossShield={on:false,timer:0,cdTimer:3.5};
     const isBossLvl=lvl?.hasBoss||lvl?.gt==='boss';
+    /* Campaign level number drives the HP scale — fallback to 1 outside campaign */
+    const campaignLevel = lvl?.id || 1;
+    const baseHp = 120 * campaignLevel; // ── HP FORMULA: 120 * level ──
     for(let i=0;i<Math.min(n,TDEFS.length);i++){
       const d=TDEFS[i];
       const isBoss=isBossLvl&&i===0;
+      const hpValue = isBoss ? baseHp*10 : baseHp; // boss = 10x base
       const t={
         id:i, x:isBoss?canvas.width/2-30:d.x, y:isBoss?80:d.y-30,
         w:isBoss?60:30, h:isBoss?60:30,
-        hp:isBoss?10:3, maxHp:isBoss?10:3,
+        /* ── HP ENGINE: maxHp/currentHp drive the new linear HP bars ── */
+        maxHp: hpValue, currentHp: hpValue,
+        hp:isBoss?10:3, maxHpPips:isBoss?10:3, // legacy pip counters kept for compatibility
         alive:true, hitT:0, phase:Math.random()*Math.PI*2,
         baseY:isBoss?80:d.y-30, col:isBoss?'#ff2d78':TCOLS[i],
         isBoss,
-        /* Boss sinusoidal float range */
         floatAmp:isBoss?22:5,
       };
       targets.push(t);
@@ -1295,6 +1314,10 @@ const Engine=(()=>{
       if(P.laserFiring){P.laserFireT-=dt;fireLaserTick(dt,item);if(P.laserFireT<=0){P.laserFiring=false;P.shootCd=2.0;}}
     }
     if(P.shootCd>0)P.shootCd-=dt;
+
+    /* ── Push current mouse coords into playerHistory (max 6 elements) ── */
+    playerHistory.push({x:mouse.x,y:mouse.y});
+    if(playerHistory.length>PLAYER_HISTORY_MAX) playerHistory.shift();
   }
 
   /* SHOOTING */
@@ -1403,8 +1426,16 @@ const Engine=(()=>{
   }
 
   /* HIT TARGET */
+  /**
+   * hitTarget — applies real weapon damage to target.currentHp.
+   * Replaces the old fixed pip-counter (t.hp--) with proper HP subtraction:
+   *   target.currentHp -= weapon.dmg
+   * Target dies when currentHp <= 0.
+   */
   function hitTarget(t,dmg,col,bx,by){
-    t.hp--;t.hitT=.25;GS.sessionDmg+=dmg;GS.sessionHits++;
+    /* ── REAL DAMAGE SUBTRACTION ── */
+    t.currentHp = Math.max(0, t.currentHp - dmg);
+    t.hitT=.25;GS.sessionDmg+=dmg;GS.sessionHits++;
     const item=WeaponSystem.getEq();
     let cred=50;
     /* Gold Minigun — 5% double credit with golden flash text */
@@ -1436,7 +1467,7 @@ const Engine=(()=>{
     if(SkinManager.getEq().id==='david' && Math.random()<0.25){
       AudioSys.play('david_crit');
     }
-    if(t.hp<=0){
+    if(t.currentHp<=0){
       t.alive=false;
       /* JUICY EXPLOSION BURST — 15-20 particles matching target color */
       const cx=t.x+t.w/2,cy=t.y+t.h/2;
@@ -1450,7 +1481,7 @@ const Engine=(()=>{
       LevelManager.recordKill();AudioSys.play('explode');
       AntiCheat.resetTarget(t.id);
       if(Math.random()<.35)UI.addChat(rndBot(),['уничтожена!🔥','отличный выстрел!','дамаг!'][0|Math.random()*3]);
-      if(!t.isBoss)setTimeout(()=>{t.hp=t.maxHp;t.alive=true;t.hitT=0;},3000+Math.random()*2000);
+      if(!t.isBoss)setTimeout(()=>{t.currentHp=t.maxHp;t.hp=t.maxHpPips;t.alive=true;t.hitT=0;},3000+Math.random()*2000);
     }
     updGHud();
   }
@@ -1681,12 +1712,43 @@ const Engine=(()=>{
       ctx.globalAlpha=hit?.7:.3;ctx.beginPath();ctx.moveTo(-tgt.w/2,0);ctx.lineTo(tgt.w/2,0);ctx.moveTo(0,-tgt.h/2);ctx.lineTo(0,tgt.h/2);ctx.stroke();ctx.globalAlpha=1;
       /* Animated scan-line */
       const sy=((t*28)%tgt.h)-tgt.h/2;ctx.globalAlpha=.22;ctx.fillStyle=tgt.col;ctx.fillRect(-tgt.w/2,sy,tgt.w,2);ctx.globalAlpha=1;
-      /* HP pips */
-      const pw=(tgt.w-(tgt.maxHp-1)*2)/tgt.maxHp;
-      for(let i=0;i<tgt.maxHp;i++){
-        const pg=ctx.createLinearGradient(-tgt.w/2+i*(pw+2),0,-tgt.w/2+i*(pw+2)+pw,0);
-        if(i<tgt.hp){pg.addColorStop(0,tgt.col);pg.addColorStop(1,'#fff');}else{pg.addColorStop(0,'rgba(255,255,255,.08)');pg.addColorStop(1,'rgba(255,255,255,.08)');}
-        ctx.fillStyle=pg;ctx.fillRect(-tgt.w/2+i*(pw+2),-tgt.h/2-9,pw,4);
+      /* ════════════════════════════════════════════════════════
+         LINEAR HP BAR — replaces old fixed pip-counter display.
+         Position: 10px ABOVE the cube's top edge (-tgt.h/2 - 10).
+         Size: width = cube width, height = 4px.
+         Fill: neon green when HP healthy, neon red when HP critical (<25%).
+         Background: semi-transparent dark strip behind the fill.
+      ════════════════════════════════════════════════════════ */
+      {
+        const hpRatio = Math.max(0, tgt.currentHp / tgt.maxHp);
+        const barW = tgt.w;           // matches cube width exactly
+        const barH = 4;                // fixed 4px height per spec
+        const barX = -tgt.w/2;         // left-aligned with cube
+        const barY = -tgt.h/2 - 10;    // 10px above cube's top edge
+
+        /* Semi-transparent background track */
+        ctx.fillStyle = 'rgba(0,0,0,.45)';
+        ctx.fillRect(barX, barY, barW, barH);
+        ctx.strokeStyle = 'rgba(255,255,255,.12)'; ctx.lineWidth = .5;
+        ctx.strokeRect(barX, barY, barW, barH);
+
+        /* Fill color: neon green (healthy) → neon red (critical <25%) */
+        const isCritical = hpRatio < 0.25;
+        const fillCol = isCritical ? '#ff2244' : '#39ff88';
+        ctx.save();
+        ctx.shadowColor = fillCol; ctx.shadowBlur = isCritical ? 8 : 5;
+        ctx.fillStyle = fillCol;
+        ctx.fillRect(barX, barY, barW * hpRatio, barH);
+        ctx.restore();
+
+        /* HP text label — small Courier New, placed to the RIGHT of the bar */
+        ctx.save();
+        ctx.font = "9px 'Courier New'";
+        ctx.textAlign = 'left';
+        ctx.fillStyle = isCritical ? '#ff6680' : '#9effc0';
+        ctx.shadowColor = fillCol; ctx.shadowBlur = 4;
+        ctx.fillText(`HP: ${Math.ceil(tgt.currentHp)}/${tgt.maxHp}`, barX + barW + 4, barY + barH);
+        ctx.restore();
       }
       /* Corner reticle */
       const cs=tgt.boss?12:8;ctx.strokeStyle=tgt.col;ctx.lineWidth=2;ctx.shadowBlur=6;ctx.beginPath();
@@ -1708,7 +1770,9 @@ const Engine=(()=>{
         /* HP label above boss */
         ctx.globalAlpha=1;ctx.fillStyle='#ff2d78';ctx.font='bold 11px Courier New';ctx.textAlign='center';
         ctx.shadowColor='#ff2d78';ctx.shadowBlur=6;
-        ctx.fillText(`HP: ${tgt.hp}/${tgt.maxHp}`,0,-tgt.h/2-16);
+        /* Title only — the new linear HP bar below already shows currentHp/maxHp numbers */
+        ctx.fillText('БОСС',0,-tgt.h/2-22);
+        ctx.textAlign='left';
       }
       ctx.restore();
     });
@@ -1725,6 +1789,92 @@ const Engine=(()=>{
     const muzzle=P.shootCd>0&&item&&P.shootCd>item.cd-.08;
     /* Delegate all rendering to active skin */
     SkinManager.drawPlayer(ctx, px, py, pw, ph, col, anx, any, muzzle);
+    /* Draw aiming crosshair at mouse position — see drawCrosshair() */
+    drawCrosshair();
+  }
+
+  /**
+   * drawCrosshair — renders the aiming reticle at the current mouse position.
+   *
+   * BASE SKIN (default / any non-David skin):
+   *   Clean neon pink-cyan crosshair — original design, single draw, no trail.
+   *
+   * DAVID MARTINEZ SKIN ("david") — Sandevistan after-image effect:
+   *   1) Loop through playerHistory (up to 6 stored {x,y} positions).
+   *   2) For each historical point, draw a faded semi-transparent copy of
+   *      the crosshair in neon-cyan (#00f0ff), decreasing globalAlpha the
+   *      further back in time the point is (older = more transparent).
+   *   3) Draw the main crosshair LAST, on top, as a large neon-yellow
+   *      cyberpunk diamond with ctx.shadowColor='#ffb700', shadowBlur=15.
+   */
+  function drawCrosshair(){
+    const isDavid = SkinManager.getEq().id === 'david';
+
+    if(!isDavid){
+      /* ── BASE CROSSHAIR: original pink-cyan neon design ── */
+      const mx=mouse.x, my=mouse.y;
+      ctx.save();
+      ctx.shadowColor='#00f5d4'; ctx.shadowBlur=10;
+      ctx.strokeStyle='#00f5d4'; ctx.lineWidth=1.5;
+      ctx.beginPath(); ctx.arc(mx,my,9,0,Math.PI*2); ctx.stroke();
+      ctx.strokeStyle='#ff2d78'; ctx.shadowColor='#ff2d78'; ctx.shadowBlur=8;
+      ctx.beginPath();
+      ctx.moveTo(mx-14,my); ctx.lineTo(mx-5,my);
+      ctx.moveTo(mx+5,my);  ctx.lineTo(mx+14,my);
+      ctx.moveTo(mx,my-14); ctx.lineTo(mx,my-5);
+      ctx.moveTo(mx,my+5);  ctx.lineTo(mx,my+14);
+      ctx.stroke();
+      ctx.restore();
+      return;
+    }
+
+    /* ── DAVID MARTINEZ: SANDEVISTAN AFTER-IMAGE CROSSHAIR ── */
+
+    /* Step 1+2: draw fading after-image copies from playerHistory,
+       oldest → newest, alpha increasing as we approach the present frame */
+    const n = playerHistory.length;
+    for(let i=0; i<n; i++){
+      const pt = playerHistory[i];
+      /* Older points (lower i) get lower alpha — classic after-image falloff */
+      const stepAlpha = (i+1) / (n+1) * 0.5; // max ~0.5 so it never overpowers the main reticle
+      ctx.save();
+      ctx.globalAlpha = stepAlpha;
+      ctx.strokeStyle = '#00f0ff';
+      ctx.shadowColor  = '#00f0ff';
+      ctx.shadowBlur   = 8;
+      ctx.lineWidth = 1.2;
+      /* Smaller echo diamond for each historical step */
+      const sz = 7 + i*0.6;
+      ctx.beginPath();
+      ctx.moveTo(pt.x, pt.y-sz); ctx.lineTo(pt.x+sz, pt.y);
+      ctx.lineTo(pt.x, pt.y+sz); ctx.lineTo(pt.x-sz, pt.y);
+      ctx.closePath(); ctx.stroke();
+      ctx.restore();
+    }
+
+    /* Step 3: MAIN crosshair — large neon-yellow cyberpunk diamond, drawn on top */
+    const mx=mouse.x, my=mouse.y;
+    ctx.save();
+    ctx.shadowColor = '#ffb700';
+    ctx.shadowBlur  = 15;
+    ctx.strokeStyle = '#ffb700';
+    ctx.lineWidth   = 2.2;
+    const S = 13; // main diamond half-size
+    ctx.beginPath();
+    ctx.moveTo(mx, my-S); ctx.lineTo(mx+S, my);
+    ctx.lineTo(mx, my+S); ctx.lineTo(mx-S, my);
+    ctx.closePath(); ctx.stroke();
+    /* Inner accent diamond */
+    ctx.globalAlpha=.4;
+    ctx.beginPath();
+    ctx.moveTo(mx, my-S*.5); ctx.lineTo(mx+S*.5, my);
+    ctx.lineTo(mx, my+S*.5); ctx.lineTo(mx-S*.5, my);
+    ctx.closePath(); ctx.stroke();
+    ctx.globalAlpha=1;
+    /* Cyan center dot — ties back to the Sandevistan cyan trail color */
+    ctx.fillStyle='#00f0ff'; ctx.shadowColor='#00f0ff'; ctx.shadowBlur=10;
+    ctx.beginPath(); ctx.arc(mx,my,2,0,Math.PI*2); ctx.fill();
+    ctx.restore();
   }
 
   /* BULLETS — unique textures per weapon type */
@@ -1909,14 +2059,28 @@ const UI=(()=>{
     const g=el('shop-grid');g.innerHTML='';
     WeaponSystem.forSale().forEach(item=>{
       const owned=WeaponSystem.owned(item.id);const d=document.createElement('div');d.className='card '+rarCls(item.rarity);
-      d.innerHTML=`<div class="sic">${item.icon}</div><div class="sn ${rarCol(item.rarity)}">${item.name}</div><div class="sar ${rarCol(item.rarity)}">${rarLbl(item.rarity)}</div><div class="sd">${item.desc}</div><div class="ss">УРН:<span>${fmt(item.dmg||0)}</span>·КД:<span>${item.cd}с</span></div><div>${owned?`<div class="sold-tag">✓ КУПЛЕНО</div>`:`<button class="btn btn-go btn-full" onclick="UI.buyItem('${item.id}')">💰 ${fmt(item.cost)} кр.</button>`}</div>`;
+      d.innerHTML=`<div class="sic">${item.icon}</div><div class="sn ${rarCol(item.rarity)}">${item.name}</div><div class="sar ${rarCol(item.rarity)}">${rarLbl(item.rarity)}</div><div class="sd">${item.desc}</div><div class="ss">УРН:<span>${fmt(item.dmg||0)}</span>·КД:<span>${item.cd}с</span></div><div>${owned?`<div class="sold-tag">✓ КУПЛЕНО</div>`:`<button class="btn btn-go btn-full" onclick="UI.buyItem('${item.id}')">💰 ${fmt(item.cost)} кр.${item.costCrystals?` + 💠${item.costCrystals}`:''}</button>`}</div>`;
       g.appendChild(d);
     });
   }
   function buyItem(id){
     const item=WeaponSystem.get(id);if(!item||WeaponSystem.owned(id))return;
-    if(GS.credits<item.cost){const w=el('shop-warn');w.style.display='block';setTimeout(()=>w.style.display='none',2800);return;}
-    GS.credits-=item.cost;GS.inventory.push(id);updateHUD();saveProgress();renderShop();renderArsenal();showNotif(`${item.icon} ${item.name} куплено!`,true);addChat('СИСТЕМА',`Игрок приобрёл ${item.name}!`);
+    /* Check credits */
+    if(GS.credits<item.cost){
+      const w=el('shop-warn');w.style.display='block';setTimeout(()=>w.style.display='none',2800);
+      addChat('СИСТЕМА','Недостаточно средств для покупки оружия!');
+      return;
+    }
+    /* Check crystals (Gold Minigun requires credits + crystals) */
+    const needCrystals=item.costCrystals||0;
+    if(needCrystals>0 && GS.crystals<needCrystals){
+      showNotif('❌ Недостаточно Кристаллов!',false);
+      addChat('СИСТЕМА','Недостаточно Кристаллов для покупки оружия!');
+      return;
+    }
+    GS.credits-=item.cost;
+    GS.crystals-=needCrystals;
+    GS.inventory.push(id);updateHUD();saveProgress();renderShop();renderArsenal();showNotif(`${item.icon} ${item.name} куплено!`,true);addChat('СИСТЕМА',`Игрок приобрёл ${item.name}!`);
   }
   function renderInventory(){
     const g=el('inv-grid'),em=el('inv-empty');g.innerHTML='';
@@ -1971,8 +2135,13 @@ const UI=(()=>{
       let priceHTML='';
       if(!skin.isFree&&!owned){
         priceHTML=`<div class="skin-price">`;
-        if(skin.costCredits>0) priceHTML+=`💰 ${fmt(skin.costCredits)} кр. `;
-        if(skin.costCrystals>0) priceHTML+=`<span class="xt-price">💠 ${skin.costCrystals}</span>`;
+        if(skin.payByEither){
+          /* David Martinez: show as "ИЛИ" choice, not combined sum */
+          priceHTML+=`💰 ${fmt(skin.costCredits)} кр. <span style="color:var(--dim)">ИЛИ</span> <span class="xt-price">💠 ${skin.costCrystals}</span>`;
+        } else {
+          if(skin.costCredits>0) priceHTML+=`💰 ${fmt(skin.costCredits)} кр. `;
+          if(skin.costCrystals>0) priceHTML+=`<span class="xt-price">💠 ${skin.costCrystals}</span>`;
+        }
         priceHTML+=`</div>`;
       }
 
@@ -2004,26 +2173,86 @@ const UI=(()=>{
     if(eqName)eqName.textContent=SkinManager.getEq().name;
   }
 
+    /**
+     * buySkin — handles the "Купить" button click for any skin card,
+     * including the Legendary David Martinez skin.
+     *
+     * Balance is read live from the top HUD state: GS.credits / GS.crystals.
+     *
+     * Payment modes:
+     *   payByEither = true   → player may pay with credits OR crystals
+     *                          (covers David: 25 000 кр. ИЛИ 50 💠)
+     *   payByEither = false  → player must have BOTH credits AND crystals
+     *                          (covers skins that require a combined price)
+     *
+     * On success:
+     *   - Deduct the chosen currency from GS
+     *   - Mark skin as unlocked: GS.ownedSkins.push(id)
+     *   - Auto-equip immediately via SkinManager.equip(id) (== equipSkin)
+     *   - Persist everything to localStorage via saveProgress()
+     *   - Re-render skin grid → button text instantly becomes "АКТИВЕН"
+     *
+     * On failure:
+     *   - Push "[Система]: Недостаточно средств для покупки скина!" to chat
+     *   - Also flash the existing shop-warn banner for visual feedback
+     */
     function buySkin(id){
-    const skin=SkinManager.get(id); if(!skin||SkinManager.isOwned(id))return;
-    /* Check credits */
-    if(GS.credits < skin.costCredits){
-      const w=el('shop-warn');w.style.display='block';setTimeout(()=>w.style.display='none',2800);return;
+      const skin = SkinManager.get(id);
+      if(!skin || SkinManager.isOwned(id)) return;
+
+      /* Read live balance from top panel state */
+      const credits  = GS.credits;
+      const crystals = GS.crystals;
+
+      let canAfford   = false;
+      let payMode     = null; // 'credits' | 'crystals' | 'both'
+
+      if(skin.payByEither){
+        /* EITHER/OR payment — David Martinez case */
+        if(credits >= skin.costCredits){ canAfford = true; payMode = 'credits'; }
+        else if(skin.costCrystals > 0 && crystals >= skin.costCrystals){ canAfford = true; payMode = 'crystals'; }
+      } else {
+        /* Standard payment — requires both currencies satisfied */
+        const enoughCredits  = credits  >= skin.costCredits;
+        const enoughCrystals = skin.costCrystals === 0 || crystals >= skin.costCrystals;
+        canAfford = enoughCredits && enoughCrystals;
+        payMode = 'both';
+      }
+
+      if(!canAfford){
+        /* ── INSUFFICIENT FUNDS: push system message to global chat ── */
+        addChat('Система', 'Недостаточно средств для покупки скина!');
+        const w = el('shop-warn');
+        if(w){ w.style.display='block'; setTimeout(()=>w.style.display='none', 2800); }
+        AudioSys.play('promo_fail');
+        return;
+      }
+
+      /* ── DEDUCT COST based on chosen payment mode ── */
+      if(payMode === 'credits'){
+        GS.credits -= skin.costCredits;
+      } else if(payMode === 'crystals'){
+        GS.crystals -= skin.costCrystals;
+      } else {
+        GS.credits  -= skin.costCredits;
+        GS.crystals -= skin.costCrystals;
+      }
+
+      /* ── UNLOCK + AUTO-EQUIP ── */
+      GS.ownedSkins.push(id);     // status: unlocked: true (tracked via ownedSkins array)
+      SkinManager.equip(id);      // == equipSkin('david') — auto-equip immediately
+
+      /* ── PERSIST TO LOCALSTORAGE ── */
+      saveProgress();
+
+      /* ── REFRESH UI: button text instantly flips to "АКТИВЕН" ── */
+      updateHUD();
+      renderSkins();
+
+      showNotif(`👤 Скин «${skin.name}» куплен и надет!`, true);
+      addChat('СИСТЕМА', `Игрок приобрёл скин «${skin.name}»!`);
+      AudioSys.play('level_up');
     }
-    /* Check crystals */
-    if(skin.costCrystals > 0 && GS.crystals < skin.costCrystals){
-      showNotif('❌ Недостаточно Кристаллов!',false); return;
-    }
-    GS.credits  -= skin.costCredits;
-    GS.crystals -= skin.costCrystals;
-    GS.ownedSkins.push(id);
-    SkinManager.equip(id);
-    saveProgress(); // persist to localStorage
-    updateHUD(); renderSkins();
-    showNotif(`👤 Скин «${skin.name}» куплен и надет!`,true);
-    addChat('СИСТЕМА',`Игрок приобрёл скин «${skin.name}»!`);
-    AudioSys.play('level_up'); // celebratory jingle
-  }
 
   return{renderArsenal,renderShop,buyItem,renderInventory,equipItem,renderSkins,buySkin,showNotif,addChat,sendChat};
 })();
@@ -2066,7 +2295,7 @@ function tickOnline(){onlineBase+=Math.floor(Math.random()*31)-15;if(onlineBase<
     SkinManager.restoreEquipped();
     UI.renderSkins();
   },150);
-  setTimeout(()=>UI.addChat('СИСТЕМА','NEON ABYSS v8.0 — SkinManager Pro + PromoCode + 10 уровней активны!'),600);
+  setTimeout(()=>UI.addChat('СИСТЕМА','NEON ABYSS v9.0 — Economy & HP Engine + PromoCode + 10 уровней активны!'),600);
   setTimeout(()=>UI.addChat('CyberFox42','антифарм система работает — честная игра! 💪'),1900);
   setTimeout(()=>UI.addChat('NeonHunter_77','промокод HOLKIP даёт 5000 кредитов!'),3300);
   setTimeout(()=>UI.showNotif('Player_Zero зашёл в Лобби Бездны',false),2600);
